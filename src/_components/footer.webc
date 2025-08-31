@@ -1,3 +1,15 @@
 <footer>
-footer
+  ©<span webc:nokeep @text="(new Date()).getFullYear()"></span> Built with
+  <a href="https://www.11ty.dev/">Eleventy</a>.
 </footer>
+
+<style>
+  footer {
+    background-color: var(--eerie-black);
+    font-family: var(--font-cursive);
+    text-align: center;
+    font-size: var(--font-view--2);
+    padding-block: var(--space-s);
+    color: var(--antiflash-white)
+  }
+</style>
