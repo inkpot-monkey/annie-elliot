@@ -1,4 +1,6 @@
 <footer>
+  <p id="quote">So the world may know he loved me once.</p>
+
   ©<span webc:nokeep @text="(new Date()).getFullYear()"></span> Built with
   <a href="https://www.11ty.dev/">Eleventy</a>.
 </footer>
@@ -11,5 +13,11 @@
     font-size: var(--font-view--2);
     padding-block: var(--space-s);
     color: var(--antiflash-white);
+
+    #quote {
+      font-size: var(--step-3);
+      font-family: var(--font-cursive);
+      margin: 0;
+    }
   }
 </style>
