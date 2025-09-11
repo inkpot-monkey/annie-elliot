@@ -2,7 +2,7 @@
   <h2>Mr & Mrs Charles Dickens</h2>
   <h3>Her Story</h3>
   <div>
-    <p id="quote">"So the world may know he loved me once."</p>
+    <p id="quote">So the world may know he loved me once.</p>
 
     <div class="u-grid" id="main-content">
       <div>
@@ -50,15 +50,18 @@
 
     h2 {
       margin-top: 0;
+      font-family: var(--font-cursive);
       font-size: var(--step-4);
     }
 
     h3 {
       font-size: var(--step-2);
+      font-family: var(--font-base);
     }
 
     #quote {
-      font-size: var(--step-1);
+      font-size: var(--step-3);
+      font-family: var(--font-cursive);
       margin-bottom: var(--space-l);
     }
 

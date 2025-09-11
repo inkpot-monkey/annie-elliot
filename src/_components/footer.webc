@@ -6,10 +6,10 @@
 <style>
   footer {
     background-color: var(--eerie-black);
-    font-family: var(--font-cursive);
+    font-family: var(--font-base);
     text-align: center;
     font-size: var(--font-view--2);
     padding-block: var(--space-s);
-    color: var(--antiflash-white)
+    color: var(--antiflash-white);
   }
 </style>

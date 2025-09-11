@@ -33,6 +33,10 @@
       margin: auto;
     }
 
+    h1 {
+      font-family: var(--font-cursive);
+    }
+
     h1,
     nav {
       color: var(--battleship-gray);
