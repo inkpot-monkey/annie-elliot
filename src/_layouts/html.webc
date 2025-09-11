@@ -10,10 +10,12 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <style webc:keep @raw="getBundle('css')"></style>
 
-    <link rel="stylesheet" href="reset.css" />
-    <link rel="stylesheet" href="design-system.css" />
+    <link rel="stylesheet" href="reset.css" webc:bucket="base" />
+    <link rel="stylesheet" href="design-system.css" webc:bucket="base" />
+
+    <style webc:keep @raw="getBundle('css', 'base')"></style>
+    <style webc:keep @raw="getBundle('css')"></style>
   </head>
   <body>
     <header webc:nokeep></header>
