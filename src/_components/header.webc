@@ -27,7 +27,7 @@
     padding-block: var(--space-s);
 
     #header {
-      max-width: var(--space-2xl-3xl);
+      max-width: var(--img-sm);
       width: 100%;
       height: auto;
       margin: auto;
