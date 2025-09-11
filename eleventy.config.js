@@ -25,6 +25,8 @@ export default function (eleventyConfig) {
       decoding: "async",
     },
   });
+
+  eleventyConfig.addPassthroughCopy({ "src/static/fonts": "fonts" });
 }
 
 export const config = {
