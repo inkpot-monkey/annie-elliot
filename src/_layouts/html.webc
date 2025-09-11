@@ -22,3 +22,9 @@
     <script type="module" webc:keep @raw="getBundle('js')"></script>
   </body>
 </html>
+
+<style>
+  main {
+    background-color: #fefaf2;
+  }
+</style>
