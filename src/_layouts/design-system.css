@@ -61,6 +61,14 @@
     clamp(1.125rem, 0.5492rem + 2.5172vw, 2.5rem)
   );
   --grid-columns: 12;
+
+  /* Personal exploration */
+  --img-xs: clamp(5rem, 4.5rem + 2.5vw, 8rem);
+  --img-sm: clamp(8rem, 7rem + 4.5vw, 12rem);
+  --img-md: clamp(12rem, 10rem + 8vw, 20rem);
+  --img-lg: clamp(20rem, 15rem + 15vw, 30rem);
+  --img-xl: clamp(30rem, 25rem + 20vw, 45rem);
+  --img-full: 100%;
 }
 
 .u-container {
