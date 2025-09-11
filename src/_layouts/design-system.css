@@ -1,9 +1,24 @@
+@font-face {
+  font-family: LibreBaskerville;
+  src: url("/fonts/LibreBaskerville.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Tangerine;
+  src: url("/fonts/Tangerine.ttf") format("truetype");
+  font-display: swap;
+}
+
 :root {
   --black-olive: hsla(43, 23%, 16%, 1);
   --battleship-gray: hsla(41, 13%, 52%, 1);
   --antiflash-white: hsla(60, 3%, 93%, 1);
   --taupe: hsla(38, 14%, 23%, 1);
   --eerie-black: hsla(47, 26%, 11%, 1);
+
+  --font-base: LibreBaskerville, system-ui, sans-serif;
+  --font-cursive: Tangerine, system-ui, sans-serif;
 
   /* @link https://utopia.fyi/type/calculator?c=366,18,1.2,1240,20,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
   --step--2: clamp(0.7813rem, 0.7734rem + 0.0343vw, 0.8rem);
@@ -61,4 +76,9 @@
 
 html {
   background: var(--eerie-black);
+}
+
+p,
+a {
+  font: var(--font-base);
 }
