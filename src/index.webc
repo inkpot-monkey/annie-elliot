@@ -1,1 +1,82 @@
-<p>main</p>
+<section id="about" class="u-container">
+  <h2>Mr & Mrs Charles Dickens</h2>
+  <h3>Her Story</h3>
+  <div>
+    <p id="quote">"So the world may know he loved me once."</p>
+
+    <div class="u-grid" id="main-content">
+      <div>
+        <p>
+          <em>Mr & Mrs Charles Dickens: Her Story</em> is a stirring reimagining
+          of Catherine Dickens' life — the long-silenced wife of one of the
+          world's greatest literary figures. Through richly textured prose and
+          vivid emotional detail, this novel breathes life into a forgotten
+          voice from the Victorian era.
+        </p>
+
+        <p>
+          Often relegated to the footnotes of literary history, Catherine
+          Hogarth Dickens is re-centered here as a complex woman: a mother, a
+          wife, and a figure navigating love, betrayal, and identity in the
+          shadows of fame.
+        </p>
+
+        <p>
+          With meticulous historical research and compelling storytelling, Annie
+          Tipper gives Catherine her rightful place in the spotlight — not just
+          as a wife, but as a woman with a story of her own.
+        </p>
+      </div>
+
+      <img
+        webc:is="eleventy-image"
+        src="assets/images/cover.jpg"
+        alt="Mr & Mrs Charles Dickens book cover"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  #about {
+    padding-block: var(--space-xl);
+
+    h2,
+    h3,
+    #quote {
+      text-align: center;
+      color: var(--taupe);
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: var(--step-4);
+    }
+
+    h3 {
+      font-size: var(--step-2);
+    }
+
+    #quote {
+      font-size: var(--step-1);
+      margin-bottom: var(--space-l);
+    }
+
+    p {
+      text-align: justify;
+    }
+
+    #main-content {
+      @media all and (min-width: 40rem) {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      picture {
+        img {
+          width: 100%;
+          height: auto;
+        }
+      }
+    }
+  }
+</style>
