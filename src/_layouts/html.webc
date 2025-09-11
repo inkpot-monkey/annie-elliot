@@ -16,9 +16,9 @@
     <link rel="stylesheet" href="design-system.css" />
   </head>
   <body>
-    <header></header>
+    <header webc:nokeep></header>
     <main @raw="content"></main>
-    <footer></footer>
+    <footer webc:nokeep></footer>
     <script type="module" webc:keep @raw="getBundle('js')"></script>
   </body>
 </html>
