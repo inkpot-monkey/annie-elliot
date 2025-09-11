@@ -2,8 +2,6 @@
   <h2>Mr & Mrs Charles Dickens</h2>
   <h3>Her Story</h3>
   <div>
-    <p id="quote">So the world may know he loved me once.</p>
-
     <div class="u-grid" id="main-content">
       <div>
         <p>
@@ -42,27 +40,22 @@
     padding-block: var(--space-xl);
 
     h2,
-    h3,
-    #quote {
+    h3 {
       text-align: center;
       color: var(--taupe);
     }
 
     h2 {
-      margin-top: 0;
+      margin: 0;
       font-family: var(--font-cursive);
-      font-size: var(--step-4);
+      font-size: var(--step-5);
     }
 
     h3 {
-      font-size: var(--step-2);
-      font-family: var(--font-base);
-    }
-
-    #quote {
-      font-size: var(--step-3);
-      font-family: var(--font-cursive);
+      margin-top: var(--space-3xs);
       margin-bottom: var(--space-l);
+      font-size: var(--step-3);
+      font-family: var(--font-base);
     }
 
     p {
@@ -70,8 +63,14 @@
     }
 
     #main-content {
-      @media all and (min-width: 40rem) {
-        grid-template-columns: 1fr 1fr;
+      gap: var(--space-2xl);
+
+      @media all and (min-width: 56rem) {
+        grid-template-columns: 3fr 2fr;
+      }
+
+      div > p:first-child {
+        margin-top: 0;
       }
 
       picture {
