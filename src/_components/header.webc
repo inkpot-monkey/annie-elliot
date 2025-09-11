@@ -1,3 +1,50 @@
-<header>
-header
+<header class="u-container">
+  <img
+    webc:is="eleventy-image"
+    src="assets/images/stamps.webp"
+    alt="Two stamps with the faces of a young Mr and Mrs Dickens"
+    id="header"
+  />
+  <h1>As told by Annie Elliot</h1>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/reviews">Reviews</a>
+    <a href="/author">Author</a>
+    <a href="/events">Events</a>
+    <a href="/contact">Contact</a>
+  </nav>
+  <img
+    webc:is="eleventy-image"
+    src="assets/images/separator.webp"
+    alt="victorian flourish"
+    id="flourish"
+  />
 </header>
+
+<style>
+  header {
+    text-align: center;
+    padding-block: var(--space-s);
+
+    #header {
+      max-width: var(--space-2xl-3xl);
+      width: 100%;
+      height: auto;
+      margin: auto;
+    }
+
+    h1,
+    nav {
+      color: var(--battleship-gray);
+    }
+
+    #flourish {
+      max-width: var(--space-3xl);
+      margin: auto;
+      width: 100%;
+      height: auto;
+      transform: rotate(180deg);
+      padding-bottom: var(--space-s);
+    }
+  }
+</style>
