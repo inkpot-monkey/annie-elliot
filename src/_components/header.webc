@@ -5,10 +5,9 @@
     alt="Two stamps with the faces of a young Mr and Mrs Dickens"
     id="header"
   />
-  <h1>As told by Annie Elliot</h1>
+  <p id="author-name">Annie Elliot</>
   <nav>
     <a href="/">Home</a>
-    <a href="/reviews">Reviews</a>
     <a href="/author">Author</a>
     <a href="/events">Events</a>
     <a href="/contact">Contact</a>
@@ -33,13 +32,13 @@
       margin: auto;
     }
 
-    h1 {
+    #author-name {
       font-family: var(--font-cursive);
-      font-size: var(--step-4);
+      font-size: 80px;
       margin: var(--space-xs);
     }
 
-    h1,
+    #author-name,
     nav {
       color: var(--battleship-gray);
     }
