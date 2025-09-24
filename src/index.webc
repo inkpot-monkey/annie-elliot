@@ -1,6 +1,6 @@
 <section id="about" class="u-container">
-  <h2>Mr & Mrs Charles Dickens</h2>
-  <h3>Her Story</h3>
+  <h1>Mr & Mrs Charles Dickens</h1>
+  <h2>Her Story</h2>
   <div>
     <div class="u-grid" id="main-content">
       <div>
@@ -24,6 +24,8 @@
           Tipper gives Catherine her rightful place in the spotlight — not just
           as a wife, but as a woman with a story of her own.
         </p>
+
+        <reviews></reviews>
       </div>
 
       <img
@@ -37,25 +39,24 @@
 
 <style>
   #about {
-    padding-block: var(--space-xl);
+    padding-block: var(--space-l);
 
-    h2,
-    h3 {
+    h1,
+    h2 {
       text-align: center;
       color: var(--taupe);
     }
 
-    h2 {
+    h1 {
       margin: 0;
-      font-family: var(--font-cursive);
-      font-size: var(--step-5);
+      font-family: var(--font-base);
     }
 
-    h3 {
-      margin-top: var(--space-3xs);
+    h2 {
+      margin-top: var(--space-s);
       margin-bottom: var(--space-l);
-      font-size: var(--step-3);
-      font-family: var(--font-base);
+      font-size: var(--step-4);
+      font-family: var(--font-cursive);
     }
 
     p {
@@ -65,11 +66,17 @@
     #main-content {
       gap: var(--space-2xl);
 
-      @media all and (min-width: 56rem) {
+      @media all and (min-width: 60rem) {
         grid-template-columns: 3fr 2fr;
+
+        .cover {
+          position: sticky;
+          align-self: start;
+          top: var(--space-2xl);
+        }
       }
 
-      div > p:first-child {
+      div > p:first-of-type {
         margin-top: 0;
       }
 
