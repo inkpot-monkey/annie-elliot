@@ -9,12 +9,7 @@
     let
       inherit (builtins) attrValues;
 
-      supportedSystems = [
-        "x86_64-linux"
-        "aarch64-linux"
-        "x86_64-darwin"
-        "aarch64-darwin"
-      ];
+      supportedSystems = [ "x86_64-linux" ];
 
       forEachSupportedSystem =
         f:
@@ -56,6 +51,9 @@
 
               # Python (for stylelint)
               inherit (pkgs) python3;
+
+              # Cloudflare
+              inherit (pkgs.nodePackages) wrangler;
 
               inherit (self.packages.${system}) default;
             };
