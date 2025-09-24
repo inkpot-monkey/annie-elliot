@@ -1,5 +1,17 @@
 <footer>
+  <img
+    webc:is="eleventy-image"
+    src="assets/images/separator.webp"
+    alt="victorian flourish"
+  />
+
   <p id="quote">So the world may know he loved me once.</p>
+
+  <img
+    webc:is="eleventy-image"
+    src="assets/images/separator.webp"
+    alt="victorian flourish"
+  />
 
   ©<span webc:nokeep @text="(new Date()).getFullYear()"></span> Built with
   <a href="https://www.11ty.dev/">Eleventy</a>.
@@ -18,6 +30,19 @@
       font-size: var(--step-3);
       font-family: var(--font-cursive);
       margin: 0;
+    }
+
+    picture:last-of-type > img {
+      transform: rotate(180deg);
+      margin-bottom: var(--space-s);
+    }
+
+    picture > img {
+      max-width: var(--space-3xl);
+      margin: auto;
+      width: 100%;
+      height: auto;
+      transform: rotate(0deg);
     }
   }
 </style>
