@@ -1,0 +1,95 @@
+<script webc:setup>
+  function formatDate(dateTime) {
+      if (!dateTime) return 'TBA';
+      const date = new Date(dateTime );
+      return date.toLocaleDateString('en-GB', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit'
+      });
+    }
+
+  async function fetchCalendarEvents() {
+    const calendarId = 'author.annie.elliot@gmail.com';
+    const apiKey = '';
+
+    try {
+      const response = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${apiKey}`);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw errorData;
+      }
+
+      const data = await response.json();
+      const events = data.items.map(({summary, description, location, start, end}) => ({
+      summary, description, location, start: formatDate(start.dateTime), end: formatDate(end.dateTime)
+  }))
+      return events;
+    } catch (error) {
+      console.error('Error fetching calendar events:', error);
+      throw error;
+    }
+  }
+
+  let events = await fetchCalendarEvents();
+</script>
+
+<section id="events" class="events-section">
+  <h2>Upcoming Events</h2>
+
+  <div class="event-card" webc:for="event of events">
+    <h3 @text="event.summary"></h3>
+    <p><strong>Date: </strong><span @text="event.start"></span></p>
+    <p><strong>Location: </strong><span @text="event.location"></span></p>
+    <p @text="event.description"></p>
+  </div>
+</section>
+
+<style>
+  .events-section {
+    background-color: #f3efe5;
+    padding: 3rem 2rem;
+    font-family: "Crimson Text", serif;
+    text-align: center;
+  }
+
+  .events-section h2 {
+    font-family: "Playfair Display", serif;
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+    color: #3c2e22;
+  }
+
+  .event-card {
+    background-color: #fffdf8;
+    border: 1px solid #cbbda9;
+    margin: 1.5rem auto;
+    padding: 2rem;
+    max-width: 700px;
+    text-align: left;
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.06);
+    position: relative;
+  }
+
+  .event-card h3 {
+    font-family: "Playfair Display", serif;
+    color: #4b3e30;
+    margin-bottom: 0.5rem;
+    font-size: 1.4rem;
+  }
+
+  .event-card p {
+    font-size: 1rem;
+    color: #564a3a;
+    line-height: 1.5;
+    margin: 0.3rem 0;
+  }
+
+  .event-card em {
+    font-style: italic;
+  }
+</style>
