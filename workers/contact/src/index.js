@@ -1,9 +1,9 @@
 import { EmailMessage } from "cloudflare:email";
 import { createMimeMessage } from "mimetext";
 
-const recipient = "thomassdk@pm.me";
+const recipient = "author.annie.elliot@gmail.com";
 const sender = "info@annieelliot.co.uk";
-const allowedOrigin = "https://annie-elliot.co.uk";
+const allowedOrigin = "http://localhost:8080";
 
 export default {
   async fetch(request, env) {
@@ -17,8 +17,8 @@ export default {
       return new Response("Unauthorized", { status: 403 });
     }
 
-    // Only allow GET requests
-    if (request.method !== "GET") {
+    // Only allow POST requests
+    if (request.method !== "POST") {
       return new Response("Method Not Allowed", {
         status: 405,
         headers: getCorsHeaders(),
@@ -27,7 +27,9 @@ export default {
 
     // Process the email
     try {
-      await sendEmail(env);
+      const formData = await request.formData();
+      const data = Object.fromEntries(formData);
+      await sendEmail(data, env);
       return new Response("Email sent successfully!", {
         headers: getCorsHeaders(),
       });
@@ -43,6 +45,7 @@ export default {
 function isValidOrigin(request) {
   const origin =
     request.headers.get("Origin") || request.headers.get("Referer");
+
   return origin && origin.startsWith(allowedOrigin);
 }
 
@@ -60,17 +63,17 @@ function handleCors() {
   });
 }
 
-async function sendEmail(env) {
+async function sendEmail(data, env) {
   const msg = createMimeMessage();
   msg.setSender({
-    name: "Website: Annie Elliot",
+    name: data.name,
     addr: sender,
   });
   msg.setRecipient(recipient);
-  msg.setSubject("A message from the website Annie Elliot");
+  msg.setSubject(`A message from ${data.email}`);
   msg.addMessage({
     contentType: "text/plain",
-    data: `Congratulations, you just got a message from a reader!`,
+    data: data.message,
   });
 
   var message = new EmailMessage(sender, recipient, msg.asRaw());

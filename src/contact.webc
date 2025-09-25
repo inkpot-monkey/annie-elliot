@@ -1,0 +1,100 @@
+<section id="contact" class="postcard">
+  <h2>Contact the Author</h2>
+  <div class="postcard-wrapper">
+    <div class="postcard-border">
+      <form action="https://contact.annieelliot.co.uk" method="post">
+        <label for="name">Dear Annie, my name is</label>
+        <input
+          type="text"
+          name="name"
+          id="name"
+          placeholder="Your Full Name"
+          required
+        />
+
+        <label for="email">You may reach me at</label>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          placeholder="your@email.com"
+          required
+        />
+
+        <label for="message">I wish to say...</label>
+        <textarea
+          id="message"
+          name="message"
+          rows="6"
+          placeholder="Your message here..."
+          required
+        ></textarea>
+
+        <button type="submit">Post My Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<style>
+  .postcard {
+    font-family: "Crimson Text", serif;
+    padding: 3rem 2rem;
+    text-align: center;
+
+    .postcard-wrapper {
+      display: flex;
+      justify-content: center;
+    }
+
+    .postcard-border {
+      border: 4px double #4b3e30;
+      padding: 2rem;
+      max-width: 600px;
+      width: 100%;
+      background: #fff;
+      box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
+      background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+
+    label {
+      margin-top: 1.2rem;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: #4b3e30;
+    }
+
+    input,
+    textarea {
+      padding: 0.75rem;
+      margin-top: 0.3rem;
+      font-family: "Crimson Text", serif;
+      font-size: 1rem;
+      border: 1px solid #c4b9a6;
+      background-color: #fdfaf5;
+    }
+
+    button {
+      margin-top: 2rem;
+      padding: 0.75rem;
+      font-family: "Playfair Display", serif;
+      background-color: #a1866f;
+      color: white;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #8e6f58;
+    }
+  }
+</style>
