@@ -1,0 +1,30 @@
+* Google calendar events :verb:
+:properties:
+:Verb-Prelude: (verb-set-var "calendarId" "author.annie.elliot%40gmail.com")
+:end:
+
+# https://developers.google.com/workspace/calendar/api/v3/reference
+
+template https://www.googleapis.com/calendar/v3/calendars
+
+** List
+# https://developers.google.com/workspace/calendar/api/v3/reference/events/list
+
+get /{{(verb-var calendarId)}}/events?key={{(verb-var key)}}
+
+** Watch
+
+This should be carried out in the google api tester to avoid messing around with credentials
+
+https://developers.google.com/workspace/calendar/api/v3/reference/events/watch
+
+*** Example Response
+
+{
+ "kind": "api#channel",
+ "id": "23d0e5a0-f757-436b-be5d-25902d44c208",
+ "resourceId": "j2RYsyE5LveTfUKYVkgJ3f18N3A",
+ "resourceUri": "https://content.googleapis.com/calendar/v3/calendars/author.annie.elliot%40gmail.com/events?alt=json&alwaysIncludeEmail=false",
+ "token": "KMD5eUZQBrRxs7UNdDIq5x7BV31XzpPM",
+ "expiration": "1759410386000"
+}
