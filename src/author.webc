@@ -1,0 +1,76 @@
+<section id="author" class="u-container">
+  <h1>About the Author</h1>
+  <div>
+    <div class="u-grid">
+      <img
+        webc:is="eleventy-image"
+        src="assets/images/author.avif"
+        alt="Portrait of Annie Elliot"
+      />
+
+      <div class="author-bio">
+        <p>
+          <strong>Annie Elliot (Mrs.)</strong> is a historical novelist devoted
+          to reviving the voices of women left out of traditional histories.
+          With a background in English literature and historical research, she
+          brings to life the forgotten narratives hidden in the margins of the
+          Victorian world.
+        </p>
+
+        <p>
+          In <em>Mr & Mrs Charles Dickens</em>, she invites readers into the
+          emotional truth of Catherine Dickens — not merely as a wife in the
+          shadow of genius, but as a woman of feeling, insight, and courage.
+        </p>
+
+        <p>
+          Annie lives in the English countryside, where she writes surrounded by
+          old letters, antique inkpots, and towering bookshelves of dusty
+          biographies.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #author {
+    padding-block: var(--space-l);
+
+    h1 {
+      text-align: center;
+      margin: 0;
+      margin-bottom: var(--space-l);
+    }
+
+    div {
+      margin: 0 auto;
+      justify-items: center;
+      gap: var(--space-l);
+      text-align: justify;
+
+      @media all and (min-width: 60rem) {
+        grid-template-columns: 2fr 3fr;
+      }
+
+      div > p:first-of-type {
+        margin-top: 0;
+      }
+    }
+
+    picture {
+      border: 6px solid #a1866f;
+      border-radius: 50%;
+      overflow: hidden;
+      background-color: #fff;
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+      max-width: var(--img-lg);
+
+      img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+    }
+  }
+</style>
