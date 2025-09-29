@@ -4,30 +4,23 @@
     <div class="u-grid">
       <img
         webc:is="eleventy-image"
-        src="assets/images/author.avif"
+        src="assets/images/author.jpg"
         alt="Portrait of Annie Elliot"
       />
 
       <div class="author-bio">
-        <p>
-          <strong>Annie Elliot (Mrs.)</strong> is a historical novelist devoted
-          to reviving the voices of women left out of traditional histories.
-          With a background in English literature and historical research, she
-          brings to life the forgotten narratives hidden in the margins of the
-          Victorian world.
-        </p>
-
-        <p>
-          In <em>Mr & Mrs Charles Dickens</em>, she invites readers into the
-          emotional truth of Catherine Dickens — not merely as a wife in the
-          shadow of genius, but as a woman of feeling, insight, and courage.
-        </p>
-
-        <p>
-          Annie lives in the English countryside, where she writes surrounded by
-          old letters, antique inkpots, and towering bookshelves of dusty
-          biographies.
-        </p>
+        Annie Elliot has an MA in Creative Writing and a BA (Hons) in Literary
+        Studies. Before retiring she worked in local government, as a newspaper
+        reporter and taught communication. She has written a booklet to help
+        teachers understand dyslexic children’s difficulties. Her short stories
+        and flash fiction have been successful in literary competitions. She has
+        been longlisted for the Mslexia Novel Award. She writes and performs
+        monologues. Fay Weldon described Annie Elliot as a natural writer and
+        her work as ‘completely brilliant’. Nikesh Shukla said she had a ‘really
+        great comedian’s eye for detail and absurdity’ and was struck by her
+        talent for the acerbic and moving. Stephen Moss summed up her
+        bitter-sweet style as funny and tragic. Mr & Mrs Charles Dickens is her
+        debut novel. Her website is annieelliot.co.uk.
       </div>
     </div>
   </div>
