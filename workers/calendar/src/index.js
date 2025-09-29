@@ -1,6 +1,6 @@
 import { Octokit } from "@octokit/core";
 
-const expectedChannelId = "23d0e5a0-f757-436b-be5d-25902d44c208";
+const expectedChannelId = "23d0e5a0-f757-436b-be5d-25902d44c208v2";
 const expectedResourceId = "j2RYsyE5LveTfUKYVkgJ3f18N3A";
 
 export default {
@@ -27,7 +27,7 @@ export default {
         return new Response("", { status: 400 });
       }
 
-      await triggerGitHubWorkflow(env.GITHUB_AUTH);
+      await triggerGitHubWorkflow(env.GITHUB_WORKFLOW_KEY);
 
       // Return success status code
       return new Response("", { status: 200 });
