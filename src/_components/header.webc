@@ -35,7 +35,7 @@
     #author-name {
       font-family: var(--font-cursive);
       font-size: 80px;
-      margin: var(--space-xs);
+      margin: var(--space-3xs);
     }
 
     #author-name,
