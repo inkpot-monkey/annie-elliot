@@ -63,7 +63,7 @@
           ><span @text="event.location"></span
         ></a>
       </p>
-      <p @text="event.description"></p>
+      <p><b @text="event.description"></b></p>
     </div>
   </div>
 
@@ -71,7 +71,7 @@
     <p class="no-events">No upcoming events scheduled at this time.</p>
   </div>
 
-  <h2 class="past-events-title">Past Events</h2>
+  <h2>Past Events</h2>
 
   <div webc:if="pastEvents.length > 0">
     <div class="event-card past-event" webc:for="event of pastEvents">
@@ -83,66 +83,71 @@
           ><span @text="event.location"></span
         ></a>
       </p>
-      <p @text="event.description"></p>
+      <p><b @text="event.description"></b></p>
     </div>
   </div>
 </section>
 
 <style>
   .events-section {
-    background-color: #f3efe5;
-    padding: 3rem 2rem;
-    font-family: "Crimson Text", serif;
+    background-color: var(--antiflash-white);
+    padding: var(--space-l) var(--space-m);
+    font-family: var(--font-base);
     text-align: center;
-  }
 
-  .events-section h2 {
-    font-family: "Playfair Display", serif;
-    font-size: 2.2rem;
-    margin-bottom: 2rem;
-    color: #3c2e22;
-  }
+    h2 {
+      font-family: var(--font-base);
+      font-size: var(--step-3);
+      margin-bottom: var(--space-m);
+      color: var(--black-olive);
+    }
 
-  .past-events-title {
-    margin-top: 3rem;
-  }
+    h2:nth-of-type(2) {
+      margin-top: var(--space-xl);
+    }
 
-  .event-card {
-    background-color: #fffdf8;
-    border: 1px solid #cbbda9;
-    margin: 1.5rem auto;
-    padding: 2rem;
-    max-width: 700px;
-    text-align: left;
-    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.06);
-    position: relative;
-  }
+    .event-card {
+      background-color: var(--antiflash-white);
+      border: 1px solid var(--battleship-gray);
+      margin: var(--space-m) auto;
+      padding: var(--space-m);
+      max-width: 700px;
+      text-align: left;
+      box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.06);
+      position: relative;
 
-  .past-event {
-    opacity: 0.8;
-    background-color: #f8f6f1;
-  }
+      h3 {
+        font-family: var(--font-base);
+        color: var(--taupe);
+        font-size: var(--step-2);
+        margin-bottom: var(--space-xs);
+        margin-top: 0;
+      }
 
-  .event-card h3 {
-    font-family: "Playfair Display", serif;
-    color: #4b3e30;
-    margin-bottom: 0.5rem;
-    font-size: 1.4rem;
-  }
+      p {
+        font-size: var(--step-0);
+        color: var(--taupe);
+        line-height: 1.5;
+        margin: var(--space-3xs) 0;
+      }
 
-  .event-card p {
-    font-size: 1rem;
-    color: #564a3a;
-    line-height: 1.5;
-    margin: 0.3rem 0;
-  }
+      p:last-of-type {
+        margin-top: var(--space-s);
+      }
 
-  .event-card em {
-    font-style: italic;
-  }
+      em {
+        font-style: italic;
+      }
+    }
 
-  .no-events {
-    font-style: italic;
-    padding: 1rem;
+    .no-events {
+      font-style: italic;
+      padding: var(--space-s);
+    }
+
+    .past-event {
+      opacity: 0.8;
+      background-color: var(--antiflash-white);
+    }
   }
 </style>
