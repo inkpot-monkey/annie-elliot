@@ -1,5 +1,8 @@
 import pluginWebc from "@11ty/eleventy-plugin-webc";
 import { eleventyImagePlugin } from "@11ty/eleventy-img";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 /** @param {import('@11ty/eleventy').UserConfig} eleventyConfig */
 export default function (eleventyConfig) {

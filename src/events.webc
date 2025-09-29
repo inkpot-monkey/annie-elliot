@@ -14,7 +14,7 @@
 
   async function fetchCalendarEvents() {
     const calendarId = 'author.annie.elliot@gmail.com';
-    const apiKey = '';
+    const apiKey = process.env.CALENDAR_KEY;
 
     try {
       const response = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${apiKey}`);
