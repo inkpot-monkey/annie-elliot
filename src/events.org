@@ -18,6 +18,14 @@ This should be carried out in the google api tester to avoid messing around with
 
 https://developers.google.com/workspace/calendar/api/v3/reference/events/watch
 
+{
+  "id": "23d0e5a0-f757-436b-be5d-25902d44c208"
+,
+  "token": "KMD5eUZQBrRxs7UNdDIq5x7BV31XzpPM",
+  "type": "webhook",
+  "address": "https://calendar.thomas-eb2.workers.dev"
+}
+
 *** Example Response
 
 {
