@@ -3,7 +3,7 @@ import { createMimeMessage } from "mimetext";
 
 const recipient = "author.annie.elliot@gmail.com";
 const sender = "info@annieelliot.co.uk";
-const allowedOrigin = "contact.annieelliot.co.uk";
+const allowedOrigin = "https://annieelliot.co.uk";
 
 export default {
   async fetch(request, env) {
