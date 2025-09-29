@@ -15,6 +15,12 @@
     {
       "name": "EMAIL"
     }
+  ],
+  "routes": [
+    {
+      "pattern": "contact.annieelliot.co.uk",
+      "custom_domain": true
+    }
   ]
   /**
    * Smart Placement
