@@ -1,7 +1,7 @@
 <script webc:setup>
   function formatDate(dateTime) {
       if (!dateTime) return 'TBA';
-      const date = new Date(dateTime );
+      const date = new Date(dateTime);
       return date.toLocaleDateString('en-GB', {
         weekday: 'long',
         day: 'numeric',
@@ -25,27 +25,66 @@
       }
 
       const data = await response.json();
-      const events = data.items.map(({summary, description, location, start, end}) => ({
-      summary, description, location, start: formatDate(start.dateTime), end: formatDate(end.dateTime)
-  }))
-      return events;
+      const events = data.items
+        .map(({summary, description, location, start, end}) => ({
+          summary,
+          description,
+          location,
+          start: formatDate(start.dateTime),
+          end: formatDate(end.dateTime),
+          startDateTime: start.dateTime
+        }))
+        .sort((a, b) => new Date(a.startDateTime) - new Date(b.startDateTime));
+
+      const now = new Date();
+      const futureEvents = events.filter(event => new Date(event.startDateTime) > now);
+      const pastEvents = events.filter(event => new Date(event.startDateTime) <= now);
+
+      return { futureEvents, pastEvents };
     } catch (error) {
       console.error('Error fetching calendar events:', error);
       throw error;
     }
   }
 
-  let events = await fetchCalendarEvents();
+  let { futureEvents, pastEvents } = await fetchCalendarEvents();
 </script>
 
 <section id="events" class="events-section">
   <h2>Upcoming Events</h2>
 
-  <div class="event-card" webc:for="event of events">
-    <h3 @text="event.summary"></h3>
-    <p><strong>Date: </strong><span @text="event.start"></span></p>
-    <p><strong>Location: </strong><span @text="event.location"></span></p>
-    <p @text="event.description"></p>
+  <div webc:if="futureEvents.length > 0">
+    <div class="event-card" webc:for="event of futureEvents">
+      <h3 @text="event.summary"></h3>
+      <p><strong>Date: </strong><span @text="event.start"></span></p>
+      <p>
+        <strong>Location: </strong
+        ><a :href="'https://maps.google.com?q=' + event.location"
+          ><span @text="event.location"></span
+        ></a>
+      </p>
+      <p @text="event.description"></p>
+    </div>
+  </div>
+
+  <div webc:if="futureEvents.length === 0">
+    <p class="no-events">No upcoming events scheduled at this time.</p>
+  </div>
+
+  <h2 class="past-events-title">Past Events</h2>
+
+  <div webc:if="pastEvents.length > 0">
+    <div class="event-card past-event" webc:for="event of pastEvents">
+      <h3 @text="event.summary"></h3>
+      <p><strong>Date: </strong><span @text="event.start"></span></p>
+      <p>
+        <strong>Location: </strong
+        ><a :href="'https://maps.google.com?q=' + event.location"
+          ><span @text="event.location"></span
+        ></a>
+      </p>
+      <p @text="event.description"></p>
+    </div>
   </div>
 </section>
 
@@ -64,6 +103,10 @@
     color: #3c2e22;
   }
 
+  .past-events-title {
+    margin-top: 3rem;
+  }
+
   .event-card {
     background-color: #fffdf8;
     border: 1px solid #cbbda9;
@@ -73,6 +116,11 @@
     text-align: left;
     box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.06);
     position: relative;
+  }
+
+  .past-event {
+    opacity: 0.8;
+    background-color: #f8f6f1;
   }
 
   .event-card h3 {
@@ -91,5 +139,10 @@
 
   .event-card em {
     font-style: italic;
+  }
+
+  .no-events {
+    font-style: italic;
+    padding: 1rem;
   }
 </style>
