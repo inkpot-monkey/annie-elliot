@@ -1,0 +1,86 @@
+<script webc:setup>
+  let reviews = [
+    {
+      quote:
+        "A captivating glimpse into literature's most fascinating marriage.",
+      source: "Literary Times",
+    },
+    {
+      quote:
+        "Brilliantly explores the complexity behind the Dickens household.",
+      source: "Book Enthusiast",
+    },
+    {
+      quote: "A masterful portrait of Victorian love and ambition.",
+      source: "Novel Review",
+    },
+    {
+      quote:
+        "Heartbreaking and illuminating - the untold story behind Dickens' greatest works.",
+      source: "Reading Corner",
+    },
+  ];
+</script>
+
+<section id="reviews" class="reviews-section">
+  <h4>Reviews</h4>
+  <div class="review-card" webc:for="review of reviews">
+    <p @text="review.quote" class="quote"></p>
+    <p @text="review.source" class="reviewer"></p>
+  </div>
+</section>
+
+<style>
+  #reviews {
+    text-align: center;
+
+    h4 {
+      font-family: var(--font-cursive);
+      font-size: var(--step-2);
+      padding-block: var(--space-s);
+    }
+
+    .review-card {
+      max-width: 700px;
+      margin: 0 auto 2.5rem auto;
+      padding: 1.5rem 2rem;
+      border: 1px solid #d4c9b4;
+      box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.05);
+      position: relative;
+      font-size: 1.2rem;
+    }
+
+    .quote {
+      font-style: italic;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    .quote::before,
+    .quote::after {
+      content: "“";
+      font-family: serif;
+      font-size: 2.5rem;
+      position: absolute;
+      opacity: 0.3;
+    }
+
+    .quote::before {
+      left: -1.5rem;
+      top: -1.2rem;
+    }
+
+    .quote::after {
+      content: "”";
+      right: -1.5rem;
+      bottom: -1.2rem;
+    }
+
+    .reviewer {
+      margin-top: 1rem;
+      text-align: right;
+      font-style: normal;
+      font-size: 1rem;
+    }
+  }
+</style>
