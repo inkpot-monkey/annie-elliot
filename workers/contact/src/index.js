@@ -3,7 +3,7 @@ import { createMimeMessage } from "mimetext";
 
 const recipient = "author.annie.elliot@gmail.com";
 const sender = "info@annieelliot.co.uk";
-const allowedOrigin = "http://localhost:8080";
+const allowedOrigin = "contact.annieelliot.co.uk";
 
 export default {
   async fetch(request, env) {
@@ -52,7 +52,7 @@ function isValidOrigin(request) {
 function getCorsHeaders() {
   return {
     "Access-Control-Allow-Origin": allowedOrigin,
-    "Access-Control-Allow-Methods": "GET",
+    "Access-Control-Allow-Methods": "POST",
     "Access-Control-Allow-Headers": "Content-Type",
   };
 }
