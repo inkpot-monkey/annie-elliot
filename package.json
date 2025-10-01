@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npx @11ty/eleventy",
-    "start": "npx @11ty/eleventy --serve --incremental",
+    "dev": "npx @11ty/eleventy --serve --incremental",
     "debug": "DEBUG=Eleventy* npx @11ty/eleventy"
   },
   "keywords": [],
