@@ -73,6 +73,7 @@
 
     & label {
       margin-top: var(--space-s);
+      font-family: var(--font-italic);
       font-style: italic;
       font-size: var(--step--1);
       color: var(--black-olive);

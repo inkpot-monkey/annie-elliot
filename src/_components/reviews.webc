@@ -48,6 +48,7 @@
     }
 
     .quote {
+      font-family: var(--font-italic);
       font-style: italic;
       line-height: 1.6;
       position: relative;

@@ -141,11 +141,13 @@
       }
 
       em {
+        font-family: var(--font-italic);
         font-style: italic;
       }
     }
 
     .no-events {
+      font-family: var(--font-italic);
       font-style: italic;
       padding: var(--space-s);
     }
