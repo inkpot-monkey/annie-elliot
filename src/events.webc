@@ -50,7 +50,7 @@
   let { futureEvents, pastEvents } = await fetchCalendarEvents();
 </script>
 
-<section id="events" class="events-section">
+<section id="events" class="events-section u-container">
   <h1>Upcoming Events</h1>
 
   <div webc:if="futureEvents.length > 0">
@@ -91,19 +91,24 @@
 <style>
   .events-section {
     background-color: var(--antiflash-white);
-    padding: var(--space-l) var(--space-m);
+    padding-block: var(--space-l);
     font-family: var(--font-base);
     text-align: center;
 
     h1 {
+      text-align: center;
+      color: var(--taupe);
+      margin: 0;
       font-family: var(--font-base);
-      font-size: var(--step-3);
-      margin-bottom: var(--space-m);
-      color: var(--black-olive);
+      margin-bottom: var(--space-l);
     }
 
     h2 {
+      text-align: center;
+      color: var(--taupe);
       margin-top: var(--space-xl);
+      margin-bottom: var(--space-l);
+      font-family: var(--font-base);
     }
 
     .event-card {

@@ -39,8 +39,16 @@
 <style>
   .postcard {
     font-family: var(--font-base);
-    padding: var(--space-xl) var(--space-l);
+    padding-block: var(--space-l);
     text-align: center;
+
+    h1 {
+      text-align: center;
+      color: var(--taupe);
+      margin: 0;
+      font-family: var(--font-base);
+      margin-bottom: var(--space-l);
+    }
 
     postcard-wrapper {
       display: flex;

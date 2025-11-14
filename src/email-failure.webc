@@ -18,6 +18,14 @@
     padding-block: var(--space-l);
     text-align: center;
 
+    h1 {
+      text-align: center;
+      color: var(--taupe);
+      margin: 0;
+      font-family: var(--font-base);
+      margin-bottom: var(--space-l);
+    }
+
     postcard-wrapper {
       display: flex;
       justify-content: center;
@@ -31,14 +39,6 @@
       background: var(--antiflash-white);
       box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
       background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
-    }
-
-    & h1 {
-      font-family: var(--font-base);
-      font-size: var(--step-3);
-      color: var(--taupe);
-      margin: 0;
-      margin-bottom: var(--space-l);
     }
 
     & .error-message {
