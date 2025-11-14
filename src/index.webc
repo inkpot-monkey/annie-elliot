@@ -110,7 +110,7 @@ metadata:
         margin: var(--space-m) auto 0;
         padding: var(--space-s) var(--space-m);
         background-color: var(--taupe);
-        color: white;
+        color: var(--white);
         border: none;
         border-radius: 4px;
         font-family: var(--font-base);
@@ -120,7 +120,7 @@ metadata:
       }
 
       button:hover {
-        background-color: var(--taupe-dark, #5a4a42);
+        background-color: var(--taupe-dark);
       }
     }
 

@@ -51,7 +51,7 @@
 
 <style>
   main {
-    background-color: #fefaf2;
+    background-color: var(--cream);
   }
 
   /* Skip link for keyboard navigation */
@@ -59,8 +59,8 @@
     position: absolute;
     top: -40px;
     left: 0;
-    background: var(--taupe, #a1866f);
-    color: white;
+    background: var(--taupe);
+    color: var(--white);
     padding: 8px;
     text-decoration: none;
     z-index: 100;
@@ -75,13 +75,13 @@
   button:focus-visible,
   input:focus-visible,
   textarea:focus-visible {
-    outline: 2px solid var(--taupe, #a1866f);
+    outline: 2px solid var(--taupe);
     outline-offset: 2px;
   }
 
   /* Ensure focus is visible on navigation links */
   nav a:focus-visible {
-    outline: 2px solid var(--antiflash-white, #f0f0f0);
+    outline: 2px solid var(--antiflash-white);
     outline-offset: 2px;
   }
 </style>

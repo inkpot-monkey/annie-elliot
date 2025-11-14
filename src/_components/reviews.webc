@@ -41,8 +41,8 @@
       max-width: 700px;
       margin: 0 auto 2.5rem auto;
       padding: 1.5rem 2rem;
-      border: 1px solid #d4c9b4;
-      box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--light-beige);
+      box-shadow: 3px 3px 10px var(--shadow-light);
       position: relative;
       font-size: 1.2rem;
     }

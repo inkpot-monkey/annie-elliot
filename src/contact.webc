@@ -72,7 +72,7 @@ metadata:
       max-width: 600px;
       width: 100%;
       background: var(--antiflash-white);
-      box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
+      box-shadow: 5px 5px 20px var(--shadow-medium);
       background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
     }
 
@@ -97,9 +97,9 @@ metadata:
       font-family: var(--font-base);
       font-size: var(--step-0);
       border: 1px solid var(--battleship-gray);
-      background-color: #ffffff;
+      background-color: var(--white);
       background-image: none;
-      color: #000000;
+      color: var(--black);
     }
 
     & textarea::placeholder {
