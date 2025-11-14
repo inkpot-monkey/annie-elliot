@@ -13,9 +13,21 @@
     alt="victorian flourish"
   />
 
-  ©<span webc:nokeep @text="(new Date()).getFullYear()"></span> Built by
-  <a href="https://palebluebytes.space">Pale Blue Bytes</a> with
-  <a href="https://www.11ty.dev/">Eleventy</a>.
+  <nav class="footer-nav">
+    <a href="/">Home</a>
+    <span aria-hidden="true">•</span>
+    <a href="/author/">Author</a>
+    <span aria-hidden="true">•</span>
+    <a href="/events/">Events</a>
+    <span aria-hidden="true">•</span>
+    <a href="/contact/">Contact</a>
+  </nav>
+
+  <p class="footer-credits">
+    ©<span webc:nokeep @text="(new Date()).getFullYear()"></span> Built by
+    <a href="https://palebluebytes.space">Pale Blue Bytes</a> with
+    <a href="https://www.11ty.dev/">Eleventy</a>.
+  </p>
 </footer>
 
 <style>
@@ -44,6 +56,48 @@
       width: 100%;
       height: auto;
       transform: rotate(0deg);
+    }
+
+    .footer-nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--space-xs);
+      margin: var(--space-m) 0;
+      flex-wrap: wrap;
+      
+      a {
+        color: var(--antiflash-white);
+        text-decoration: none;
+        font-size: var(--step--1);
+        
+        &:hover {
+          text-decoration: underline;
+          text-decoration-color: var(--antiflash-white);
+          text-underline-offset: 2px;
+        }
+      }
+      
+      span {
+        color: var(--battleship-gray);
+      }
+    }
+
+    .footer-credits {
+      font-size: var(--step--2);
+      margin-top: var(--space-xs);
+      margin-bottom: 0;
+      
+      a {
+        color: var(--antiflash-white);
+        text-decoration: underline;
+        text-decoration-color: var(--battleship-gray);
+        text-underline-offset: 2px;
+        
+        &:hover {
+          text-decoration-color: var(--antiflash-white);
+        }
+      }
     }
   }
 </style>

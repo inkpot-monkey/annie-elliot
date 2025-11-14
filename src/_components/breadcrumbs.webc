@@ -1,0 +1,59 @@
+<nav aria-label="Breadcrumb" class="breadcrumbs" webc:if="page.url && page.url !== '/'">
+  <ol>
+    <li><a href="/">Home</a></li>
+    <li webc:if="page.url.includes('/author')">
+      <span aria-hidden="true">/</span>
+      <a href="/author/">About the Author</a>
+    </li>
+    <li webc:if="page.url.includes('/events')">
+      <span aria-hidden="true">/</span>
+      <a href="/events/">Events</a>
+    </li>
+    <li webc:if="page.url.includes('/contact')">
+      <span aria-hidden="true">/</span>
+      <a href="/contact/">Contact</a>
+    </li>
+  </ol>
+</nav>
+
+<style>
+  .breadcrumbs {
+    font-family: var(--font-base);
+    font-size: var(--step--1);
+    padding: var(--space-xs) var(--space-m);
+    background-color: var(--antiflash-white);
+    border-bottom: 1px solid var(--battleship-gray);
+    
+    ol {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3xs);
+      max-width: var(--container-width);
+      margin: 0 auto;
+    }
+    
+    li {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3xs);
+      
+      span {
+        color: var(--battleship-gray);
+      }
+    }
+    
+    a {
+      color: var(--taupe);
+      text-decoration: none;
+      
+      &:hover {
+        text-decoration: underline;
+        text-decoration-color: var(--taupe);
+        text-underline-offset: 2px;
+      }
+    }
+  }
+</style>

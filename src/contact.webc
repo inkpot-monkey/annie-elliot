@@ -41,6 +41,10 @@ metadata:
       </form>
     </div>
   </div>
+
+  <nav class="related-links">
+    <p>Learn more about <a href="/author/">Annie Elliot</a>, read about <a href="/">Mr & Mrs Charles Dickens, Her Story</a>, or <a href="/events/">find upcoming events</a>.</p>
+  </nav>
 </section>
 
 <style>
@@ -110,6 +114,27 @@ metadata:
 
       &:hover {
         background-color: var(--black-olive);
+      }
+    }
+
+    .related-links {
+      margin-top: var(--space-xl);
+      text-align: center;
+      
+      p {
+        font-size: var(--step-0);
+        color: var(--taupe);
+      }
+      
+      a {
+        color: var(--taupe);
+        text-decoration: underline;
+        text-decoration-color: var(--battleship-gray);
+        text-underline-offset: 2px;
+        
+        &:hover {
+          text-decoration-color: var(--taupe);
+        }
       }
     }
   }

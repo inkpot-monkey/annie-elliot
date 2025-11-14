@@ -41,6 +41,7 @@
   </head>
   <body>
     <header webc:nokeep></header>
+    <breadcrumbs webc:nokeep></breadcrumbs>
     <main @raw="content"></main>
     <footer webc:nokeep></footer>
     <script type="module" webc:keep @raw="getBundle('js')"></script>
