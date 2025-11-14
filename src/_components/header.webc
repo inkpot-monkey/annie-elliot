@@ -6,8 +6,12 @@
     id="header"
     loading="eager"
   />
-  <p id="author-name">Annie Elliot</>
-  <nav-links aria-label="Main navigation" font-size="var(--step-0)" dot-color="var(--battleship-gray)"></nav-links>
+  <p id="author-name">Annie Elliot</p>
+  <nav-links
+    aria-label="Main navigation"
+    font-size="var(--step-0)"
+    dot-color="var(--battleship-gray)"
+  ></nav-links>
   <img
     webc:is="eleventy-image"
     src="assets/images/separator.webp"
