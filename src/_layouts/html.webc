@@ -1,11 +1,17 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-GB">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title @text="metadata.title"></title>
     <meta name="description" :content="metadata.description" />
+    <meta name="author" content="Annie Elliot" />
     <meta name="generator" :content="eleventy.generator" />
+    <meta name="creator" content="Pale Blue Bytes" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#a1866f" />
+    <link rel="canonical" :href="metadata.canonical || 'https://annieelliot.co.uk' + page.url" />
+    
     <link rel="manifest" href="/favicon/site.webmanifest" />
     <link
       rel="icon"
@@ -20,6 +26,9 @@
       sizes="180x180"
       href="/favicon/apple-touch-icon.png"
     />
+
+    <!-- Structured Data (JSON-LD) -->
+    <structured-data></structured-data>
 
     <link rel="stylesheet" href="reset.css" webc:bucket="base" />
     <link rel="stylesheet" href="design-system.css" webc:bucket="base" />

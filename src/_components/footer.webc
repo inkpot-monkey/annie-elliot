@@ -13,7 +13,8 @@
     alt="victorian flourish"
   />
 
-  ©<span webc:nokeep @text="(new Date()).getFullYear()"></span> Built with
+  ©<span webc:nokeep @text="(new Date()).getFullYear()"></span> Built by
+  <a href="https://palebluebytes.space">Pale Blue Bytes</a> with
   <a href="https://www.11ty.dev/">Eleventy</a>.
 </footer>
 

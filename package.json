@@ -1,16 +1,24 @@
 {
   "name": "annie-elliot",
   "version": "0.0.1",
-  "description": "",
+  "description": "A website for the novel Mr & Mrs Dickens, Her Story by the author Annie Elliot",
   "type": "module",
   "main": "index.js",
+  "homepage": "https://annieelliot.co.uk",
   "scripts": {
     "build": "npx @11ty/eleventy",
     "dev": "npx @11ty/eleventy --serve --incremental",
     "debug": "DEBUG=Eleventy* npx @11ty/eleventy"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "annie elliot",
+    "charles dickens",
+    "book",
+    "novel",
+    "author website",
+    "literary fiction"
+  ],
+  "author": "Pale Blue Bytes",
   "license": "ISC",
   "packageManager": "pnpm@10.13.1",
   "dependencies": {
