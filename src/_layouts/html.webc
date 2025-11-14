@@ -40,10 +40,9 @@
     <style webc:keep @raw="getBundle('css')"></style>
   </head>
   <body>
-    <a href="#main-content" class="skip-link">Skip to main content</a>
     <header webc:nokeep></header>
     <breadcrumbs webc:nokeep></breadcrumbs>
-    <main id="main-content" @raw="content"></main>
+    <main @raw="content"></main>
     <footer webc:nokeep></footer>
     <script type="module" webc:keep @raw="getBundle('js')"></script>
   </body>
@@ -52,22 +51,6 @@
 <style>
   main {
     background-color: var(--cream);
-  }
-
-  /* Skip link for keyboard navigation */
-  .skip-link {
-    position: absolute;
-    top: -40px;
-    left: 0;
-    background: var(--taupe);
-    color: var(--white);
-    padding: 8px;
-    text-decoration: none;
-    z-index: 100;
-  }
-
-  .skip-link:focus {
-    top: 0;
   }
 
   /* Focus indicators for keyboard navigation */
