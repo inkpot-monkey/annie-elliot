@@ -7,12 +7,7 @@
     loading="eager"
   />
   <p id="author-name">Annie Elliot</>
-  <nav aria-label="Main navigation">
-    <a href="/">Home</a>
-    <a href="/author">Author</a>
-    <a href="/events">Events</a>
-    <a href="/contact">Contact</a>
-  </nav>
+  <nav-links aria-label="Main navigation" font-size="var(--step-0)" dot-color="var(--battleship-gray)"></nav-links>
   <img
     webc:is="eleventy-image"
     src="assets/images/separator.webp"
@@ -40,21 +35,8 @@
       margin: var(--space-3xs);
     }
 
-    #author-name,
-    nav {
+    #author-name {
       color: var(--battleship-gray);
-    }
-
-    nav {
-      justify-content: center;
-      display: flex;
-      gap: var(--space-s);
-      font-size: var(--step-0);
-      color: var(--antiflash-white);
-      text-transform: uppercase;
-      a {
-        text-decoration: none;
-      }
     }
 
     #flourish {

@@ -94,10 +94,6 @@ metadata:
       <p><b @text="event.description"></b></p>
     </div>
   </div>
-
-  <nav class="related-links" aria-label="Related links">
-    <p>Learn more about <a href="/author/">Annie Elliot</a> and <a href="/">her debut novel, Mr & Mrs Charles Dickens, Her Story</a>.</p>
-  </nav>
 </section>
 
 <style>
@@ -166,27 +162,6 @@ metadata:
     .past-event {
       opacity: 0.8;
       background-color: var(--antiflash-white);
-    }
-
-    .related-links {
-      margin-top: var(--space-xl);
-      text-align: center;
-      
-      p {
-        font-size: var(--step-0);
-        color: var(--taupe);
-      }
-      
-      a {
-        color: var(--taupe);
-        text-decoration: underline;
-        text-decoration-color: var(--battleship-gray);
-        text-underline-offset: 2px;
-        
-        &:hover {
-          text-decoration-color: var(--taupe);
-        }
-      }
     }
   }
 </style>

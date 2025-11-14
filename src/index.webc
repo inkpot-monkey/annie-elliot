@@ -37,10 +37,6 @@ metadata:
         </p>
 
         <reviews></reviews>
-
-        <nav class="related-links" aria-label="Related links">
-          <p>Learn more about <a href="/author/">the author, Annie Elliot</a>, or <a href="/events/">find upcoming book events</a>.</p>
-        </nav>
       </div>
 
       <div class="cover">
@@ -121,27 +117,6 @@ metadata:
 
       button:hover {
         background-color: var(--taupe-dark);
-      }
-    }
-
-    .related-links {
-      margin-top: var(--space-l);
-      text-align: center;
-      
-      p {
-        font-size: var(--step-0);
-        color: var(--taupe);
-      }
-      
-      a {
-        color: var(--taupe);
-        text-decoration: underline;
-        text-decoration-color: var(--battleship-gray);
-        text-underline-offset: 2px;
-        
-        &:hover {
-          text-decoration-color: var(--taupe);
-        }
       }
     }
   }
