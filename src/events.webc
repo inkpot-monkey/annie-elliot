@@ -90,7 +90,6 @@
 
 <style>
   .events-section {
-    background-color: var(--antiflash-white);
     padding-block: var(--space-l);
     font-family: var(--font-base);
     text-align: center;
