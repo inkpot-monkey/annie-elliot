@@ -1,5 +1,5 @@
 <section id="email-failure" class="postcard u-container">
-  <h2>Message Could Not Be Sent</h2>
+  <h1>Message Could Not Be Sent</h1>
   <div class="postcard-wrapper">
     <div class="postcard-border">
       <p class="error-message">
@@ -33,7 +33,7 @@
       background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
     }
 
-    & h2 {
+    & h1 {
       font-family: var(--font-base);
       font-size: var(--step-3);
       color: var(--taupe);

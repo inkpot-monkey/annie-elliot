@@ -1,5 +1,5 @@
 <section id="email-success" class="postcard u-container">
-  <h2>Message Sent Successfully</h2>
+  <h1>Message Sent Successfully</h1>
   <div class="postcard-wrapper">
     <div class="postcard-border">
       <p class="success-message">
@@ -32,7 +32,7 @@
       background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
     }
 
-    & h2 {
+    & h1 {
       font-family: var(--font-base);
       font-size: var(--step-3);
       color: var(--taupe);

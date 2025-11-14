@@ -51,7 +51,7 @@
 </script>
 
 <section id="events" class="events-section">
-  <h2>Upcoming Events</h2>
+  <h1>Upcoming Events</h1>
 
   <div webc:if="futureEvents.length > 0">
     <div class="event-card" webc:for="event of futureEvents">
@@ -71,9 +71,9 @@
     <p class="no-events">No upcoming events scheduled at this time.</p>
   </div>
 
-  <h2>Past Events</h2>
-
   <div webc:if="pastEvents.length > 0">
+    <h2>Past Events</h2>
+
     <div class="event-card past-event" webc:for="event of pastEvents">
       <h3 @text="event.summary"></h3>
       <p><strong>Date: </strong><span @text="event.start"></span></p>
@@ -95,14 +95,14 @@
     font-family: var(--font-base);
     text-align: center;
 
-    h2 {
+    h1 {
       font-family: var(--font-base);
       font-size: var(--step-3);
       margin-bottom: var(--space-m);
       color: var(--black-olive);
     }
 
-    h2:nth-of-type(2) {
+    h2 {
       margin-top: var(--space-xl);
     }
 
