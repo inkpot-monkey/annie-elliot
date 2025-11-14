@@ -10,7 +10,7 @@ metadata:
   <h1>Mr & Mrs Charles Dickens</h1>
   <h2>Her Story</h2>
   <div>
-    <div class="u-grid" id="main-content">
+    <div class="u-grid main-grid">
       <div>
         <p>
           After twenty-two years of marriage, Charles Dickens banished his wife,
@@ -38,7 +38,7 @@ metadata:
 
         <reviews></reviews>
 
-        <nav class="related-links">
+        <nav class="related-links" aria-label="Related links">
           <p>Learn more about <a href="/author/">the author, Annie Elliot</a>, or <a href="/events/">find upcoming book events</a>.</p>
         </nav>
       </div>
@@ -81,7 +81,7 @@ metadata:
       text-align: justify;
     }
 
-    #main-content {
+    .main-grid {
       gap: var(--space-2xl);
 
       @media all and (min-width: 60rem) {

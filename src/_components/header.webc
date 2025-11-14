@@ -6,7 +6,7 @@
     id="header"
   />
   <p id="author-name">Annie Elliot</>
-  <nav>
+  <nav aria-label="Main navigation">
     <a href="/">Home</a>
     <a href="/author">Author</a>
     <a href="/events">Events</a>

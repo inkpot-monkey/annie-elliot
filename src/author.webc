@@ -1,14 +1,14 @@
 ---
 metadata:
   title: "About Annie Elliot | Author of Mr & Mrs Charles Dickens"
-  description: "Annie Elliot is the author of Mr & Mrs Charles Dickens, Her Story. She has an MA in Creative Writing and a BA (Hons) in Literary Studies. Her debut novel restores Catherine Dickens to history."
+  description: "Annie Elliot is the author of Mr & Mrs Charles Dickens, Her Story. She has an MA in Creative Writing and a BA (Hons) in Literary Studies."
   canonical: "https://annieelliot.co.uk/author/"
   pageType: "author"
 ---
 <section id="author" class="u-container">
   <h1>About the Author</h1>
   <div>
-    <div class="u-grid" id="main-content">
+    <div class="u-grid main-grid">
       <img
         webc:is="eleventy-image"
         src="assets/images/author.jpg"
@@ -38,7 +38,7 @@ metadata:
           <a href="https://annieelliot.co.uk">annieelliot.co.uk</a>.
         </p>
         
-        <nav class="related-links">
+        <nav class="related-links" aria-label="Related links">
           <p>Read about <a href="/">Mr & Mrs Charles Dickens, Her Story</a>, <a href="/events/">find upcoming book events</a>, or <a href="/contact/">get in touch</a>.</p>
         </nav>
       </div>
@@ -58,7 +58,7 @@ metadata:
       margin-bottom: var(--space-l);
     }
 
-    #main-content {
+    .main-grid {
       gap: var(--space-2xl);
       text-align: justify;
 

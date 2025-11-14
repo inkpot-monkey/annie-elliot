@@ -1,7 +1,7 @@
 ---
 metadata:
   title: "Upcoming Book Events | Annie Elliot - Mr & Mrs Charles Dickens"
-  description: "Find upcoming book events, readings, and appearances by Annie Elliot, author of Mr & Mrs Charles Dickens, Her Story. Join us for book signings and literary discussions."
+  description: "Find upcoming book events, readings, and appearances by Annie Elliot, author of Mr & Mrs Charles Dickens, Her Story."
   canonical: "https://annieelliot.co.uk/events/"
   pageType: "events"
 ---
@@ -95,7 +95,7 @@ metadata:
     </div>
   </div>
 
-  <nav class="related-links">
+  <nav class="related-links" aria-label="Related links">
     <p>Learn more about <a href="/author/">Annie Elliot</a> and <a href="/">her debut novel, Mr & Mrs Charles Dickens, Her Story</a>.</p>
   </nav>
 </section>

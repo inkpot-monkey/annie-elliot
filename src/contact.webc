@@ -42,7 +42,7 @@ metadata:
     </div>
   </div>
 
-  <nav class="related-links">
+  <nav class="related-links" aria-label="Related links">
     <p>Learn more about <a href="/author/">Annie Elliot</a>, read about <a href="/">Mr & Mrs Charles Dickens, Her Story</a>, or <a href="/events/">find upcoming events</a>.</p>
   </nav>
 </section>
@@ -97,7 +97,14 @@ metadata:
       font-family: var(--font-base);
       font-size: var(--step-0);
       border: 1px solid var(--battleship-gray);
-      background-color: var(--antiflash-white);
+      background-color: #ffffff;
+      background-image: none;
+      color: #000000;
+    }
+
+    & textarea::placeholder {
+      color: var(--taupe);
+      opacity: 0.8;
     }
 
     & button {

@@ -38,7 +38,17 @@
 
             # Cloudflare
             inherit (pkgs.nodePackages) wrangler;
+
+            # Browser for testing (Puppeteer/pa11y)
+            inherit (pkgs) chromium;
           };
+
+          # Set environment variables for Puppeteer to use system Chromium
+          shellHook = ''
+            export PUPPETEER_EXECUTABLE_PATH="${pkgs.chromium}/bin/chromium"
+            export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
+            echo "✅ Puppeteer configured to use system Chromium: $PUPPETEER_EXECUTABLE_PATH"
+          '';
         };
       });
     };
