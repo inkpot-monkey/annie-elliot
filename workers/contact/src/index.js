@@ -30,14 +30,10 @@ export default {
       const formData = await request.formData();
       const data = Object.fromEntries(formData);
       await sendEmail(data, env);
-      return new Response("Email sent successfully!", {
-        headers: getCorsHeaders(),
-      });
+      return Response.redirect(`${allowedOrigin}/email-success`, 303);
     } catch (e) {
-      return new Response(e.message, {
-        status: 500,
-        headers: getCorsHeaders(),
-      });
+      console.error("Email error:", e);
+      return Response.redirect(`${allowedOrigin}/email-failure`, 303);
     }
   },
 };
