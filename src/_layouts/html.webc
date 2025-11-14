@@ -3,6 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Preload critical fonts to prevent font flash -->
+    <link rel="preload" href="/fonts/LibreBodoni.ttf" as="font" type="font/ttf" crossorigin="anonymous" />
+    <link rel="preload" href="/fonts/CrimsonPro.ttf" as="font" type="font/ttf" crossorigin="anonymous" />
+    <link rel="preload" href="/fonts/Tangerine.ttf" as="font" type="font/ttf" crossorigin="anonymous" />
+    
     <title @text="metadata.title"></title>
     <meta name="description" :content="metadata.description" />
     <meta name="author" content="Annie Elliot" />
@@ -33,11 +39,35 @@
     <!-- Fallback: use component if structuredDataJson not provided -->
     <structured-data webc:if="!structuredDataJson"></structured-data>
 
+    <!-- Critical CSS: Base stylesheets bundled and inlined to prevent FOUC -->
     <link rel="stylesheet" href="reset.css" webc:bucket="base" />
     <link rel="stylesheet" href="design-system.css" webc:bucket="base" />
 
+    <!-- Bundled CSS from components -->
     <style webc:keep @raw="getBundle('css', 'base')"></style>
     <style webc:keep @raw="getBundle('css')"></style>
+    
+    <!-- Critical layout styles -->
+    <style webc:keep>
+      main {
+        background-color: var(--cream);
+      }
+
+      /* Focus indicators for keyboard navigation */
+      a:focus-visible,
+      button:focus-visible,
+      input:focus-visible,
+      textarea:focus-visible {
+        outline: 2px solid var(--taupe);
+        outline-offset: 2px;
+      }
+
+      /* Ensure focus is visible on navigation links */
+      nav a:focus-visible {
+        outline: 2px solid var(--antiflash-white);
+        outline-offset: 2px;
+      }
+    </style>
   </head>
   <body>
     <header webc:nokeep></header>
@@ -47,24 +77,3 @@
     <script type="module" webc:keep @raw="getBundle('js')"></script>
   </body>
 </html>
-
-<style>
-  main {
-    background-color: var(--cream);
-  }
-
-  /* Focus indicators for keyboard navigation */
-  a:focus-visible,
-  button:focus-visible,
-  input:focus-visible,
-  textarea:focus-visible {
-    outline: 2px solid var(--taupe);
-    outline-offset: 2px;
-  }
-
-  /* Ensure focus is visible on navigation links */
-  nav a:focus-visible {
-    outline: 2px solid var(--antiflash-white);
-    outline-offset: 2px;
-  }
-</style>

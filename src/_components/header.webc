@@ -4,6 +4,7 @@
     src="assets/images/stamps.webp"
     alt="Two stamps with the faces of a young Mr and Mrs Dickens"
     id="header"
+    loading="eager"
   />
   <p id="author-name">Annie Elliot</>
   <nav aria-label="Main navigation">
@@ -17,6 +18,7 @@
     src="assets/images/separator.webp"
     alt="victorian flourish"
     id="flourish"
+    loading="eager"
   />
 </header>
 

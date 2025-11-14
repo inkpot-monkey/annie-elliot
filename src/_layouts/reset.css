@@ -71,6 +71,12 @@ picture {
   display: block;
 }
 
+/* Prevent layout shift: Modern browsers use width/height attributes automatically,
+   but we ensure aspect-ratio is preserved for better compatibility */
+img[width][height] {
+  height: auto;
+}
+
 /* Inherit fonts for inputs and buttons */
 input,
 button,

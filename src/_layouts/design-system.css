@@ -2,18 +2,24 @@
   font-family: LibreBodoni;
   src: url("/fonts/LibreBodoni.ttf") format("truetype");
   font-display: swap;
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
   font-family: CrimsonPro;
   src: url("/fonts/CrimsonPro.ttf") format("truetype");
   font-display: swap;
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
   font-family: Tangerine;
   src: url("/fonts/Tangerine.ttf") format("truetype");
   font-display: swap;
+  font-weight: normal;
+  font-style: normal;
 }
 
 :root {
