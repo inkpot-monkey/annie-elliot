@@ -1,5 +1,7 @@
 import { getStructuredData } from "./structuredData.js";
 
 export default {
-  getStructuredData,
+  getStructuredData: async (page, metadata) => {
+    return await getStructuredData(page, metadata);
+  },
 };

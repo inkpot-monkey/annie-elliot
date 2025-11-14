@@ -28,7 +28,10 @@
     />
 
     <!-- Structured Data (JSON-LD) -->
-    <structured-data></structured-data>
+    <!-- structuredDataJson is provided by page-specific .11tydata.js files -->
+    <script type="application/ld+json" webc:if="structuredDataJson" webc:keep @text="structuredDataJson"></script>
+    <!-- Fallback: use component if structuredDataJson not provided -->
+    <structured-data webc:if="!structuredDataJson"></structured-data>
 
     <link rel="stylesheet" href="reset.css" webc:bucket="base" />
     <link rel="stylesheet" href="design-system.css" webc:bucket="base" />

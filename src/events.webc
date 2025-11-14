@@ -39,7 +39,8 @@ metadata:
           location,
           start: formatDate(start.dateTime),
           end: formatDate(end.dateTime),
-          startDateTime: start.dateTime
+          startDateTime: start.dateTime,
+          endDateTime: end?.dateTime || null // Keep ISO format for structured data
         }))
         .sort((a, b) => new Date(a.startDateTime) - new Date(b.startDateTime));
 

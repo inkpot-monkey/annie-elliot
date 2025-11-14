@@ -1,6 +1,9 @@
 import { readFileSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -9,17 +12,63 @@ const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
 
 const siteUrl = "https://annieelliot.co.uk";
 
-export function getStructuredData(page, metadata) {
+async function fetchCalendarEvents() {
+  const calendarId = 'author.annie.elliot@gmail.com';
+  const apiKey = process.env.CALENDAR_KEY;
+
+  if (!apiKey) {
+    console.warn('CALENDAR_KEY not found in environment variables');
+    return null;
+  }
+
+  try {
+    const response = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${apiKey}`);
+
+    if (!response.ok) {
+      console.error('Failed to fetch calendar events:', response.status, response.statusText);
+      return null;
+    }
+
+    const data = await response.json();
+    const events = data.items
+      .map(({summary, description, location, start, end}) => ({
+        summary,
+        description,
+        location,
+        startDateTime: start.dateTime,
+        endDateTime: end?.dateTime || null
+      }))
+      .sort((a, b) => new Date(a.startDateTime) - new Date(b.startDateTime));
+
+    const now = new Date();
+    const futureEvents = events.filter(event => new Date(event.startDateTime) > now);
+
+    return {
+      futureEvents: futureEvents
+    };
+  } catch (error) {
+    console.error('Error fetching calendar events:', error);
+    return null;
+  }
+}
+
+export async function getStructuredData(page, metadata) {
   // Prioritize metadata.pageType, fallback to checking page URL
   let pageType = metadata?.pageType;
   if (!pageType) {
     const pageUrlValue = page?.url || "";
-    pageType =
+    // Check for events page
+    if (pageUrlValue.includes('/events')) {
+      pageType = "events";
+    } else if (
       pageUrlValue === "/" ||
       pageUrlValue === "" ||
       pageUrlValue.endsWith("/index.html")
-        ? "book"
-        : "website";
+    ) {
+      pageType = "book";
+    } else {
+      pageType = "website";
+    }
   }
   const pageUrl = siteUrl + (page?.url || "/");
   const structuredData = [];
@@ -120,6 +169,43 @@ export function getStructuredData(page, metadata) {
     ...(packageJson.keywords && packageJson.keywords.length > 0 && { keywords: packageJson.keywords.join(", ") }),
   };
   structuredData.push(websiteSchema);
+
+  // Event schemas - for events page
+  if (pageType === "events") {
+    const events = await fetchCalendarEvents();
+    if (events && Array.isArray(events.futureEvents) && events.futureEvents.length > 0) {
+      events.futureEvents.forEach((event) => {
+        if (event.startDateTime) {
+          const eventSchema = {
+            "@context": "https://schema.org",
+            "@type": "Event",
+            name: event.summary || "Book Event",
+            description: event.description || `Book event with Annie Elliot, author of Mr & Mrs Charles Dickens`,
+            startDate: event.startDateTime,
+            ...(event.endDateTime && { endDate: event.endDateTime }),
+            location: {
+              "@type": "Place",
+              name: event.location || "TBA",
+              ...(event.location && event.location !== "TBA" && {
+                address: {
+                  "@type": "PostalAddress",
+                  addressLocality: event.location,
+                },
+              }),
+            },
+            organizer: {
+              "@type": "Person",
+              name: "Annie Elliot",
+              url: siteUrl + "/author/",
+            },
+            eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+            eventStatus: "https://schema.org/EventScheduled",
+          };
+          structuredData.push(eventSchema);
+        }
+      });
+    }
+  }
 
   return JSON.stringify(structuredData);
 }
