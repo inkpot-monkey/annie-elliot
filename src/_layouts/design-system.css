@@ -1,6 +1,12 @@
 @font-face {
-  font-family: LibreBaskerville;
-  src: url("/fonts/LibreBaskerville.ttf") format("truetype");
+  font-family: LibreBodoni;
+  src: url("/fonts/LibreBodoni.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: CrimsonPro;
+  src: url("/fonts/CrimsonPro.ttf") format("truetype");
   font-display: swap;
 }
 
@@ -17,7 +23,8 @@
   --taupe: hsla(38, 14%, 23%, 1);
   --eerie-black: hsla(47, 26%, 11%, 1);
 
-  --font-base: LibreBaskerville, system-ui, sans-serif;
+  --font-base: LibreBodoni, system-ui, sans-serif;
+  --font-italic: CrimsonPro, system-ui, sans-serif;
   --font-cursive: Tangerine, system-ui, sans-serif;
 
   /* @link https://utopia.fyi/type/calculator?c=366,18,1.2,1240,20,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
