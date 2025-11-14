@@ -5,6 +5,7 @@ metadata:
   canonical: "https://annieelliot.co.uk/"
   pageType: "book"
 ---
+
 <section id="about" class="u-container">
   <h1>Mr & Mrs Charles Dickens</h1>
   <h2>Her Story</h2>
@@ -44,7 +45,7 @@ metadata:
           src="assets/images/cover.jpg"
           alt="Mr & Mrs Charles Dickens book cover"
         />
-        <button type="button">Preorder now!</button>
+        <!-- <button type="button">Preorder now!</button> -->
       </div>
     </div>
   </div>
