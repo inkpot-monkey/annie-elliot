@@ -30,6 +30,7 @@ export default function (eleventyConfig) {
   });
 
   eleventyConfig.addPassthroughCopy({ "src/static/fonts": "fonts" });
+  eleventyConfig.addPassthroughCopy({ "src/static/favicon": "favicon" });
 }
 
 export const config = {
