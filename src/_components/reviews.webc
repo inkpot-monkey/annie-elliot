@@ -2,11 +2,11 @@
   let reviews = [
     {
       quote: `In her lifetime Catherine Dickens was too often the supporting act to her husband's starring role. Annie Elliot’s meticulously researched, empathetic reimagining of Catherine, at long last, places her centre stage in the Dickens family drama`,
-      source: "Peter Thompson. Volunteer. Charles Dickens Museum",
+      source: `Peter Thompson, Volunteer at the <a href="https://dickensmuseum.com">Charles Dickens Museum</a>`,
     },
     {
       quote: `This absorbing novel brings Catherine Dickens, nee Hogarth, out of obscurity, giving her a voice of her own and a distinctive character. It successfully performs a tricky balancing act between meticulous historical accuracy and an imaginative recreation of a believable, flesh and blood woman. The author comes over as fully entering into the life of her  central character, and enables us to do so too`,
-      source: "Val Parks",
+      source: `Val Parks, Volunteer at the <a href="https://dickensmuseum.com">Charles Dickens Museum</a>`,
     },
     {
       quote: `The author set out to give Catherine Dickens a voice, a woman so often overruled and silenced by her dominant husband.
@@ -14,7 +14,7 @@
   By using fictional scenes and accurate accounts the author has imagined the newly widowed Catherine’s recollections of her marriage, starting with her first meeting Charles in the newspaper office, then their family life together and finally their separation.
 
   By giving Catherine a voice this book gives glimpses of the feisty woman Catherine could have become.`,
-      source: "Mally Scrutton, volunteer, Charles Dickens Museum",
+      source: `Mally Scrutton, Volunteer at the <a href="https://dickensmuseum.com">Charles Dickens Museum</a>`,
     },
   ];
 </script>
@@ -23,7 +23,7 @@
   <h4>Reviews</h4>
   <div class="review-card" webc:for="review of reviews">
     <p @text="review.quote" class="quote"></p>
-    <p @text="review.source" class="reviewer"></p>
+    <p @raw="review.source" class="reviewer"></p>
   </div>
 </section>
 
