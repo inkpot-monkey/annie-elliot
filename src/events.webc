@@ -5,6 +5,7 @@ metadata:
   canonical: "https://annieelliot.co.uk/events/"
   pageType: "events"
 ---
+
 <script webc:setup>
   function formatDate(dateTime) {
       if (!dateTime) return 'TBA';
@@ -71,7 +72,7 @@ metadata:
           ><span @text="event.location"></span
         ></a>
       </p>
-      <p><b @text="event.description"></b></p>
+      <p @text="event.description"></p>
     </div>
   </div>
 
@@ -145,6 +146,7 @@ metadata:
 
       p:last-of-type {
         margin-top: var(--space-s);
+        font-family: var(--font-italic);
       }
 
       em {
