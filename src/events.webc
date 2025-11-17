@@ -63,16 +63,19 @@ metadata:
   <h1>Upcoming Events</h1>
 
   <div webc:if="futureEvents.length > 0">
-    <div class="event-card" webc:for="event of futureEvents">
-      <h3 @text="event.summary"></h3>
-      <p><strong>Date: </strong><span @text="event.start"></span></p>
-      <p>
-        <strong>Location: </strong
-        ><a :href="'https://maps.google.com?q=' + event.location"
-          ><span @text="event.location"></span
-        ></a>
-      </p>
-      <p @text="event.description"></p>
+    <div class="event-wrapper" webc:for="event of futureEvents">
+      <img src="/images/eventFrame.svg" alt="" class="event-frame" />
+      <div class="event-card">
+        <h3 @text="event.summary"></h3>
+        <p><strong>Date: </strong><span @text="event.start"></span></p>
+        <p>
+          <strong>Location: </strong
+          ><a :href="'https://maps.google.com?q=' + event.location"
+            ><span @text="event.location"></span
+          ></a>
+        </p>
+        <p @text="event.description"></p>
+      </div>
     </div>
   </div>
 
@@ -83,16 +86,19 @@ metadata:
   <div webc:if="pastEvents.length > 0">
     <h2>Past Events</h2>
 
-    <div class="event-card past-event" webc:for="event of pastEvents">
-      <h3 @text="event.summary"></h3>
-      <p><strong>Date: </strong><span @text="event.start"></span></p>
-      <p>
-        <strong>Location: </strong
-        ><a :href="'https://maps.google.com?q=' + event.location"
-          ><span @text="event.location"></span
-        ></a>
-      </p>
-      <p><b @text="event.description"></b></p>
+    <div class="event-wrapper" webc:for="event of pastEvents">
+      <img src="/images/eventFrame.svg" alt="" class="event-frame" />
+      <div class="event-card past-event">
+        <h3 @text="event.summary"></h3>
+        <p><strong>Date: </strong><span @text="event.start"></span></p>
+        <p>
+          <strong>Location: </strong
+          ><a :href="'https://maps.google.com?q=' + event.location"
+            ><span @text="event.location"></span
+          ></a>
+        </p>
+        <p><b @text="event.description"></b></p>
+      </div>
     </div>
   </div>
 </section>
@@ -119,40 +125,68 @@ metadata:
       font-family: var(--font-base);
     }
 
-    .event-card {
-      background-color: var(--antiflash-white);
-      border: 1px solid var(--battleship-gray);
-      margin: var(--space-m) auto;
-      padding: var(--space-m);
-      max-width: 700px;
-      text-align: left;
-      box-shadow: 2px 2px 12px var(--shadow-light);
+    .event-wrapper {
       position: relative;
+      margin: var(--space-m) auto;
+      max-width: 700px;
+      padding: var(--space-s);
+      filter: drop-shadow(0 4px 12px var(--shadow-dark));
+    }
 
-      h3 {
-        font-family: var(--font-base);
-        color: var(--taupe);
-        font-size: var(--step-2);
-        margin-bottom: var(--space-xs);
-        margin-top: 0;
-      }
+    .event-card {
+      background-color: var(--white);
+      border: none;
+      padding: var(--space-l);
+      text-align: center;
+      box-shadow: none;
+      position: relative;
+      z-index: 1;
+    }
 
-      p {
-        font-size: var(--step-0);
-        color: var(--taupe);
-        line-height: 1.5;
-        margin: var(--space-3xs) 0;
-      }
+    .event-wrapper .event-frame {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      object-position: center;
+      pointer-events: none;
+      z-index: 2;
+      display: block;
+    }
+    
+    .event-wrapper .event-frame[src$=".svg"] {
+      width: 100% !important;
+      height: 100% !important;
+    }
 
-      p:last-of-type {
-        margin-top: var(--space-s);
-        font-family: var(--font-italic);
-      }
+    .event-card h3 {
+      font-family: var(--font-base);
+      color: var(--taupe);
+      font-size: var(--step-2);
+      margin-bottom: var(--space-s);
+      margin-top: 0;
+    }
 
-      em {
-        font-family: var(--font-italic);
-        font-style: italic;
-      }
+    .event-card p {
+      font-size: var(--step-0);
+      color: var(--taupe);
+      line-height: 1.6;
+      margin: var(--space-xs) 0;
+    }
+
+    .event-card p:last-of-type {
+      margin-top: var(--space-m);
+      font-family: var(--font-italic);
+      line-height: 1.7;
+    }
+
+    .event-card em {
+      font-family: var(--font-italic);
+      font-style: italic;
     }
 
     .no-events {

@@ -30,11 +30,11 @@ export default function (eleventyConfig) {
     ],
   });
 
-  eleventyConfig.setServerOptions({
-    domDiff: false,
-  });
+    eleventyConfig.setServerOptions({
+      domDiff: false,
+    });
 
-  eleventyConfig.addPlugin(eleventyImagePlugin, {
+    eleventyConfig.addPlugin(eleventyImagePlugin, {
     formats: ["webp", "jpeg"],
     urlPath: "/img/",
 
@@ -44,9 +44,10 @@ export default function (eleventyConfig) {
     },
   });
 
-  eleventyConfig.addPassthroughCopy({ "src/static/fonts": "fonts" });
-  eleventyConfig.addPassthroughCopy({ "src/static/favicon": "favicon" });
-  eleventyConfig.addPassthroughCopy({ "src/robots.txt": "robots.txt" });
+    eleventyConfig.addPassthroughCopy({ "src/static/fonts": "fonts" });
+    eleventyConfig.addPassthroughCopy({ "src/static/images": "images" });
+    eleventyConfig.addPassthroughCopy({ "src/static/favicon": "favicon" });
+    eleventyConfig.addPassthroughCopy({ "src/robots.txt": "robots.txt" });
 }
 
 export const config = {
