@@ -70,8 +70,7 @@
 
     .quote::after {
       content: "”";
-      right: -1.5rem;
-      bottom: -1.2rem;
+      transform: translateY(-16px);
     }
 
     .reviewer {
