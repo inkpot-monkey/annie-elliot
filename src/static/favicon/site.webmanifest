@@ -1,24 +1,21 @@
 {
-  "name": "Annie Elliot - Mr & Mrs Charles Dickens",
-  "short_name": "Annie Elliot",
-  "description": "A website for the novel Mr & Mrs Dickens, Her Story by the author Annie Elliot",
+  "name": "MyWebSite",
+  "short_name": "MySite",
   "icons": [
     {
-      "src": "/favicon/web-app-manifest-192x192.png",
+      "src": "/web-app-manifest-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "/favicon/web-app-manifest-512x512.png",
+      "src": "/web-app-manifest-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#a1866f",
-  "background_color": "#fefaf2",
-  "display": "standalone",
-  "start_url": "/",
-  "scope": "/"
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone"
 }
