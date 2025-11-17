@@ -3,12 +3,30 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+
     <!-- Preload critical fonts to prevent font flash -->
-    <link rel="preload" href="/fonts/LibreBodoni.ttf" as="font" type="font/ttf" crossorigin="anonymous" />
-    <link rel="preload" href="/fonts/CrimsonPro.ttf" as="font" type="font/ttf" crossorigin="anonymous" />
-    <link rel="preload" href="/fonts/Tangerine.ttf" as="font" type="font/ttf" crossorigin="anonymous" />
-    
+    <link
+      rel="preload"
+      href="/fonts/LibreBodoni.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href="/fonts/CrimsonPro.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href="/fonts/Tangerine.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin="anonymous"
+    />
+
     <title @text="metadata.title"></title>
     <meta name="description" :content="metadata.description" />
     <meta name="author" content="Annie Elliot" />
@@ -16,8 +34,11 @@
     <meta name="creator" content="Pale Blue Bytes" />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#a1866f" />
-    <link rel="canonical" :href="metadata.canonical || 'https://annieelliot.co.uk' + page.url" />
-    
+    <link
+      rel="canonical"
+      :href="metadata.canonical || 'https://annieelliot.co.uk' + page.url"
+    />
+
     <link rel="manifest" href="/favicon/site.webmanifest" />
     <link
       rel="icon"
@@ -35,7 +56,12 @@
 
     <!-- Structured Data (JSON-LD) -->
     <!-- structuredDataJson is provided by page-specific .11tydata.js files -->
-    <script type="application/ld+json" webc:if="structuredDataJson" webc:keep @text="structuredDataJson"></script>
+    <script
+      type="application/ld+json"
+      webc:if="structuredDataJson"
+      webc:keep
+      @text="structuredDataJson"
+    ></script>
     <!-- Fallback: use component if structuredDataJson not provided -->
     <structured-data webc:if="!structuredDataJson"></structured-data>
 
@@ -46,7 +72,7 @@
     <!-- Bundled CSS from components -->
     <style webc:keep @raw="getBundle('css', 'base')"></style>
     <style webc:keep @raw="getBundle('css')"></style>
-    
+
     <!-- Critical layout styles -->
     <style webc:keep>
       main {
@@ -71,7 +97,6 @@
   </head>
   <body>
     <header webc:nokeep></header>
-    <breadcrumbs webc:nokeep></breadcrumbs>
     <main @raw="content"></main>
     <footer webc:nokeep></footer>
     <script type="module" webc:keep @raw="getBundle('js')"></script>
