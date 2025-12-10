@@ -45,7 +45,14 @@ metadata:
           src="assets/images/cover.jpg"
           alt="Mr & Mrs Charles Dickens book cover"
         />
-        <!-- <button type="button">Preorder now!</button> -->
+        <div class="button-container">
+          <a href="https://www.waterstones.com/book/mr-and-mrs-charles-dickens/annie-elliot/9781915023742" class="btn btn-waterstones" aria-label="Preorder from Waterstones">
+            <img src="/images/waterstones-logo.svg" alt="Waterstones" />
+          </a>
+          <a href="https://www.amazon.co.uk/Mr-Mrs-Charles-Dickens-Story/dp/1915023742/ref=sr_1_1?crid=270O064P2TK7C&amp;dib=eyJ2IjoiMSJ9.kAiRe4xWtUNTTwN6v8GjhbffdpBDO1i9m8UpVQ3Z9Z01mK0cJUU7nGofZTiCFXB-jSZld8S4IfYYgiqFxuFEEktK02ARb_XFVqbq7hUJQoTeN4h1obcSi3SehwWwd8vTmK_1WX_dkspf_9PBTedkn4EiN5BjNgcyWEI_LYWZpaDC1x_pxicUQcuXS5syMVxW.qabpfl6DN4IDnXciDd6PxqrdJAun147XxpHIpZqC2-0&amp;dib_tag=se&amp;keywords=Mr+and+Mrs+Charles+Dickens%3A+Her+Story&amp;qid=1765401088&amp;sprefix=mr+and+mrs+charles+dickens+her+story%2Caps%2C291&amp;sr=8-1" class="btn btn-amazon" aria-label="Preorder from Amazon">
+            <img src="/images/amazon-logo.svg" alt="Amazon" />
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -101,22 +108,54 @@ metadata:
         }
       }
 
-      button {
-        display: block;
-        margin: var(--space-m) auto 0;
-        padding: var(--space-s) var(--space-m);
-        background-color: var(--taupe);
-        color: var(--white);
-        border: none;
-        border-radius: 4px;
-        font-family: var(--font-base);
-        font-weight: bold;
-        cursor: pointer;
-        transition: background-color 0.2s;
+      .button-container {
+        display: flex;
+        gap: var(--space-xs);
+        justify-content: space-between;
+        margin-top: var(--space-m);
+        width: 100%;
       }
 
-      button:hover {
-        background-color: var(--taupe-dark);
+      .btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: var(--space-xs);
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: transform 0.2s, opacity 0.2s;
+        text-decoration: none;
+        height: 50px;
+        flex: 1; /* Make buttons equal width */
+        box-sizing: border-box;
+        background-color: #ffffff; /* Ensure base background is white */
+      }
+
+      .btn:hover {
+        transform: scale(1.05);
+        opacity: 0.9;
+      }
+
+      .btn img {
+        max-height: 100%;
+        max-width: 100%;
+        object-fit: contain;
+      }
+      
+      /* Specific adjustment for Amazon logo to make it larger */
+      .btn-amazon img {
+        transform: scale(1.2); 
+      }
+
+      .btn-waterstones {
+        background-color: #ffffff;
+        border: 1px solid #000000;
+      }
+
+      .btn-amazon {
+        background-color: #ffffff;
+        border: 1px solid #FF9900;
       }
     }
   }
