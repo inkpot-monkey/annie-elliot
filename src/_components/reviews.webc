@@ -1,83 +1,87 @@
 <script webc:setup>
-  let reviews = [
-    {
-      quote: `In her lifetime Catherine Dickens was too often the supporting act to her husband's starring role. Annie Elliot’s meticulously researched, empathetic reimagining of Catherine, at long last, places her centre stage in the Dickens family drama`,
-      source: `Peter Thompson, Volunteer at the <a href="https://dickensmuseum.com">Charles Dickens Museum</a>`,
-    },
-    {
-      quote: `This absorbing novel brings Catherine Dickens, nee Hogarth, out of obscurity, giving her a voice of her own and a distinctive character. It successfully performs a tricky balancing act between meticulous historical accuracy and an imaginative recreation of a believable, flesh and blood woman. The author comes over as fully entering into the life of her  central character, and enables us to do so too`,
-      source: `Val Parks, Volunteer at the <a href="https://dickensmuseum.com">Charles Dickens Museum</a>`,
-    },
-    {
-      quote: `The author set out to give Catherine Dickens a voice, a woman so often overruled and silenced by her dominant husband.
+	let reviews = [
+		{
+			quote: `In her lifetime Catherine Dickens was too often the supporting act to her husband's starring role. Annie Elliot’s meticulously researched, empathetic reimagining of Catherine, at long last, places her centre stage in the Dickens family drama`,
+			source: `Peter Thompson, Volunteer at the <a href="https://dickensmuseum.com">Charles Dickens Museum</a>`,
+		},
+		{
+			quote: `This absorbing novel brings Catherine Dickens, nee Hogarth, out of obscurity, giving her a voice of her own and a distinctive character. It successfully performs a tricky balancing act between meticulous historical accuracy and an imaginative recreation of a believable, flesh and blood woman. The author comes over as fully entering into the life of her  central character, and enables us to do so too`,
+			source: `Val Parks, Volunteer at the <a href="https://dickensmuseum.com">Charles Dickens Museum</a>`,
+		},
+		{
+			quote: `The author set out to give Catherine Dickens a voice, a woman so often overruled and silenced by her dominant husband.
 
-  By using fictional scenes and accurate accounts the author has imagined the newly widowed Catherine’s recollections of her marriage, starting with her first meeting Charles in the newspaper office, then their family life together and finally their separation.
+	  By using fictional scenes and accurate accounts the author has imagined the newly widowed Catherine’s recollections of her marriage, starting with her first meeting Charles in the newspaper office, then their family life together and finally their separation.
 
-  By giving Catherine a voice this book gives glimpses of the feisty woman Catherine could have become.`,
-      source: `Mally Scrutton, Volunteer at the <a href="https://dickensmuseum.com">Charles Dickens Museum</a>`,
-    },
-  ];
+	  By giving Catherine a voice this book gives glimpses of the feisty woman Catherine could have become.`,
+			source: `Mally Scrutton, Volunteer at the <a href="https://dickensmuseum.com">Charles Dickens Museum</a>`,
+		},
+		{
+			quote: `A readable and convincing insight into the thoughts and feelings of Catherine Dickens in the 24 hours after the death of her husband. Based on thorough research, Annie Elliot, provides us with an understanding of both the love and misuse experienced by this caring wife and mother throughout the 22 years of marriage to Charles Dickens.`,
+			source: `Christine Skelton, Emeritus Professor of Education, University of Birmingham<br>Author of: <i>Charles Dickens and Georgina Hogarth, A Curious and Enduring Relationship</i>`,
+		},
+	];
 </script>
 
 <section id="reviews" class="reviews-section">
-  <h4>Reviews</h4>
-  <div class="review-card" webc:for="review of reviews">
-    <p @text="review.quote" class="quote"></p>
-    <p @raw="review.source" class="reviewer"></p>
-  </div>
+	<h4>Reviews</h4>
+	<div class="review-card" webc:for="review of reviews">
+		<p @text="review.quote" class="quote"></p>
+		<p @raw="review.source" class="reviewer"></p>
+	</div>
 </section>
 
 <style>
-  #reviews {
-    text-align: center;
+	#reviews {
+		text-align: center;
 
-    h4 {
-      font-family: var(--font-cursive);
-      font-size: var(--step-2);
-      padding-block: var(--space-s);
-    }
+		h4 {
+			font-family: var(--font-cursive);
+			font-size: var(--step-2);
+			padding-block: var(--space-s);
+		}
 
-    .review-card {
-      max-width: 700px;
-      margin: 0 auto 2.5rem auto;
-      padding: 1.5rem 2rem;
-      border: 1px solid var(--light-beige);
-      box-shadow: 3px 3px 10px var(--shadow-light);
-      position: relative;
-      font-size: 1.2rem;
-    }
+		.review-card {
+			max-width: 700px;
+			margin: 0 auto 2.5rem auto;
+			padding: 1.5rem 2rem;
+			border: 1px solid var(--light-beige);
+			box-shadow: 3px 3px 10px var(--shadow-light);
+			position: relative;
+			font-size: 1.2rem;
+		}
 
-    .quote {
-      font-family: var(--font-italic);
-      font-style: italic;
-      line-height: 1.6;
-      position: relative;
-    }
+		.quote {
+			font-family: var(--font-italic);
+			font-style: italic;
+			line-height: 1.6;
+			position: relative;
+		}
 
-    .quote::before,
-    .quote::after {
-      content: "“";
-      font-family: serif;
-      font-size: 2.5rem;
-      position: absolute;
-      opacity: 0.3;
-    }
+		.quote::before,
+		.quote::after {
+			content: "“";
+			font-family: serif;
+			font-size: 2.5rem;
+			position: absolute;
+			opacity: 0.3;
+		}
 
-    .quote::before {
-      left: -1.5rem;
-      top: -1.2rem;
-    }
+		.quote::before {
+			left: -1.5rem;
+			top: -1.2rem;
+		}
 
-    .quote::after {
-      content: "”";
-      transform: translateY(-16px);
-    }
+		.quote::after {
+			content: "”";
+			transform: translateY(-16px);
+		}
 
-    .reviewer {
-      margin-top: 1rem;
-      text-align: right;
-      font-style: normal;
-      font-size: 1rem;
-    }
-  }
+		.reviewer {
+			margin-top: 1rem;
+			text-align: right;
+			font-style: normal;
+			font-size: 1rem;
+		}
+	}
 </style>
