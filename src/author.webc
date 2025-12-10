@@ -78,6 +78,7 @@ metadata:
       background-color: var(--white);
       box-shadow: 5px 5px 15px var(--shadow-medium);
       max-width: var(--img-lg);
+      margin-inline: auto;
 
       img {
         width: 100%;
