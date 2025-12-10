@@ -34,15 +34,19 @@ metadata:
 
       const data = await response.json();
       const events = data.items
-        .map(({summary, description, location, start, end}) => ({
-          summary,
-          description,
-          location,
-          start: formatDate(start.dateTime),
-          end: formatDate(end.dateTime),
-          startDateTime: start.dateTime,
-          endDateTime: end?.dateTime || null // Keep ISO format for structured data
-        }))
+        .map(({summary, description, location, start, end}) => {
+          const startDt = start.dateTime || start.date;
+          const endDt = end?.dateTime || end?.date || null;
+          return {
+            summary,
+            description,
+            location,
+            start: formatDate(startDt),
+            end: formatDate(endDt),
+            startDateTime: startDt,
+            endDateTime: endDt
+          };
+        })
         .sort((a, b) => new Date(a.startDateTime) - new Date(b.startDateTime));
 
       const now = new Date();
