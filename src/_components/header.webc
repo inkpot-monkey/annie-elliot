@@ -15,7 +15,7 @@
   <img
     webc:is="eleventy-image"
     src="assets/images/separator.webp"
-    alt="victorian flourish"
+    alt=""
     id="flourish"
     loading="eager"
   />

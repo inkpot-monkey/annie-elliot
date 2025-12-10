@@ -2,7 +2,7 @@
   <img
     webc:is="eleventy-image"
     src="assets/images/separator.webp"
-    alt="victorian flourish"
+    alt=""
   />
 
   <p id="quote">So the world may know he loved me once.</p>
@@ -10,7 +10,7 @@
   <img
     webc:is="eleventy-image"
     src="assets/images/separator.webp"
-    alt="victorian flourish"
+    alt=""
   />
 
   <p class="footer-credits">
