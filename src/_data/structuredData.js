@@ -105,22 +105,19 @@ export async function getStructuredData(page, metadata) {
     const bookSchema = {
       "@context": "https://schema.org",
       "@type": "Book",
-      name: "Mr & Mrs Charles Dickens",
-      alternateName: "Mr & Mrs Charles Dickens, Her Story",
-      author: {
+      "name": "Mr & Mrs Charles Dickens: Her Story",
+      "author": {
         "@type": "Person",
-        name: "Annie Elliot",
-        url: siteUrl + "/author/",
+        "name": "Annie Elliot",
+        "url": siteUrl // Used siteUrl instead of hardcoding as per pattern, but schema requested hardcoded url in example. Keeping consistent with existing code pattern or following request strictly? Request said: "url": "[https://annieelliot.co.uk](https://annieelliot.co.uk)" which is siteUrl.
       },
-      description:
-        "After twenty-two years of marriage, Charles Dickens banished his wife Kate from their home and nine children. This is Kate's story: a poignant self-portrait of a woman struggling to achieve peace of mind.",
-      url: siteUrl,
-      publisher: {
-        "@type": "Organization",
-        name: "Annie Elliot",
+      "workExample": {
+        "@type": "Book",
+        "isbn": "978-1784650961",
+        "bookFormat": "https://schema.org/Paperback"
       },
-      inLanguage: "en-GB",
-      bookFormat: "https://schema.org/Hardcover",
+      "image": siteUrl + "/images/book-cover.jpg",
+      "description": "The untold story of Catherine Dickens, wife of Charles Dickens, reimagining her life and marriage."
     };
     structuredData.push(bookSchema);
   }
@@ -149,8 +146,8 @@ export async function getStructuredData(page, metadata) {
     // Add keywords if available
     ...(packageJson.keywords &&
       packageJson.keywords.length > 0 && {
-        keywords: packageJson.keywords.join(", "),
-      }),
+      keywords: packageJson.keywords.join(", "),
+    }),
   };
   structuredData.push(websiteSchema);
 
@@ -178,11 +175,11 @@ export async function getStructuredData(page, metadata) {
               name: event.location || "TBA",
               ...(event.location &&
                 event.location !== "TBA" && {
-                  address: {
-                    "@type": "PostalAddress",
-                    addressLocality: event.location,
-                  },
-                }),
+                address: {
+                  "@type": "PostalAddress",
+                  addressLocality: event.location,
+                },
+              }),
             },
             organizer: {
               "@type": "Person",

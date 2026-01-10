@@ -1,162 +1,192 @@
 ---
 metadata:
-  title: "Mr & Mrs Charles Dickens - Her Story | Annie Elliot"
-  description: "After twenty-two years of marriage, Charles Dickens banished his wife Kate from their home. This is Kate's story: a poignant self-portrait of a woman struggling to achieve peace of mind."
+  title: "Mr & Mrs Charles Dickens: Her Story | A Novel by Annie Elliot"
+  description: "Discover the untold story of Mrs Dickens. Annie Elliot's historical novel reveals the life of Catherine Dickens, the woman behind the famous author."
   canonical: "https://annieelliot.co.uk/"
   pageType: "book"
 ---
 
 <section id="about" class="u-container">
-  <h1>Mr & Mrs Charles Dickens</h1>
-  <h2>Her Story</h2>
-  <div>
-    <div class="u-grid main-grid">
-      <div>
-        <p>
-          After twenty-two years of marriage, Charles Dickens banished his wife,
-          Kate from their home and nine children and wrecked her reputation to
-          protect his own when he fell in love with an eighteen-year-old
-          actress.
-        </p>
+	<h1>Mr & Mrs Charles Dickens</h1>
+	<h2>Her Story</h2>
+	<div>
+		<div class="u-grid main-grid">
+			<div>
+				<p>
+					After twenty-two years of marriage, Charles Dickens banished his wife,
+					Kate from their home and nine children and wrecked her reputation to
+					protect his own when he fell in love with an eighteen-year-old
+					actress.
+				</p>
 
-        <p>
-          This is Kate's story: a poignant self-portrait of a woman struggling
-          to achieve peace of mind by making sense of a marriage that defined,
-          but nearly destroyed her. Sifting through her husband's letters after
-          his sudden death she relives the happy times they shared but also
-          speaks up for herself to expose the darker side of the man the world
-          reveres.
-        </p>
+				<p>
+					This is Kate's story: a poignant self-portrait of a woman struggling
+					to achieve peace of mind by making sense of a marriage that defined,
+					but nearly destroyed her. Sifting through her husband's letters after
+					his sudden death she relives the happy times they shared but also
+					speaks up for herself to expose the darker side of the man the world
+					reveres.
+				</p>
 
-        <p>
-          On her deathbed, Kate asked her daughter to give Charles's letters to
-          the British Museum 'so the world may know he loved me once.' This
-          novel fulfils her dying wish and restores her to history as more than
-          a famous author's discarded wife. It bestows on Kate the respect,
-          dignity, agency and voice she was denied in life.
-        </p>
+				<p>
+					On her deathbed, Kate asked her daughter to give Charles's letters to
+					the British Museum 'so the world may know he loved me once.' This
+					novel fulfils her dying wish and restores her to history as more than
+					a famous author's discarded wife. It bestows on Kate the respect,
+					dignity, agency and voice she was denied in life.
+				</p>
 
-        <reviews></reviews>
-      </div>
+				<reviews></reviews>
+			</div>
 
-      <div class="cover">
-        <img
-          webc:is="eleventy-image"
-          src="assets/images/cover.jpg"
-          alt="Mr & Mrs Charles Dickens book cover"
-        />
-        <div class="button-container">
-          <a href="https://www.waterstones.com/book/mr-and-mrs-charles-dickens/annie-elliot/9781915023742" class="btn btn-waterstones" aria-label="Preorder from Waterstones">
-            <img src="/images/waterstones-logo.svg" alt="Waterstones" />
-          </a>
-          <a href="https://www.amazon.co.uk/Mr-Mrs-Charles-Dickens-Story/dp/1915023742/ref=sr_1_1?crid=270O064P2TK7C&amp;dib=eyJ2IjoiMSJ9.kAiRe4xWtUNTTwN6v8GjhbffdpBDO1i9m8UpVQ3Z9Z01mK0cJUU7nGofZTiCFXB-jSZld8S4IfYYgiqFxuFEEktK02ARb_XFVqbq7hUJQoTeN4h1obcSi3SehwWwd8vTmK_1WX_dkspf_9PBTedkn4EiN5BjNgcyWEI_LYWZpaDC1x_pxicUQcuXS5syMVxW.qabpfl6DN4IDnXciDd6PxqrdJAun147XxpHIpZqC2-0&amp;dib_tag=se&amp;keywords=Mr+and+Mrs+Charles+Dickens%3A+Her+Story&amp;qid=1765401088&amp;sprefix=mr+and+mrs+charles+dickens+her+story%2Caps%2C291&amp;sr=8-1" class="btn btn-amazon" aria-label="Preorder from Amazon">
-            <img src="/images/amazon-logo.svg" alt="Amazon" />
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
+			<div class="cover">
+				<img
+					webc:is="eleventy-image"
+					src="assets/images/book-cover.jpg"
+					alt="Mr & Mrs Charles Dickens book cover"
+				/>
+				<div class="button-container">
+					<a
+						href="https://www.waterstones.com/book/mr-and-mrs-charles-dickens/annie-elliot/9781915023742"
+						class="btn btn-waterstones"
+						aria-label="Preorder from Waterstones"
+					>
+						<img src="/images/waterstones-logo.svg" alt="Waterstones" />
+					</a>
+					<a
+						href="https://www.amazon.co.uk/Mr-Mrs-Charles-Dickens-Story/dp/1915023742/ref=sr_1_1?crid=270O064P2TK7C&amp;dib=eyJ2IjoiMSJ9.kAiRe4xWtUNTTwN6v8GjhbffdpBDO1i9m8UpVQ3Z9Z01mK0cJUU7nGofZTiCFXB-jSZld8S4IfYYgiqFxuFEEktK02ARb_XFVqbq7hUJQoTeN4h1obcSi3SehwWwd8vTmK_1WX_dkspf_9PBTedkn4EiN5BjNgcyWEI_LYWZpaDC1x_pxicUQcuXS5syMVxW.qabpfl6DN4IDnXciDd6PxqrdJAun147XxpHIpZqC2-0&amp;dib_tag=se&amp;keywords=Mr+and+Mrs+Charles+Dickens%3A+Her+Story&amp;qid=1765401088&amp;sprefix=mr+and+mrs+charles+dickens+her+story%2Caps%2C291&amp;sr=8-1"
+						class="btn btn-amazon"
+						aria-label="Preorder from Amazon"
+					>
+						<img src="/images/amazon-logo.svg" alt="Amazon" />
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
 </section>
 
 <style>
-  #about {
-    padding-block: var(--space-l);
+	#about {
+		padding-block: var(--space-l);
 
-    h1,
-    h2 {
-      text-align: center;
-      color: var(--taupe);
-    }
+		h1,
+		h2 {
+			text-align: center;
+			color: var(--taupe);
+		}
 
-    h1 {
-      margin: 0;
-      font-family: var(--font-base);
-    }
+		h1 {
+			margin: 0;
+			font-family: var(--font-base);
+		}
 
-    h2 {
-      margin-top: var(--space-s);
-      margin-bottom: var(--space-l);
-      font-size: var(--step-4);
-      font-family: var(--font-cursive);
-    }
+		h2 {
+			margin-top: var(--space-s);
+			margin-bottom: var(--space-l);
+			font-size: var(--step-4);
+			font-family: var(--font-cursive);
+		}
 
-    p {
-      text-align: justify;
-    }
+		p {
+			text-align: justify;
+		}
 
-    .main-grid {
-      gap: var(--space-2xl);
+		.main-grid {
+			gap: var(--space-2xl);
 
-      @media all and (min-width: 60rem) {
-        grid-template-columns: 3fr 2fr;
+			@media all and (min-width: 60rem) {
+				grid-template-columns: 3fr 2fr;
 
-        .cover {
-          position: sticky;
-          align-self: start;
-          top: var(--space-2xl);
-        }
-      }
+				.cover {
+					position: sticky;
+					align-self: start;
+					top: var(--space-2xl);
+				}
+			}
 
-      div > p:first-of-type {
-        margin-top: 0;
-      }
+			div > p:first-of-type {
+				margin-top: 0;
+			}
 
-      picture {
-        img {
-          width: 100%;
-          height: auto;
-        }
-      }
+			picture {
+				img {
+					width: 100%;
+					height: auto;
+				}
+			}
 
-      .button-container {
-        display: flex;
-        gap: var(--space-xs);
-        justify-content: space-between;
-        margin-top: var(--space-m);
-        width: 100%;
-      }
+			.button-container {
+				display: flex;
+				gap: var(--space-xs);
+				justify-content: space-between;
+				margin-top: var(--space-m);
+				width: 100%;
+			}
 
-      .btn {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: var(--space-xs);
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: transform 0.2s, opacity 0.2s;
-        text-decoration: none;
-        height: 50px;
-        flex: 1; /* Make buttons equal width */
-        box-sizing: border-box;
-        background-color: #ffffff; /* Ensure base background is white */
-      }
+			.btn {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				padding: var(--space-xs);
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+				transition:
+					transform 0.2s,
+					opacity 0.2s;
+				text-decoration: none;
+				height: 50px;
+				flex: 1; /* Make buttons equal width */
+				box-sizing: border-box;
+				background-color: #ffffff; /* Ensure base background is white */
+			}
 
-      .btn:hover {
-        transform: scale(1.05);
-        opacity: 0.9;
-      }
+			.btn:hover {
+				transform: scale(1.05);
+				opacity: 0.9;
+			}
 
-      .btn img {
-        max-height: 100%;
-        max-width: 100%;
-        object-fit: contain;
-      }
-      
-      /* Specific adjustment for Amazon logo to make it larger */
-      .btn-amazon img {
-        transform: scale(1.2); 
-      }
+			.btn img {
+				max-height: 100%;
+				max-width: 100%;
+				object-fit: contain;
+			}
 
-      .btn-waterstones {
-        background-color: #ffffff;
-        border: 1px solid #000000;
-      }
+			/* Specific adjustment for Amazon logo to make it larger */
+			.btn-amazon img {
+				transform: scale(1.2);
+			}
 
-      .btn-amazon {
-        background-color: #ffffff;
-        border: 1px solid #FF9900;
-      }
-    }
-  }
+			.btn-waterstones {
+				background-color: #ffffff;
+				border: 1px solid #000000;
+			}
+
+			.btn-amazon {
+				background-color: #ffffff;
+				border: 1px solid #ff9900;
+			}
+		}
+	}
 </style>
+
+<script type="application/ld+json" webc:keep>
+	{
+		"@context": "https://schema.org",
+		"@type": "Book",
+		"name": "Mr & Mrs Charles Dickens: Her Story",
+		"author": {
+			"@type": "Person",
+			"name": "Annie Elliot",
+			"url": "https://annieelliot.co.uk"
+		},
+		"workExample": {
+			"@type": "Book",
+			"isbn": "978-1784650961",
+			"bookFormat": "https://schema.org/Paperback"
+		},
+		"image": "https://annieelliot.co.uk/images/book-cover.jpg",
+		"description": "The untold story of Catherine Dickens, wife of Charles Dickens, reimagining her life and marriage."
+	}
+</script>
