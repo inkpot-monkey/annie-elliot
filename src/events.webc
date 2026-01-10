@@ -6,68 +6,11 @@ metadata:
   pageType: "events"
 ---
 
-<script webc:setup>
-  function formatDate(dateTime) {
-      if (!dateTime) return 'TBA';
-      const date = new Date(dateTime);
-      return date.toLocaleDateString('en-GB', {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit'
-      });
-    }
-
-  async function fetchCalendarEvents() {
-    const calendarId = 'author.annie.elliot@gmail.com';
-    const apiKey = process.env.CALENDAR_KEY;
-
-    try {
-      const response = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${apiKey}`);
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw errorData;
-      }
-
-      const data = await response.json();
-      const events = data.items
-        .map(({summary, description, location, start, end}) => {
-          const startDt = start.dateTime || start.date;
-          const endDt = end?.dateTime || end?.date || null;
-          return {
-            summary,
-            description,
-            location,
-            start: formatDate(startDt),
-            end: formatDate(endDt),
-            startDateTime: startDt,
-            endDateTime: endDt
-          };
-        })
-        .sort((a, b) => new Date(a.startDateTime) - new Date(b.startDateTime));
-
-      const now = new Date();
-      const futureEvents = events.filter(event => new Date(event.startDateTime) > now);
-      const pastEvents = events.filter(event => new Date(event.startDateTime) <= now);
-
-      return { futureEvents, pastEvents };
-    } catch (error) {
-      console.error('Error fetching calendar events:', error);
-      throw error;
-    }
-  }
-
-  let { futureEvents, pastEvents } = await fetchCalendarEvents();
-</script>
-
 <section id="events" class="events-section u-container">
   <h1>Upcoming Events</h1>
 
-  <div webc:if="futureEvents.length > 0">
-    <div class="event-wrapper" webc:for="event of futureEvents">
+  <div webc:if="$data.calendar.futureEvents.length > 0">
+    <div class="event-wrapper" webc:for="event of $data.calendar.futureEvents">
       <div class="event-background"></div>
       <img src="/images/eventFrame.svg" alt="" class="event-frame" />
       <div class="event-card">
@@ -85,14 +28,14 @@ metadata:
     </div>
   </div>
 
-  <div webc:if="futureEvents.length === 0">
+  <div webc:if="$data.calendar.futureEvents.length === 0">
     <p class="no-events">No upcoming events scheduled at this time.</p>
   </div>
 
-  <div webc:if="pastEvents.length > 0">
+  <div webc:if="$data.calendar.pastEvents.length > 0">
     <h2>Past Events</h2>
 
-    <div class="event-wrapper" webc:for="event of pastEvents">
+    <div class="event-wrapper" webc:for="event of $data.calendar.pastEvents">
       <div class="event-background past-event"></div>
       <img src="/images/eventFrame.svg" alt="" class="event-frame" />
       <div class="event-card">

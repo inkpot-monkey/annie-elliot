@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en-GB">
   <head>
     <meta charset="utf-8" />
@@ -54,32 +54,6 @@
       href="/favicon/apple-touch-icon.png"
     />
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" :content="metadata.canonical || 'https://annieelliot.co.uk' + page.url" />
-    <meta property="og:title" :content="metadata.title" />
-    <meta property="og:description" :content="metadata.description" />
-    <meta property="og:image" content="https://annieelliot.co.uk/images/book-cover.jpg" />
-    <meta property="og:site_name" content="Annie Elliot" />
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" :content="metadata.canonical || 'https://annieelliot.co.uk' + page.url" />
-    <meta property="twitter:title" :content="metadata.title" />
-    <meta property="twitter:description" :content="metadata.description" />
-    <meta property="twitter:image" content="https://annieelliot.co.uk/images/book-cover.jpg" />
-
-    <!-- Structured Data (JSON-LD) -->
-    <!-- structuredDataJson is provided by page-specific .11tydata.js files -->
-    <script
-      type="application/ld+json"
-      webc:if="structuredDataJson"
-      webc:keep
-      @text="structuredDataJson"
-    ></script>
-    <!-- Fallback: use component if structuredDataJson not provided -->
-    <structured-data webc:if="!structuredDataJson"></structured-data>
-
     <!-- Critical CSS: Base stylesheets bundled and inlined to prevent FOUC -->
     <link rel="stylesheet" href="reset.css" webc:bucket="base" />
     <link rel="stylesheet" href="design-system.css" webc:bucket="base" />
@@ -110,6 +84,29 @@
         outline-offset: 2px;
       }
     </style>
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" :content="metadata.canonical || 'https://annieelliot.co.uk' + page.url" />
+    <meta property="og:title" :content="metadata.title" />
+    <meta property="og:description" :content="metadata.description" />
+    <meta property="og:image" content="https://annieelliot.co.uk/images/book-cover.jpg" />
+    <meta property="og:site_name" content="Annie Elliot" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" :content="metadata.canonical || 'https://annieelliot.co.uk' + page.url" />
+    <meta property="twitter:title" :content="metadata.title" />
+    <meta property="twitter:description" :content="metadata.description" />
+    <meta property="twitter:image" content="https://annieelliot.co.uk/images/book-cover.jpg" />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script
+      type="application/ld+json"
+      webc:if="structuredDataJson"
+      webc:keep
+      @raw="structuredDataJson"
+    ></script>
   </head>
   <body>
     <header webc:nokeep></header>

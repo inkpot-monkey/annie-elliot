@@ -11,7 +11,7 @@ test.describe('SEO Checks', () => {
 
     test('should have correct meta description', async ({ page }) => {
         const metaDescription = page.locator('meta[name="description"]');
-        await expect(metaDescription).toHaveAttribute('content', "Discover the untold story of Mrs Dickens. Annie Elliot's historical novel reveals the life of Catherine Dickens, the woman behind the famous author.");
+        await expect(metaDescription).toHaveAttribute('content', /Discover the untold story of Mrs Dickens\. Annie Elliot['’]s historical novel reveals the life of Catherine Dickens, the woman behind the famous author\./);
     });
 
     test('should have viewport meta tag', async ({ page }) => {
@@ -22,7 +22,7 @@ test.describe('SEO Checks', () => {
     test('should have correct Open Graph tags', async ({ page }) => {
         await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', 'Mr & Mrs Charles Dickens: Her Story | A Novel by Annie Elliot');
 
-        await expect(page.locator('meta[property="og:description"]')).toHaveAttribute('content', "Discover the untold story of Mrs Dickens. Annie Elliot's historical novel reveals the life of Catherine Dickens, the woman behind the famous author.");
+        await expect(page.locator('meta[property="og:description"]')).toHaveAttribute('content', /Discover the untold story of Mrs Dickens\. Annie Elliot['’]s historical novel reveals the life of Catherine Dickens, the woman behind the famous author\./);
 
         await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', 'https://annieelliot.co.uk/images/book-cover.jpg');
 

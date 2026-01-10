@@ -13,8 +13,8 @@ metadata:
 		<div class="u-grid main-grid">
 			<div>
 				<p>
-					After twenty-two years of marriage, Charles Dickens banished his wife,
-					Kate from their home and nine children and wrecked her reputation to
+					After twenty-two years of marriage, the world-famous author banished Mrs Dickens
+					(Catherine) from their home and nine children and wrecked her reputation to
 					protect his own when he fell in love with an eighteen-year-old
 					actress.
 				</p>
@@ -43,7 +43,7 @@ metadata:
 				<img
 					webc:is="eleventy-image"
 					src="assets/images/book-cover.jpg"
-					alt="Mr & Mrs Charles Dickens book cover"
+					alt="Book cover of Mr & Mrs Charles Dickens: Her Story by Annie Elliot - A novel about Mrs Dickens"
 				/>
 				<div class="button-container">
 					<a
@@ -171,22 +171,4 @@ metadata:
 	}
 </style>
 
-<script type="application/ld+json" webc:keep>
-	{
-		"@context": "https://schema.org",
-		"@type": "Book",
-		"name": "Mr & Mrs Charles Dickens: Her Story",
-		"author": {
-			"@type": "Person",
-			"name": "Annie Elliot",
-			"url": "https://annieelliot.co.uk"
-		},
-		"workExample": {
-			"@type": "Book",
-			"isbn": "978-1784650961",
-			"bookFormat": "https://schema.org/Paperback"
-		},
-		"image": "https://annieelliot.co.uk/images/book-cover.jpg",
-		"description": "The untold story of Catherine Dickens, wife of Charles Dickens, reimagining her life and marriage."
-	}
-</script>
+

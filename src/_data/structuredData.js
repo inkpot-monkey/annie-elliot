@@ -12,55 +12,7 @@ const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
 
 const siteUrl = "https://annieelliot.co.uk";
 
-async function fetchCalendarEvents() {
-  const calendarId = "author.annie.elliot@gmail.com";
-  const apiKey = process.env.CALENDAR_KEY;
-
-  if (!apiKey) {
-    console.warn("CALENDAR_KEY not found in environment variables");
-    return null;
-  }
-
-  try {
-    const response = await fetch(
-      `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${apiKey}`,
-    );
-
-    if (!response.ok) {
-      console.error(
-        "Failed to fetch calendar events:",
-        response.status,
-        response.statusText,
-      );
-      return null;
-    }
-
-    const data = await response.json();
-    const events = data.items
-      .map(({ summary, description, location, start, end }) => ({
-        summary,
-        description,
-        location,
-        startDateTime: start.dateTime,
-        endDateTime: end?.dateTime || null,
-      }))
-      .sort((a, b) => new Date(a.startDateTime) - new Date(b.startDateTime));
-
-    const now = new Date();
-    const futureEvents = events.filter(
-      (event) => new Date(event.startDateTime) > now,
-    );
-
-    return {
-      futureEvents: futureEvents,
-    };
-  } catch (error) {
-    console.error("Error fetching calendar events:", error);
-    return null;
-  }
-}
-
-export async function getStructuredData(page, metadata) {
+export async function getStructuredData(page, metadata, externalData = {}) {
   // Prioritize metadata.pageType, fallback to checking page URL
   let pageType = metadata?.pageType;
   if (!pageType) {
@@ -109,7 +61,7 @@ export async function getStructuredData(page, metadata) {
       "author": {
         "@type": "Person",
         "name": "Annie Elliot",
-        "url": siteUrl // Used siteUrl instead of hardcoding as per pattern, but schema requested hardcoded url in example. Keeping consistent with existing code pattern or following request strictly? Request said: "url": "[https://annieelliot.co.uk](https://annieelliot.co.uk)" which is siteUrl.
+        "url": siteUrl
       },
       "workExample": {
         "@type": "Book",
@@ -153,7 +105,9 @@ export async function getStructuredData(page, metadata) {
 
   // Event schemas - for events page
   if (pageType === "events") {
-    const events = await fetchCalendarEvents();
+    // Expecting events to be passed in externalData.calendar or just events array
+    const events = externalData.calendar || { futureEvents: [] };
+
     if (
       events &&
       Array.isArray(events.futureEvents) &&
