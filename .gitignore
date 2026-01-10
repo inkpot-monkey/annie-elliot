@@ -30,3 +30,8 @@ result-*
 
 # Ignore automatically generated direnv output
 .direnv
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/

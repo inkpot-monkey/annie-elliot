@@ -7,14 +7,17 @@
   "homepage": "https://annieelliot.co.uk",
   "scripts": {
     "build": "npx @11ty/eleventy",
-    "dev": "npx @11ty/eleventy --serve --incremental",
+    "dev": "npx @11ty/eleventy --serve --incremental --port=8080",
     "debug": "DEBUG=Eleventy* npx @11ty/eleventy",
     "test:seo": "node scripts/test-seo.js",
-    "test:a11y": "node scripts/test-a11y.js",
+    "test:a11y": "npx playwright test tests/a11y.spec.js",
     "test:lighthouse": "lighthouse http://localhost:8080 --output html --output-path ./lighthouse-report.html --only-categories=accessibility,seo",
     "test:html": "html-validate dist/**/*.html",
     "test:links": "blc http://localhost:8080 -ro --exclude-external",
-    "test:all": "npm run test:seo && npm run test:html"
+    "test:all": "npm run test:seo && npm run test:html",
+    "test:visual": "npx playwright test",
+    "test:update": "npx playwright test --update-snapshots",
+    "report": "npx playwright show-report"
   },
   "keywords": [
     "annie elliot",
@@ -34,11 +37,11 @@
     "dotenv": "^17.2.2"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.0",
+    "@playwright/test": "^1.57.0",
     "broken-link-checker": "^0.7.8",
     "html-validate": "^10.3.1",
     "lighthouse": "^13.0.1",
-    "pa11y": "^9.0.1",
-    "prettier": "^3.6.2",
-    "puppeteer": "^24.30.0"
+    "prettier": "^3.6.2"
   }
 }
