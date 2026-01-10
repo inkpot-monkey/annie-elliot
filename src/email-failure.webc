@@ -26,12 +26,12 @@
       margin-bottom: var(--space-l);
     }
 
-    postcard-wrapper {
+    .postcard-wrapper {
       display: flex;
       justify-content: center;
     }
 
-    postcard-border {
+    .postcard-border {
       border: 4px double var(--taupe);
       padding: var(--space-l);
       max-width: 600px;
@@ -71,10 +71,13 @@
       }
 
       &.button-secondary {
-        background-color: var(--battleship-gray);
+        background-color: transparent;
+        color: var(--taupe);
+        border: 2px solid var(--taupe);
 
         &:hover {
           background-color: var(--taupe);
+          color: var(--antiflash-white);
         }
       }
     }

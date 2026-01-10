@@ -68,14 +68,16 @@ metadata:
 
   <div webc:if="futureEvents.length > 0">
     <div class="event-wrapper" webc:for="event of futureEvents">
+      <div class="event-background"></div>
       <img src="/images/eventFrame.svg" alt="" class="event-frame" />
       <div class="event-card">
         <h3 @text="event.summary"></h3>
         <p><strong>Date: </strong><span @text="event.start"></span></p>
-        <p>
+        <p webc:if="event.location">
           <strong>Location: </strong
-          ><a :href="'https://maps.google.com?q=' + event.location"
-            ><span @text="event.location"></span
+          ><a :href="'https://maps.google.com?q=' + (event.location || '')"
+              :aria-label="'View location for ' + event.summary"
+            ><span @text="event.location || 'View Map'"></span
           ></a>
         </p>
         <p @text="event.description"></p>
@@ -91,14 +93,16 @@ metadata:
     <h2>Past Events</h2>
 
     <div class="event-wrapper" webc:for="event of pastEvents">
+      <div class="event-background past-event"></div>
       <img src="/images/eventFrame.svg" alt="" class="event-frame" />
-      <div class="event-card past-event">
+      <div class="event-card">
         <h3 @text="event.summary"></h3>
         <p><strong>Date: </strong><span @text="event.start"></span></p>
-        <p>
+        <p webc:if="event.location">
           <strong>Location: </strong
-          ><a :href="'https://maps.google.com?q=' + event.location"
-            ><span @text="event.location"></span
+          ><a :href="'https://maps.google.com?q=' + (event.location || '')"
+              :aria-label="'View location for ' + event.summary"
+            ><span @text="event.location || 'View Map'"></span
           ></a>
         </p>
         <p><b @text="event.description"></b></p>
@@ -130,41 +134,45 @@ metadata:
     }
 
     .event-wrapper {
-      position: relative;
+      display: grid;
       margin: var(--space-m) auto;
       max-width: 700px;
       padding: var(--space-s);
       filter: drop-shadow(0 4px 12px var(--shadow-dark));
     }
 
-    .event-card {
+    .event-wrapper > * {
+      grid-area: 1 / 1;
+      width: 100%;
+      height: 100%;
+    }
+
+    .event-background {
       background-color: var(--white);
+      z-index: 0;
+    }
+
+    .event-wrapper .event-frame {
+      object-fit: fill;
+      object-position: center;
+      pointer-events: none;
+      z-index: 1;
+      display: block;
+    }
+    
+    .event-wrapper .event-frame[src$=".svg"] {
+      width: 100%;
+      height: 100%;
+    }
+
+    .event-card {
+      background-color: transparent;
       border: none;
       padding: var(--space-l);
       text-align: center;
       box-shadow: none;
       position: relative;
-      z-index: 1;
-    }
-
-    .event-wrapper .event-frame {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: fill;
-      object-position: center;
-      pointer-events: none;
       z-index: 2;
-      display: block;
-    }
-    
-    .event-wrapper .event-frame[src$=".svg"] {
-      width: 100% !important;
-      height: 100% !important;
     }
 
     .event-card h3 {
@@ -200,7 +208,6 @@ metadata:
     }
 
     .past-event {
-      opacity: 0.8;
       background-color: var(--antiflash-white);
     }
   }
