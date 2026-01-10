@@ -4,7 +4,7 @@
   const fontSizeVal = typeof fontSize !== 'undefined' ? fontSize : 'var(--step-0)';
   const dotColorVal = typeof dotColor !== 'undefined' ? dotColor : 'var(--battleship-gray)';
   const marginVal = typeof margin !== 'undefined' ? margin : '0';
-  const ariaLabelVal = typeof ariaLabel !== 'undefined' ? ariaLabel : 'Navigation';
+  const navLabelVal = typeof navLabel !== 'undefined' ? navLabel : 'Navigation';
   
   // Link color is always white, underline is always battleship-gray
   const styleVars = `--font-size: ${fontSizeVal}; --dot-color: ${dotColorVal}; --margin: ${marginVal};`;
@@ -12,7 +12,7 @@
 
 <nav 
   class="nav-links" 
-  :aria-label="ariaLabelVal"
+  :aria-label="navLabelVal"
   :style="styleVars"
 >
   <a href="/">Home</a>

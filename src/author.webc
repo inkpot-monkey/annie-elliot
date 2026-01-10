@@ -7,84 +7,84 @@ metadata:
 ---
 
 <section id="author" class="u-container">
-  <h1>About the Author</h1>
-  <div>
-    <div class="u-grid main-grid">
-      <img
-        webc:is="eleventy-image"
-        src="assets/images/author.jpg"
-        alt="Portrait of Annie Elliot"
-      />
+	<h1>About the Author</h1>
+	<div>
+		<div class="u-grid main-grid">
+			<img
+				webc:is="eleventy-image"
+				src="assets/images/author.jpg"
+				alt="Portrait of Annie Elliot"
+			/>
 
-      <div>
-        <p>
-          Annie Elliot has an MA in Creative Writing and a BA (Hons) in Literary
-          Studies. Before retiring she worked in local government, as a
-          newspaper reporter and taught communication. She has written a booklet
-          to help teachers understand dyslexic children’s difficulties. Her
-          short stories and flash fiction have been successful in literary
-          competitions. She has been longlisted for the Mslexia Novel Award. She
-          writes and performs monologues.
-        </p>
+			<div>
+				<p>
+					Annie Elliot has an MA in Creative Writing and a BA (Hons) in Literary
+					Studies. Before retiring she worked in local government, as a
+					newspaper reporter, and taught communication. She has written a
+					booklet to help teachers understand dyslexic children’s difficulties.
+					Her short stories and flash fiction have been successful in literary
+					competitions and she has been longlisted for the Mslexia Novel Award.
+					She writes and performs monologues.
+				</p>
 
-        <p>
-          At university, her tutor, the late Fay Weldon, described Annie Elliot
-          as a natural writer and her work as ‘completely brilliant’. Struck by
-          her talent for the acerbic and moving, the author and screenwriter
-          Nikesh Shukla, host of the Brown Baby podcast, complimented her on her
-          ‘comedian’s eye for detail and absurdity’. The naturalist, author and
-          broadcaster, Stephen Moss described her bitter-sweet style as funny
-          and tragic.
-        </p>
-        <p>
-          Mr & Mrs Charles Dickens – Her Story is Annie Elliot’s debut novel.
-          Her website is
-          <a href="https://annieelliot.co.uk">annieelliot.co.uk</a>.
-        </p>
-      </div>
-    </div>
-  </div>
+				<p>
+					At university, her tutor, the late Fay Weldon, described Annie Elliot
+					as a natural writer and her work as ‘completely brilliant’. Struck by
+					her talent for the acerbic and moving, the author and screenwriter
+					Nikesh Shukla, host of the Brown Baby podcast, complimented Annie on
+					her ‘comedian’s eye for detail and absurdity’. The naturalist, author
+					and broadcaster Stephen Moss described her bitter-sweet style as funny
+					and tragic. Mr & Mrs Charles Dickens is Annie Elliot’s debut novel.
+				</p>
+				<p>
+					Mr & Mrs Charles Dickens – Her Story is Annie Elliot’s debut novel.
+					Her website is
+					<a href="https://annieelliot.co.uk">annieelliot.co.uk</a>.
+				</p>
+			</div>
+		</div>
+	</div>
 </section>
 
 <style>
-  #author {
-    padding-block: var(--space-l);
+	#author {
+		padding-block: var(--space-l);
 
-    h1 {
-      text-align: center;
-      color: var(--taupe);
-      margin: 0;
-      font-family: var(--font-base);
-      margin-bottom: var(--space-l);
-    }
+		h1 {
+			text-align: center;
+			color: var(--taupe);
+			margin: 0;
+			font-family: var(--font-base);
+			margin-bottom: var(--space-l);
+		}
 
-    .main-grid {
-      gap: var(--space-2xl);
-      text-align: justify;
+		.main-grid {
+			gap: var(--space-2xl);
+			text-align: justify;
 
-      @media all and (min-width: 60rem) {
-        grid-template-columns: 2fr 3fr;
-      }
+			@media all and (min-width: 60rem) {
+				grid-template-columns: 2fr 3fr;
+			}
 
-      div > p:first-of-type {
-        margin-top: 0;
-      }
-    }
+			div > p:first-of-type {
+				margin-top: 0;
+			}
+		}
 
-    picture {
-      border: 6px solid var(--taupe);
-      border-radius: 50%;
-      overflow: hidden;
-      background-color: var(--white);
-      box-shadow: 5px 5px 15px var(--shadow-medium);
-      max-width: var(--img-lg);
-      margin-inline: auto;
+		picture {
+			border: 6px solid var(--taupe);
+			border-radius: 50%;
+			overflow: hidden;
+			background-color: var(--white);
+			box-shadow: 5px 5px 15px var(--shadow-medium);
+			max-width: var(--img-lg);
+			margin-inline: auto;
 
-      img {
-        width: 100%;
-        height: auto;
-        display: block;
-      }
-    }
-  }
+			img {
+				width: 100%;
+				height: auto;
+				display: block;
+			}
+		}
+	}
 </style>

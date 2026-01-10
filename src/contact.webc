@@ -58,12 +58,12 @@ metadata:
       margin-bottom: var(--space-l);
     }
 
-    postcard-wrapper {
+    .postcard-wrapper {
       display: flex;
       justify-content: center;
     }
 
-    postcard-border {
+    .postcard-border {
       border: 4px double var(--taupe);
       padding: var(--space-l);
       max-width: 600px;
@@ -101,7 +101,6 @@ metadata:
 
     & textarea::placeholder {
       color: var(--taupe);
-      opacity: 0.8;
     }
 
     & button {
