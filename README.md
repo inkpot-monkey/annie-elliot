@@ -62,4 +62,12 @@ We use `@axe-core/playwright` to ensure the website is accessible to all users a
 
 Playwright generates an HTML report after each run, which provides detailed insights, including "diff" views for visual tests and specific violation details for accessibility tests.
 
-*   **View Report:** `npm run report`
+## SEO & Indexing
+
+To ensure Google indexes your changes (especially the new "Mrs Dickens" keywords and Event schema) quickly:
+
+1.  **Google Search Console**: Use the "URL Inspection" tool on the homepage and click **Request Indexing**.
+2.  **Sitemaps**: Resubmit `sitemap.xml` in the Search Console.
+3.  **Verification**: Use "Test Live URL" to confirm that the server-side JSON-LD and meta descriptions are visible to Google's crawler.
+
+For a detailed breakdown of the SEO strategy and implementation, see the `audit_report.md` and `walkthrough.md` in the documentation folder.
