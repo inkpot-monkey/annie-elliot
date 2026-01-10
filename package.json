@@ -9,7 +9,7 @@
     "build": "npx @11ty/eleventy",
     "dev": "npx @11ty/eleventy --serve --incremental --port=8080",
     "debug": "DEBUG=Eleventy* npx @11ty/eleventy",
-    "test:seo": "node scripts/test-seo.js",
+    "test:seo": "npx playwright test tests/seo.spec.js",
     "test:a11y": "npx playwright test tests/a11y.spec.js",
     "test:lighthouse": "lighthouse http://localhost:8080 --output html --output-path ./lighthouse-report.html --only-categories=accessibility,seo",
     "test:html": "html-validate dist/**/*.html",
