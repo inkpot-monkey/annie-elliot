@@ -5,29 +5,14 @@ eleventyExcludeFromCollections: true
 ---
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  {% set buildDate = "now" | date("YYYY-MM-DD") %}
+{% for page in collections.all %}
+  {% if not page.data.eleventyExcludeFromCollections %}
   <url>
-    <loc>https://annieelliot.co.uk/</loc>
-    <lastmod>{{ buildDate }}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://annieelliot.co.uk/author/</loc>
-    <lastmod>{{ buildDate }}</lastmod>
+    <loc>https://annieelliot.co.uk{{ page.url | url }}</loc>
+    <lastmod>{{ page.date | date("YYYY-MM-DD") }}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
-    <loc>https://annieelliot.co.uk/events/</loc>
-    <lastmod>{{ buildDate }}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://annieelliot.co.uk/contact/</loc>
-    <lastmod>{{ buildDate }}</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
+  {% endif %}
+{% endfor %}
 </urlset>
