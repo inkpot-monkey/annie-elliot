@@ -7,151 +7,154 @@ metadata:
 ---
 
 <section id="events" class="events-section u-container">
-  <h1>Upcoming Events</h1>
+	<h1>Upcoming Events</h1>
 
-  <div webc:if="$data.calendar.futureEvents.length > 0">
-    <div class="event-wrapper" webc:for="event of $data.calendar.futureEvents">
-      <div class="event-background"></div>
-      <img src="/images/eventFrame.svg" alt="" class="event-frame" />
-      <div class="event-card">
-        <h3 @text="event.summary"></h3>
-        <p><strong>Date: </strong><span @text="event.start"></span></p>
-        <p webc:if="event.location">
-          <strong>Location: </strong
-          ><a :href="'https://maps.google.com?q=' + (event.location || '')"
-              :aria-label="'View location for ' + event.summary"
-            ><span @text="event.location || 'View Map'"></span
-          ></a>
-        </p>
-        <p @text="event.description"></p>
-      </div>
-    </div>
-  </div>
+	<div webc:if="$data.calendar.futureEvents.length > 0">
+		<div class="event-wrapper" webc:for="event of $data.calendar.futureEvents">
+			<img src="/images/eventFrame.svg" alt="" class="event-frame" />
+			<div class="event-card">
+				<h3 @text="event.summary"></h3>
+				<p><strong>Date: </strong><span @text="event.start"></span></p>
+				<p webc:if="event.location">
+					<strong>Location: </strong
+					><a
+						:href="'https://maps.google.com?q=' + (event.location || '')"
+						:aria-label="'View location for ' + event.summary"
+						><span @text="event.location || 'View Map'"></span
+					></a>
+				</p>
+				<p @text="event.description"></p>
+			</div>
+		</div>
+	</div>
 
-  <div webc:if="$data.calendar.futureEvents.length === 0">
-    <p class="no-events">No upcoming events scheduled at this time.</p>
-  </div>
+	<div webc:if="$data.calendar.futureEvents.length === 0">
+		<p class="no-events">No upcoming events scheduled at this time.</p>
+	</div>
 
-  <div webc:if="$data.calendar.pastEvents.length > 0">
-    <h2>Past Events</h2>
+	<div webc:if="$data.calendar.pastEvents.length > 0">
+		<h2>Past Events</h2>
 
-    <div class="event-wrapper" webc:for="event of $data.calendar.pastEvents">
-      <div class="event-background past-event"></div>
-      <img src="/images/eventFrame.svg" alt="" class="event-frame" />
-      <div class="event-card">
-        <h3 @text="event.summary"></h3>
-        <p><strong>Date: </strong><span @text="event.start"></span></p>
-        <p webc:if="event.location">
-          <strong>Location: </strong
-          ><a :href="'https://maps.google.com?q=' + (event.location || '')"
-              :aria-label="'View location for ' + event.summary"
-            ><span @text="event.location || 'View Map'"></span
-          ></a>
-        </p>
-        <p><b @text="event.description"></b></p>
-      </div>
-    </div>
-  </div>
+		<div class="event-wrapper" webc:for="event of $data.calendar.pastEvents">
+			<div class="event-background past-event"></div>
+			<img src="/images/eventFrame.svg" alt="" class="event-frame" />
+			<div class="event-card">
+				<h3 @text="event.summary"></h3>
+				<p><strong>Date: </strong><span @text="event.start"></span></p>
+				<p webc:if="event.location">
+					<strong>Location: </strong
+					><a
+						:href="'https://maps.google.com?q=' + (event.location || '')"
+						:aria-label="'View location for ' + event.summary"
+						><span @text="event.location || 'View Map'"></span
+					></a>
+				</p>
+				<p><b @text="event.description"></b></p>
+			</div>
+		</div>
+	</div>
 </section>
 
 <style>
-  .events-section {
-    padding-block: var(--space-l);
-    font-family: var(--font-base);
-    text-align: center;
+	.events-section {
+		padding-block: var(--space-l);
+		font-family: var(--font-base);
+		text-align: center;
 
-    h1 {
-      text-align: center;
-      color: var(--taupe);
-      margin: 0;
-      font-family: var(--font-base);
-      margin-bottom: var(--space-l);
-    }
+		h1 {
+			text-align: center;
+			color: var(--taupe);
+			margin: 0;
+			font-family: var(--font-italic);
+			font-style: italic;
+			font-size: var(--step-5);
+			margin-bottom: var(--space-l);
+		}
 
-    h2 {
-      text-align: center;
-      color: var(--taupe);
-      margin-top: var(--space-xl);
-      margin-bottom: var(--space-l);
-      font-family: var(--font-base);
-    }
+		h2 {
+			text-align: center;
+			color: var(--taupe);
+			margin-top: var(--space-xl);
+			margin-bottom: var(--space-l);
+			font-family: var(--font-base);
+		}
 
-    .event-wrapper {
-      display: grid;
-      margin: var(--space-m) auto;
-      max-width: 700px;
-      padding: var(--space-s);
-      filter: drop-shadow(0 4px 12px var(--shadow-dark));
-    }
+		.event-wrapper {
+			display: grid;
+			margin: var(--space-m) auto;
+			max-width: 700px;
+			padding: var(--space-s);
+		}
 
-    .event-wrapper > * {
-      grid-area: 1 / 1;
-      width: 100%;
-      height: 100%;
-    }
+		.event-wrapper > * {
+			grid-area: 1 / 1;
+			width: 100%;
+			height: 100%;
+		}
 
-    .event-background {
-      background-color: var(--white);
-      z-index: 0;
-    }
+		.event-background {
+			background-color: var(--white);
+			z-index: 0;
+		}
 
-    .event-wrapper .event-frame {
-      object-fit: fill;
-      object-position: center;
-      pointer-events: none;
-      z-index: 1;
-      display: block;
-    }
-    
-    .event-wrapper .event-frame[src$=".svg"] {
-      width: 100%;
-      height: 100%;
-    }
+		.event-wrapper .event-frame {
+			filter: drop-shadow(0 4px 12px var(--shadow-dark));
+			object-fit: fill;
+			object-position: center;
+			pointer-events: none;
+			z-index: 1;
+			display: block;
+		}
 
-    .event-card {
-      background-color: transparent;
-      border: none;
-      padding: var(--space-l);
-      text-align: center;
-      box-shadow: none;
-      position: relative;
-      z-index: 2;
-    }
+		.event-wrapper .event-frame[src$=".svg"] {
+			width: 100%;
+			height: 100%;
+		}
 
-    .event-card h3 {
-      font-family: var(--font-base);
-      color: var(--taupe);
-      font-size: var(--step-2);
-      margin-bottom: var(--space-s);
-      margin-top: 0;
-    }
+		.event-card {
+			background-color: transparent;
+			border: none;
+			padding: var(--space-xl);
+			text-align: center;
+			box-shadow: none;
+			position: relative;
+			z-index: 2;
+		}
 
-    .event-card p {
-      font-size: var(--step-0);
-      color: var(--taupe);
-      line-height: 1.6;
-      margin: var(--space-xs) 0;
-    }
+		.event-card h3 {
+			font-family: var(--font-base);
+			color: var(--taupe);
+			font-size: var(--step-2);
+			margin-bottom: var(--space-s);
+			margin-top: 0;
+		}
 
-    .event-card p:last-of-type {
-      margin-top: var(--space-m);
-      font-family: var(--font-italic);
-      line-height: 1.7;
-    }
+		.event-card p {
+			font-size: var(--step-0);
+			color: var(--taupe);
+			line-height: 1.6;
+			margin: var(--space-xs) 0;
+		}
 
-    .event-card em {
-      font-family: var(--font-italic);
-      font-style: italic;
-    }
+		.event-card p:last-of-type {
+			margin-top: var(--space-xs);
+			font-family: var(--font-italic);
+			line-height: 1.7;
+		}
 
-    .no-events {
-      font-family: var(--font-italic);
-      font-style: italic;
-      padding: var(--space-s);
-    }
+		.event-card em {
+			font-family: var(--font-italic);
+			font-style: italic;
+		}
 
-    .past-event {
-      background-color: var(--antiflash-white);
-    }
-  }
+		.no-events {
+			font-family: var(--font-italic);
+			font-style: italic;
+			padding: var(--space-s);
+		}
+
+		.past-event {
+			background-color: var(--antiflash-white);
+		}
+	}
 </style>
