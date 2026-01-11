@@ -95,10 +95,15 @@ metadata:
 		.main-grid {
 			gap: var(--space-2xl);
 
+			.cover {
+				order: -1;
+			}
+
 			@media all and (min-width: 60rem) {
 				grid-template-columns: 3fr 2fr;
 
 				.cover {
+					order: 0;
 					position: sticky;
 					align-self: start;
 					top: var(--space-2xl);
