@@ -12,7 +12,7 @@ metadata:
 		<div class="u-grid main-grid">
 			<img
 				webc:is="eleventy-image"
-				src="assets/images/author.jpg"
+				src="assets/images/author.png"
 				alt="Portrait of Annie Elliot"
 			/>
 
@@ -54,11 +54,11 @@ metadata:
 		}
 
 		.main-grid {
-			gap: var(--space-2xl);
+			gap: var(--space-l);
 			text-align: justify;
 
 			@media all and (min-width: 60rem) {
-				grid-template-columns: 2fr 3fr;
+				grid-template-columns: 1fr 1fr;
 			}
 
 			div > p:first-of-type {
@@ -67,14 +67,6 @@ metadata:
 		}
 
 		picture {
-			border: 6px solid var(--taupe);
-			border-radius: 50%;
-			overflow: hidden;
-			background-color: var(--white);
-			box-shadow: 5px 5px 15px var(--shadow-medium);
-			max-width: var(--img-lg);
-			margin-inline: auto;
-
 			img {
 				width: 100%;
 				height: auto;
