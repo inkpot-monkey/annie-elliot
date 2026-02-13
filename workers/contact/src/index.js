@@ -1,5 +1,6 @@
 import { EmailMessage } from "cloudflare:email";
-import { createMimeMessage } from "mimetext";
+import * as MimeText from "mimetext";
+const { createMimeMessage } = MimeText;
 
 const recipient = "author.annie.elliot@gmail.com";
 const sender = "info@annieelliot.co.uk";
@@ -60,6 +61,12 @@ function handleCors() {
 }
 
 async function sendEmail(data, env) {
+  // Validate email
+  if (!data.email || typeof data.email !== "string" || !data.email.includes("@")) {
+    console.error("Invalid email address:", data.email);
+    // Don't set Reply-To if invalid, just send the message
+  }
+
   const msg = createMimeMessage();
   msg.setSender({
     name: data.name,
@@ -67,6 +74,20 @@ async function sendEmail(data, env) {
   });
   msg.setRecipient(recipient);
   msg.setSubject(`A message from ${data.email}`);
+
+  // Safely attempt to set Reply-To
+  if (data.email && typeof data.email === "string" && data.email.includes("@")) {
+    try {
+      if (MimeText.Mailbox) {
+        msg.setHeader("Reply-To", new MimeText.Mailbox(data.email));
+      } else {
+        msg.setHeader("Reply-To", { addr: data.email });
+      }
+    } catch (e) {
+      console.warn("Failed to set Reply-To header:", e);
+    }
+  }
+
   msg.addMessage({
     contentType: "text/plain",
     data: data.message,
