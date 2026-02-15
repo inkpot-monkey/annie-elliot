@@ -1,9 +1,33 @@
 @font-face {
-  font-family: LibreBodoni;
-  src: url("/fonts/LibreBodoni.ttf") format("truetype");
+  font-family: 'Playfair Display';
+  src: url("/fonts/PlayfairDisplay-Regular.ttf") format("truetype");
   font-display: swap;
-  font-weight: normal;
+  font-weight: 400;
   font-style: normal;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  src: url("/fonts/PlayfairDisplay-Italic.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  src: url("/fonts/PlayfairDisplay-Bold.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  src: url("/fonts/PlayfairDisplay-BoldItalic.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 700;
+  font-style: italic;
 }
 
 @font-face {
@@ -22,30 +46,80 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Barlow Condensed';
+  src: url("/fonts/BarlowCondensed-Regular.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Barlow Condensed';
+  src: url("/fonts/BarlowCondensed-Italic.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Barlow Condensed';
+  src: url("/fonts/BarlowCondensed-Bold.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Barlow Condensed';
+  src: url("/fonts/BarlowCondensed-BoldItalic.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Raleway';
+  src: url("/fonts/Raleway-Variable.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Raleway';
+  src: url("/fonts/Raleway-Italic-Variable.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 100 900;
+  font-style: italic;
+}
+
 :root {
   --black-olive: hsla(43, 23%, 16%, 1);
   --battleship-gray: hsla(41, 13%, 52%, 1);
   --antiflash-white: hsla(60, 3%, 93%, 1);
   --taupe: hsla(38, 14%, 23%, 1);
   --eerie-black: hsla(47, 26%, 11%, 1);
-  
+
   /* Pure colors */
   --white: #ffffff;
   --black: #000000;
-  
+
   /* Extended palette */
   --taupe-dark: hsla(38, 14%, 20%, 1);
   --cream: #fefaf2;
   --light-beige: #d4c9b4;
-  
+
   /* Shadow colors */
   --shadow-light: rgba(0, 0, 0, 0.05);
   --shadow-medium: rgba(0, 0, 0, 0.1);
   --shadow-dark: rgba(0, 0, 0, 0.15);
 
-  --font-base: LibreBodoni, system-ui, sans-serif;
+  --font-base: 'Playfair Display', system-ui, sans-serif;
   --font-italic: CrimsonPro, system-ui, sans-serif;
   --font-cursive: Tangerine, system-ui, sans-serif;
+  --font-condensed: 'Barlow Condensed', system-ui, sans-serif;
+  --font-body: 'Raleway', system-ui, sans-serif;
 
   /* @link https://utopia.fyi/type/calculator?c=366,18,1.2,1240,20,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
   --step--2: clamp(0.7813rem, 0.7734rem + 0.0343vw, 0.8rem);
@@ -83,10 +157,8 @@
 
   /* @link https://utopia.fyi/grid/calculator?c=366,18,1.2,1240,20,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
   --grid-max-width: 77.5rem;
-  --grid-gutter: var(
-    --space-s-l,
-    clamp(1.125rem, 0.5492rem + 2.5172vw, 2.5rem)
-  );
+  --grid-gutter: var(--space-s-l,
+      clamp(1.125rem, 0.5492rem + 2.5172vw, 2.5rem));
   --grid-columns: 12;
 
   /* Personal exploration */
@@ -116,11 +188,11 @@ html {
 
 p,
 a {
-  font: var(--font-base);
+  font-family: var(--font-body);
   font-size: var(--step-0);
 }
 
 h1 {
-  font: var(--font-base);
+  font-family: var(--font-base);
   font-size: var(--step-4);
 }
