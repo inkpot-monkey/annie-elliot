@@ -35,8 +35,10 @@ metadata:
 	<div webc:if="$data.calendar.pastEvents.length > 0">
 		<h2>Past Events</h2>
 
-		<div class="event-wrapper" webc:for="event of $data.calendar.pastEvents">
-			<div class="event-background past-event"></div>
+		<div
+			class="event-wrapper is-past"
+			webc:for="event of $data.calendar.pastEvents"
+		>
 			<img src="/images/eventFrame.svg" alt="" class="event-frame" />
 			<div class="event-card">
 				<h3 @text="event.summary"></h3>
@@ -49,7 +51,7 @@ metadata:
 						><span @text="event.location || 'View Map'"></span
 					></a>
 				</p>
-				<p><b @text="event.description"></b></p>
+				<p @text="event.description"></p>
 			</div>
 		</div>
 	</div>
@@ -65,18 +67,19 @@ metadata:
 			text-align: center;
 			color: var(--taupe);
 			margin: 0;
-			font-family: var(--font-italic);
-			font-style: italic;
-			font-size: var(--step-5);
+			font-family: var(--font-base);
 			margin-bottom: var(--space-l);
 		}
 
 		h2 {
 			text-align: center;
 			color: var(--taupe);
-			margin-top: var(--space-xl);
-			margin-bottom: var(--space-l);
-			font-family: var(--font-base);
+			margin-top: var(--space-l);
+			margin-bottom: var(--space-m);
+			font-family: var(--font-italic);
+			font-style: italic;
+			font-size: var(--step-4);
+			font-weight: normal;
 		}
 
 		.event-wrapper {
@@ -86,15 +89,14 @@ metadata:
 			padding: var(--space-s);
 		}
 
+		.event-wrapper.is-past {
+			opacity: 0.7;
+		}
+
 		.event-wrapper > * {
 			grid-area: 1 / 1;
 			width: 100%;
 			height: 100%;
-		}
-
-		.event-background {
-			background-color: var(--white);
-			z-index: 0;
 		}
 
 		.event-wrapper .event-frame {
@@ -151,10 +153,6 @@ metadata:
 			font-family: var(--font-italic);
 			font-style: italic;
 			padding: var(--space-s);
-		}
-
-		.past-event {
-			background-color: var(--antiflash-white);
 		}
 	}
 </style>
