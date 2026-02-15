@@ -57,6 +57,15 @@ metadata:
 
 				<div class="button-container">
 					<a
+						href="https://envelopebooks.co.uk/shop/mr-and-mrs-charles-dickens/"
+						class="btn btn-envelope"
+						aria-label="Buy from Envelope Books"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<img src="/images/envelope-books-logo.svg" alt="Envelope Books" />
+					</a>
+					<a
 						href="https://www.waterstones.com/book/mr-and-mrs-charles-dickens/annie-elliot/9781915023742"
 						class="btn btn-waterstones"
 						aria-label="Preorder from Waterstones"
@@ -239,6 +248,11 @@ metadata:
 			.btn-amazon {
 				background-color: #ffffff;
 				border: 1px solid #ff9900;
+			}
+
+			.btn-envelope {
+				background-color: #ffffff;
+				border: 1px solid #000000;
 			}
 		}
 	}
