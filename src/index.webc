@@ -56,29 +56,33 @@ metadata:
 				</p>
 
 				<div class="button-container">
-					<a
-						href="https://envelopebooks.co.uk/shop/mr-and-mrs-charles-dickens/"
-						class="btn btn-envelope"
-						aria-label="Buy from Envelope Books"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<img src="/images/envelope-books-logo.svg" alt="Envelope Books" />
-					</a>
-					<a
-						href="https://www.waterstones.com/book/mr-and-mrs-charles-dickens/annie-elliot/9781915023742"
-						class="btn btn-waterstones"
-						aria-label="Preorder from Waterstones"
-					>
-						<img src="/images/waterstones-logo.svg" alt="Waterstones" />
-					</a>
-					<a
-						href="https://www.amazon.co.uk/Mr-Mrs-Charles-Dickens-Story/dp/1915023742/ref=sr_1_1?crid=270O064P2TK7C&amp;dib=eyJ2IjoiMSJ9.kAiRe4xWtUNTTwN6v8GjhbffdpBDO1i9m8UpVQ3Z9Z01mK0cJUU7nGofZTiCFXB-jSZld8S4IfYYgiqFxuFEEktK02ARb_XFVqbq7hUJQoTeN4h1obcSi3SehwWwd8vTmK_1WX_dkspf_9PBTedkn4EiN5BjNgcyWEI_LYWZpaDC1x_pxicUQcuXS5syMVxW.qabpfl6DN4IDnXciDd6PxqrdJAun147XxpHIpZqC2-0&amp;dib_tag=se&amp;keywords=Mr+and+Mrs+Charles+Dickens%3A+Her+Story&amp;qid=1765401088&amp;sprefix=mr+and+mrs+charles+dickens+her+story%2Caps%2C291&amp;sr=8-1"
-						class="btn btn-amazon"
-						aria-label="Preorder from Amazon"
-					>
-						<img src="/images/amazon-logo.svg" alt="Amazon" />
-					</a>
+					<div class="button-row">
+						<a
+							href="https://www.waterstones.com/book/mr-and-mrs-charles-dickens/annie-elliot/9781915023742"
+							class="btn btn-waterstones"
+							aria-label="Preorder from Waterstones"
+						>
+							<img src="/images/waterstones-logo.svg" alt="Waterstones" />
+						</a>
+						<a
+							href="https://www.amazon.co.uk/Mr-Mrs-Charles-Dickens-Story/dp/1915023742/ref=sr_1_1?crid=270O064P2TK7C&amp;dib=eyJ2IjoiMSJ9.kAiRe4xWtUNTTwN6v8GjhbffdpBDO1i9m8UpVQ3Z9Z01mK0cJUU7nGofZTiCFXB-jSZld8S4IfYYgiqFxuFEEktK02ARb_XFVqbq7hUJQoTeN4h1obcSi3SehwWwd8vTmK_1WX_dkspf_9PBTedkn4EiN5BjNgcyWEI_LYWZpaDC1x_pxicUQcuXS5syMVxW.qabpfl6DN4IDnXciDd6PxqrdJAun147XxpHIpZqC2-0&amp;dib_tag=se&amp;keywords=Mr+and+Mrs+Charles+Dickens%3A+Her+Story&amp;qid=1765401088&amp;sprefix=mr+and+mrs+charles+dickens+her+story%2Caps%2C291&amp;sr=8-1"
+							class="btn btn-amazon"
+							aria-label="Preorder from Amazon"
+						>
+							<img src="/images/amazon-logo.svg" alt="Amazon" />
+						</a>
+					</div>
+					<div class="button-row center">
+						<a
+							href="https://envelopebooks.co.uk/shop/mr-and-mrs-charles-dickens/"
+							class="btn btn-envelope"
+							aria-label="Buy from Envelope Books"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<img src="/images/envelope-books-logo.svg" alt="Envelope Books" />
+						</a>
+					</div>
 				</div>
 			</div>
 
@@ -198,12 +202,16 @@ metadata:
 			}
 
 			.button-container {
-				display: flex;
+				display: grid;
+				grid-template-columns: 1fr 1fr;
 				gap: var(--space-xs);
-				justify-content: space-between;
 				margin-top: var(--space-m);
 				max-width: 30rem;
 				margin-inline: auto;
+
+				.button-row {
+					display: contents; /* Let buttons participate in the grid */
+				}
 			}
 
 			.btn {
@@ -219,7 +227,6 @@ metadata:
 					opacity 0.2s;
 				text-decoration: none;
 				height: 50px;
-				flex: 1; /* Make buttons equal width */
 				box-sizing: border-box;
 				background-color: #ffffff; /* Ensure base background is white */
 			}
@@ -253,6 +260,10 @@ metadata:
 			.btn-envelope {
 				background-color: #ffffff;
 				border: 1px solid #000000;
+				grid-column: 1 / span 2;
+				justify-self: center;
+				/* Match the width of one button in the row above */
+				width: calc(50% - (var(--space-xs) / 2));
 			}
 		}
 	}
