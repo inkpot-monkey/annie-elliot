@@ -13,7 +13,7 @@ export default async function () {
 
     try {
         const response = await fetch(
-            `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${apiKey}`,
+            `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${apiKey}&t=${Date.now()}`,
         );
 
         if (!response.ok) {
