@@ -7,7 +7,21 @@
     <!-- Preload critical fonts to prevent font flash -->
     <link
       rel="preload"
-      href="/fonts/LibreBodoni.ttf"
+      href="/fonts/PlayfairDisplay-Regular.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href="/fonts/PlayfairDisplay-Bold.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href="/fonts/BarlowCondensed-Regular.ttf"
       as="font"
       type="font/ttf"
       crossorigin="anonymous"
@@ -15,6 +29,13 @@
     <link
       rel="preload"
       href="/fonts/CrimsonPro.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href="/fonts/Raleway-Variable.ttf"
       as="font"
       type="font/ttf"
       crossorigin="anonymous"
