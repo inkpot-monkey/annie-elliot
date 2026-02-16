@@ -43,10 +43,12 @@ export default function (eleventyConfig) {
   eleventyConfig.addPlugin(eleventyImagePlugin, {
     formats: ["webp", "jpeg"],
     urlPath: "/img/",
+    widths: [400, 800, 1200, "auto"],
 
     defaultAttributes: {
       loading: "lazy",
       decoding: "async",
+      sizes: "(max-width: 600px) 100vw, (max-width: 960px) 50vw, 600px",
     },
   });
 

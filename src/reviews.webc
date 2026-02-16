@@ -21,6 +21,7 @@ metadata:
 					webc:is="eleventy-image"
 					src="src/assets/images/lucinda-dickens-hawksley.jpg"
 					alt="Lucinda Dickens Hawksley and Annie Elliot at the book launch of Mr & Mrs Charles Dickens: Her Story"
+					sizes="(min-width: 60rem) 40vw, 100vw"
 				/>
 				<figcaption>
 					Lucinda Hawksley, great-great-great granddaughter of Charles and
@@ -34,6 +35,7 @@ metadata:
 					webc:is="eleventy-image"
 					src="src/assets/images/ellie-breed.jpg"
 					alt="Ellie Breed at the book launch of Mr & Mrs Charles Dickens: Her Story"
+					sizes="(min-width: 60rem) 40vw, 100vw"
 				/>
 				<figcaption>Ellie Breed the first person to buy the book.</figcaption>
 			</figure>

@@ -1,9 +1,9 @@
 <footer>
-	<img webc:is="eleventy-image" src="assets/images/separator.webp" alt="" />
+	<img webc:is="eleventy-image" src="assets/images/separator.webp" alt="" sizes="150px" />
 
 	<p id="quote">So the world may know he loved me once.</p>
 
-	<img webc:is="eleventy-image" src="assets/images/separator.webp" alt="" />
+	<img webc:is="eleventy-image" src="assets/images/separator.webp" alt="" sizes="150px" />
 
 	<p class="footer-credits">
 		©<span webc:nokeep @text="(new Date()).getFullYear()"></span> Built by

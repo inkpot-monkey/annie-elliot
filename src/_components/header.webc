@@ -5,6 +5,7 @@
 		alt="Two stamps with the faces of a young Mr and Mrs Dickens"
 		id="header"
 		loading="eager"
+		sizes="200px"
 	/>
 
 	<div class="coming-soon-banner">
@@ -225,6 +226,7 @@
 		alt=""
 		id="flourish-bottom"
 		loading="eager"
+		sizes="150px"
 	/>
 </header>
 
