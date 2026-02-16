@@ -51,7 +51,7 @@ metadata:
 			color: var(--taupe);
 			margin: 0;
 			font-family: var(--font-base);
-			margin-bottom: var(--space-l);
+			margin-bottom: var(--space-xl);
 		}
 
 		.main-grid {
