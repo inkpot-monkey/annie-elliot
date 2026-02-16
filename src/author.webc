@@ -55,7 +55,7 @@ metadata:
 		}
 
 		.main-grid {
-			gap: var(--space-l);
+			gap: var(--space-2xl);
 			text-align: justify;
 
 			@media all and (min-width: 60rem) {
