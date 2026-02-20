@@ -116,7 +116,7 @@ metadata:
 		.event-card {
 			background-color: transparent;
 			border: none;
-			padding: var(--space-xl);
+			padding: var(--space-2xl) var(--space-xl);
 			text-align: center;
 			box-shadow: none;
 			position: relative;
