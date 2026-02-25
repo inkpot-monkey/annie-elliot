@@ -26,10 +26,12 @@ export default async function () {
         }
 
         const data = await response.json();
+        const calendarTimeZone = data.timeZone || 'Europe/London';
         const events = data.items
             .map(({ summary, description, location, start, end }) => {
                 const startDt = start.dateTime || start.date;
                 const endDt = end?.dateTime || end?.date || null;
+                const eventTimeZone = start.timeZone || calendarTimeZone;
 
                 // Helper to format date for display if needed here, 
                 // but typically raw data is better in _data and formatting in filters/templates.
@@ -48,7 +50,8 @@ export default async function () {
                         month: 'long',
                         year: 'numeric',
                         hour: 'numeric',
-                        minute: '2-digit'
+                        minute: '2-digit',
+                        timeZone: eventTimeZone
                     })
                 };
             })
