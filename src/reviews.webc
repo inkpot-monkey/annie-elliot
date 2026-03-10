@@ -16,28 +16,14 @@ metadata:
 		</section>
 
 		<section class="photo-gallery">
-			<figure class="gallery-item">
+			<figure class="gallery-item" webc:for="item of $data.gallery">
 				<img
 					webc:is="eleventy-image"
-					src="src/assets/images/lucinda-dickens-hawksley.jpg"
-					alt="Lucinda Dickens Hawksley and Annie Elliot at the book launch of Mr & Mrs Charles Dickens: Her Story"
+					:src="item.src"
+					:alt="item.alt"
 					sizes="(min-width: 60rem) 40vw, 100vw"
 				/>
-				<figcaption>
-					Lucinda Hawksley, great-great-great granddaughter of Charles and
-					Catherine Dickens receives a proof copy of my book at the Dickens
-					Fellowship Christmas lunch in London.
-				</figcaption>
-			</figure>
-
-			<figure class="gallery-item">
-				<img
-					webc:is="eleventy-image"
-					src="src/assets/images/ellie-breed.jpg"
-					alt="Ellie Breed at the book launch of Mr & Mrs Charles Dickens: Her Story"
-					sizes="(min-width: 60rem) 40vw, 100vw"
-				/>
-				<figcaption>Ellie Breed the first person to buy the book.</figcaption>
+				<figcaption @text="item.caption"></figcaption>
 			</figure>
 		</section>
 	</div>
