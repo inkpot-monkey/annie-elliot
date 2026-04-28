@@ -4,17 +4,21 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Preload critical fonts to prevent font flash -->
+    <link
+      webc:if="lcpBookCoverPreload"
+      rel="preload"
+      as="image"
+      type="image/webp"
+      fetchpriority="high"
+      :href="lcpBookCoverPreload.href"
+      :imagesrcset="lcpBookCoverPreload.imagesrcset"
+      :imagesizes="lcpBookCoverPreload.imagesizes"
+    />
+
+    <!-- Preload only fonts needed for first paint (nav + hero); rest load via @font-face -->
     <link
       rel="preload"
       href="/fonts/PlayfairDisplay-Regular.ttf"
-      as="font"
-      type="font/ttf"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preload"
-      href="/fonts/PlayfairDisplay-Bold.ttf"
       as="font"
       type="font/ttf"
       crossorigin="anonymous"
@@ -28,21 +32,7 @@
     />
     <link
       rel="preload"
-      href="/fonts/CrimsonPro.ttf"
-      as="font"
-      type="font/ttf"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preload"
       href="/fonts/Raleway-Variable.ttf"
-      as="font"
-      type="font/ttf"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preload"
-      href="/fonts/Tangerine.ttf"
       as="font"
       type="font/ttf"
       crossorigin="anonymous"
