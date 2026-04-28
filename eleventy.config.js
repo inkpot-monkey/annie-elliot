@@ -43,7 +43,15 @@ export default function (eleventyConfig) {
   eleventyConfig.addPlugin(eleventyImagePlugin, {
     formats: ["webp", "jpeg"],
     urlPath: "/img/",
-    widths: [400, 800, 1200, "auto"],
+    widths: [400, 640, 800, 1200, "auto"],
+    sharpWebpOptions: {
+      quality: 78,
+      effort: 5,
+    },
+    sharpJpegOptions: {
+      quality: 78,
+      mozjpeg: true,
+    },
 
     defaultAttributes: {
       loading: "lazy",
