@@ -5,7 +5,8 @@
 		alt="Two stamps with the faces of a young Mr and Mrs Dickens"
 		id="header"
 		loading="eager"
-		sizes="200px"
+		width="156, 260, 385"
+		sizes="clamp(8rem, 7rem + 4.5vw, 12rem)"
 	/>
 
 	<nav-links
@@ -19,7 +20,8 @@
 		alt=""
 		id="flourish-bottom"
 		loading="eager"
-		sizes="150px"
+		width="200, 360, 520"
+		sizes="clamp(6.75rem, 6.4rem + 1.4vw, 7.5rem)"
 	/>
 </header>
 
