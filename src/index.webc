@@ -79,7 +79,7 @@ metadata:
 			<div class="cover">
 				<img
 					webc:is="eleventy-image"
-					src="assets/images/book-cover.jpg"
+					src="src/static/images/book-cover.jpg"
 					alt="Book cover of Mr & Mrs Charles Dickens: Her Story by Annie Elliot - A novel about Mrs Dickens"
 					sizes="(min-width: 60rem) 40vw, 100vw"
 					loading="eager"
