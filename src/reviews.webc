@@ -42,7 +42,11 @@ metadata:
 
 	#reviews {
 		display: grid;
-		grid-template-columns: repeat(2, 1fr);
+		grid-template-columns: 1fr;
+		@media (min-width: 40rem) {
+			grid-template-columns: repeat(2, 1fr);
+		}
+		align-items: center;
 		gap: var(--space-l);
 		padding-bottom: var(--space-xl);
 
