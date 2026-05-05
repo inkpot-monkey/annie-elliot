@@ -7,7 +7,6 @@ metadata:
 <section id="reviews-page" class="u-container">
 	<h1>Reader Reviews</h1>
 
-	<div class="u-grid main-grid">
 		<section id="reviews" class="reviews-section">
 			<figure class="review-card" webc:for="review of $data.reviews">
 				<blockquote @text="review.quote" class="quote"></blockquote>
@@ -25,8 +24,6 @@ metadata:
 				/>
 				<figcaption @text="item.caption"></figcaption>
 			</figure>
-		</section>
-	</div>
 </section>
 
 <style>
@@ -42,13 +39,6 @@ metadata:
 		}
 	}
 
-	.main-grid {
-		gap: var(--space-2xl);
-
-		@media all and (min-width: 60rem) {
-			grid-template-columns: 3fr 2fr;
-		}
-	}
 
 	#reviews {
 		display: grid;
