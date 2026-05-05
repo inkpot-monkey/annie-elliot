@@ -103,8 +103,14 @@ metadata:
 	}
 
 	.photo-gallery {
-		display: flex;
-		flex-direction: column;
+		display: grid;
+		grid-template-columns: 1fr;
+		@media (min-width: 40rem) {
+			grid-template-columns: repeat(2, 1fr);
+		}
+		@media (min-width: 60rem) {
+			grid-template-columns: repeat(3, 1fr);
+		}
 		gap: var(--space-xl);
 
 		.gallery-item {
