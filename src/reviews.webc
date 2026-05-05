@@ -42,11 +42,9 @@ metadata:
 
 	#reviews {
 		display: grid;
-		grid-template-columns: 1fr;
+		grid-template-columns: repeat(2, 1fr);
 		gap: var(--space-l);
-		justify-content: center;
-		align-items: center;
-		padding-bottom: var(--space-m);
+		padding-bottom: var(--space-xl);
 
 		.review-card {
 			margin: 0;
