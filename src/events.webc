@@ -306,16 +306,11 @@ metadata:
 			margin-block: var(--space-2xl) var(--space-l);
 			position: relative;
 			display: block;
+			width: fit-content;
+			margin-inline: auto;
 			text-align: center;
-
-			&::after {
-				content: "";
-				display: block;
-				width: 60px;
-				height: 1px;
-				background: var(--light-beige);
-				margin: var(--space-xs) auto 0;
-			}
+			border-bottom: 1px solid var(--light-beige);
+			padding-bottom: var(--space-xs);
 		}
 
 		.event-card h3 {
