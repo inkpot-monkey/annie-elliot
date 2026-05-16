@@ -1,95 +1,63 @@
 @font-face {
   font-family: 'Playfair Display';
-  src: url("/fonts/PlayfairDisplay-Regular.ttf") format("truetype");
-  font-display: swap;
+  src: url("/fonts/PlayfairDisplay-Regular.woff2") format("woff2");
+  font-display: block;
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Playfair Display';
-  src: url("/fonts/PlayfairDisplay-Italic.ttf") format("truetype");
-  font-display: swap;
-  font-weight: 400;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Playfair Display';
-  src: url("/fonts/PlayfairDisplay-Bold.ttf") format("truetype");
-  font-display: swap;
+  src: url("/fonts/PlayfairDisplay-Bold.woff2") format("woff2");
+  font-display: block;
   font-weight: 700;
   font-style: normal;
-}
-
-@font-face {
-  font-family: 'Playfair Display';
-  src: url("/fonts/PlayfairDisplay-BoldItalic.ttf") format("truetype");
-  font-display: swap;
-  font-weight: 700;
-  font-style: italic;
 }
 
 @font-face {
   font-family: CrimsonPro;
-  src: url("/fonts/CrimsonPro.ttf") format("truetype");
-  font-display: swap;
+  src: url("/fonts/CrimsonPro.woff2") format("woff2");
+  font-display: block;
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: Tangerine;
-  src: url("/fonts/Tangerine.ttf") format("truetype");
-  font-display: swap;
+  src: url("/fonts/Tangerine.woff2") format("woff2");
+  font-display: block;
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Barlow Condensed';
-  src: url("/fonts/BarlowCondensed-Regular.ttf") format("truetype");
-  font-display: swap;
+  src: url("/fonts/BarlowCondensed-Regular.woff2") format("woff2");
+  font-display: block;
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Barlow Condensed';
-  src: url("/fonts/BarlowCondensed-Italic.ttf") format("truetype");
-  font-display: swap;
-  font-weight: 400;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Barlow Condensed';
-  src: url("/fonts/BarlowCondensed-Bold.ttf") format("truetype");
-  font-display: swap;
+  src: url("/fonts/BarlowCondensed-Bold.woff2") format("woff2");
+  font-display: block;
   font-weight: 700;
   font-style: normal;
-}
-
-@font-face {
-  font-family: 'Barlow Condensed';
-  src: url("/fonts/BarlowCondensed-BoldItalic.ttf") format("truetype");
-  font-display: swap;
-  font-weight: 700;
-  font-style: italic;
 }
 
 @font-face {
   font-family: 'Raleway';
-  src: url("/fonts/Raleway-Variable.ttf") format("truetype");
-  font-display: swap;
+  src: url("/fonts/Raleway-Variable.woff2") format("woff2");
+  font-display: block;
   font-weight: 100 900;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Raleway';
-  src: url("/fonts/Raleway-Italic-Variable.ttf") format("truetype");
-  font-display: swap;
+  src: url("/fonts/Raleway-Italic-Variable.woff2") format("woff2");
+  font-display: block;
   font-weight: 100 900;
   font-style: italic;
 }

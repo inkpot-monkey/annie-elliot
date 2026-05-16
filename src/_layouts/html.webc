@@ -18,23 +18,30 @@
     <!-- Preload only fonts needed for first paint (nav + hero); rest load via @font-face -->
     <link
       rel="preload"
-      href="/fonts/PlayfairDisplay-Regular.ttf"
+      href="/fonts/PlayfairDisplay-Regular.woff2"
       as="font"
-      type="font/ttf"
+      type="font/woff2"
       crossorigin="anonymous"
     />
     <link
       rel="preload"
-      href="/fonts/BarlowCondensed-Regular.ttf"
+      href="/fonts/BarlowCondensed-Regular.woff2"
       as="font"
-      type="font/ttf"
+      type="font/woff2"
       crossorigin="anonymous"
     />
     <link
       rel="preload"
-      href="/fonts/Raleway-Variable.ttf"
+      href="/fonts/Raleway-Variable.woff2"
       as="font"
-      type="font/ttf"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href="/fonts/CrimsonPro.woff2"
+      as="font"
+      type="font/woff2"
       crossorigin="anonymous"
     />
 
