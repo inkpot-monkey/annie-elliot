@@ -7,128 +7,141 @@ metadata:
 <section id="reviews-page" class="u-container">
 	<h1>Reader Reviews</h1>
 
-		<section id="reviews" class="reviews-section">
-			<figure class="review-card" webc:for="review of $data.reviews">
-				<blockquote @text="review.quote" class="quote"></blockquote>
-				<figcaption @raw="review.source" class="reviewer"></figcaption>
-			</figure>
-		</section>
+	<section id="reviews" class="reviews-section">
+		<figure class="review-card" webc:for="review of $data.reviews">
+			<blockquote @text="review.quote" class="quote"></blockquote>
+			<figcaption @raw="review.source" class="reviewer"></figcaption>
+		</figure>
+	</section>
 
-		<section class="photo-gallery">
-			<figure class="gallery-item" webc:for="item of $data.gallery">
-				<img
-					webc:is="eleventy-image"
-					:src="item.src"
-					:alt="item.alt"
-					sizes="(min-width: 60rem) 40vw, 100vw"
-				/>
-				<figcaption @text="item.caption"></figcaption>
-			</figure>
-</section>
+	<h2>Photo Gallery</h2>
 
-<style>
-	#reviews-page {
-		padding-block: var(--space-l);
+	<section class="photo-gallery">
+		<figure class="gallery-item" webc:for="item of $data.gallery">
+			<img
+				webc:is="eleventy-image"
+				:src="item.src"
+				:alt="item.alt"
+				sizes="(min-width: 60rem) 40vw, 100vw"
+			/>
+			<figcaption @text="item.caption"></figcaption>
+		</figure>
+	</section>
 
-		h1 {
-			text-align: center;
-			color: var(--taupe);
-			margin: 0;
-			font-family: var(--font-base);
-			margin-bottom: var(--space-l);
-		}
-	}
+	<style>
+		#reviews-page {
+			padding-block: var(--space-l);
 
-
-	#reviews {
-		display: grid;
-		grid-template-columns: 1fr;
-		@media (min-width: 40rem) {
-			grid-template-columns: repeat(2, 1fr);
-		}
-		align-items: center;
-		gap: var(--space-l);
-		padding-bottom: var(--space-xl);
-
-		.review-card {
-			margin: 0;
-			padding: 1.5rem 2rem;
-			border: 1px solid var(--light-beige);
-			box-shadow: 3px 3px 10px var(--shadow-light);
-			position: relative;
-			font-size: 1.1rem;
-			display: flex;
-			flex-direction: column;
-		}
-
-		.quote {
-			font-family: var(--font-italic);
-			font-style: italic;
-			line-height: 1.6;
-			position: relative;
-			margin: 0;
-			text-align: left;
-		}
-
-		.quote::before,
-		.quote::after {
-			content: "“";
-			font-family: serif;
-			font-size: 2.5rem;
-			position: absolute;
-			opacity: 0.3;
-		}
-
-		.quote::before {
-			left: -1.5rem;
-			top: -1.2rem;
-		}
-
-		.quote::after {
-			content: "”";
-			transform: translateY(-16px);
-		}
-
-		.reviewer {
-			margin-top: 1rem;
-			text-align: right;
-			font-style: normal;
-			font-size: 0.9rem;
-
-			a {
-				font-style: italic;
-				font-size: inherit;
+			h1 {
+				text-align: center;
+				color: var(--taupe);
+				margin: 0;
+				font-family: var(--font-base);
+				margin-bottom: var(--space-l);
 			}
 		}
-	}
 
-	.photo-gallery {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		gap: var(--space-xl);
+		#reviews {
+			display: grid;
+			grid-template-columns: 1fr;
+			@media (min-width: 40rem) {
+				grid-template-columns: repeat(2, 1fr);
+			}
+			align-items: center;
+			gap: var(--space-l);
+			padding-bottom: var(--space-xl);
 
-		.gallery-item {
-			margin: 0;
-			flex: 1 1 280px;
-			max-width: 400px;
-			text-align: center;
-
-			img {
-				width: 100%;
-				height: auto;
+			.review-card {
+				margin: 0;
+				padding: 1.5rem 2rem;
 				border: 1px solid var(--light-beige);
 				box-shadow: 3px 3px 10px var(--shadow-light);
+				position: relative;
+				font-size: 1.1rem;
+				display: flex;
+				flex-direction: column;
 			}
 
-			figcaption {
-				margin-top: var(--space-s);
+			.quote {
 				font-family: var(--font-italic);
 				font-style: italic;
-				font-size: var(--step--1);
-				color: var(--taupe);
-				line-height: 1.4;
+				line-height: 1.6;
+				position: relative;
+				margin: 0;
+				text-align: left;
+			}
+
+			.quote::before,
+			.quote::after {
+				content: "“";
+				font-family: serif;
+				font-size: 2.5rem;
+				position: absolute;
+				opacity: 0.3;
+			}
+
+			.quote::before {
+				left: -1.5rem;
+				top: -1.2rem;
+			}
+
+			.quote::after {
+				content: "”";
+				transform: translateY(-16px);
+			}
+
+			.reviewer {
+				margin-top: 1rem;
+				text-align: right;
+				font-style: normal;
+				font-size: 0.9rem;
+
+				a {
+					font-style: italic;
+					font-size: inherit;
+				}
 			}
 		}
-	}
-</style>
+
+		h2 {
+			text-align: center;
+			color: var(--taupe);
+			margin-top: var(--space-l);
+			margin-bottom: var(--space-m);
+			font-family: var(--font-italic);
+			font-style: italic;
+			font-size: var(--step-4);
+			font-weight: normal;
+		}
+
+		.photo-gallery {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			gap: var(--space-xl);
+
+			.gallery-item {
+				margin: 0;
+				flex: 1 1 280px;
+				max-width: 400px;
+				text-align: center;
+
+				img {
+					width: 100%;
+					height: auto;
+					border: 1px solid var(--light-beige);
+					box-shadow: 3px 3px 10px var(--shadow-light);
+				}
+
+				figcaption {
+					margin-top: var(--space-s);
+					font-family: var(--font-italic);
+					font-style: italic;
+					font-size: var(--step--1);
+					color: var(--taupe);
+					line-height: 1.4;
+				}
+			}
+		}
+	</style>
+</section>

@@ -25,6 +25,11 @@
 		"caption": "Speaking at Bournemouth Writing Festival about the different paths to publication.\n\nPhotos by Solid Imagery"
 	},
 	{
+		"src": "src/assets/images/Rochester and Chatham Fellowship.jpg",
+		"alt": "Signing books at Rochester & Chatham Dickens Fellowship",
+		"caption": "Signing books at Rochester & Chatham Dickens Fellowship with (left) Chairman Nick Baines and (right) Hon Secretary and Vice President Stephen Martin."
+	},
+	{
 		"src": "src/assets/images/Lillian Nayder.jpg",
 		"alt": "Annie Elliot with Lillian Nayder",
 		"caption": "At the Charles Dickens Museum in London with Lillian Nayder who signed my copy of her wonderful book about Catherine Dickens which formed the basis of my research."
@@ -34,11 +39,7 @@
 		"alt": "Annie Elliot sitting on the tiles at Gad's Hill Place",
 		"caption": "Sitting on the tiles at Gad's Hill Place where Charles died. A photo of this floor was printed on the front cover of my book."
 	},
-	{
-		"src": "src/assets/images/Rochester and Chatham Fellowship.jpg",
-		"alt": "Signing books at Rochester & Chatham Dickens Fellowship",
-		"caption": "Signing books at Rochester & Chatham Dickens Fellowship with (left) Chairman Nick Baines and (right) Hon Secretary and Vice President Stephen Martin."
-	},
+
 	{
 		"src": "src/assets/images/museum-launch.jpg",
 		"alt": "Visiting the Extra/Ordinary Women Exhibition",

@@ -7,7 +7,48 @@ metadata:
 ---
 
 <section id="events" class="events-section u-container">
-	<h1>Upcoming Events</h1>
+	<section id="audience-say" class="audience-section">
+		<div class="audience-header">
+			<h1>What Audiences Say</h1>
+			<h2>About Mrs Dickens Telling Her Story</h2>
+		</div>
+
+		<div class="featured-testimonial-wrapper">
+			<img src="/images/eventFrame.svg" alt="" class="featured-frame" />
+			<div class="featured-content">
+				<p>
+					“RIVETING, EXCELLENT, FASCINATING, SPELLBINDING, TRANSFORMATIVE,
+					ILLUMINATING, HUMOUROUS BUT HEARTBREAKING”
+				</p>
+			</div>
+		</div>
+
+		<div class="testimonials-grid">
+			<div class="testimonial-item">
+				<blockquote class="quote">A professional performance.</blockquote>
+			</div>
+			<div class="testimonial-item">
+				<blockquote class="quote">Annie Elliot became Mrs Dickens.</blockquote>
+			</div>
+			<div class="testimonial-item">
+				<blockquote class="quote">
+					We didn't want to miss a single word.
+				</blockquote>
+			</div>
+			<div class="testimonial-item">
+				<blockquote class="quote">
+					A very talented lady who kept us enthralled.
+				</blockquote>
+			</div>
+			<div class="testimonial-item">
+				<blockquote class="quote">
+					Annie Elliot got right into the character of Mrs Dickens.
+				</blockquote>
+			</div>
+		</div>
+	</section>
+
+	<h2 class="section-heading">Upcoming Events</h2>
 
 	<div webc:if="$data.calendar.futureEvents.length > 0">
 		<div class="event-wrapper" webc:for="event of $data.calendar.futureEvents">
@@ -33,7 +74,7 @@ metadata:
 	</div>
 
 	<div webc:if="$data.calendar.pastEvents.length > 0">
-		<h2>Past Events</h2>
+		<h2 class="section-heading">Past Events</h2>
 
 		<div
 			class="event-wrapper is-past"
@@ -62,6 +103,139 @@ metadata:
 		padding-block: var(--space-l);
 		font-family: var(--font-base);
 		text-align: center;
+
+		.audience-section {
+			padding-bottom: var(--space-2xl);
+			margin-bottom: var(--space-2xl);
+			border-bottom: 1px solid var(--light-beige);
+			position: relative;
+
+			.audience-header {
+				margin-bottom: var(--space-xl);
+
+				h1 {
+					font-family: var(--font-base);
+					font-size: var(--step-5);
+					color: var(--taupe);
+					margin: 0;
+					font-weight: 700;
+					line-height: 1.1;
+					text-transform: none;
+					letter-spacing: normal;
+				}
+
+				h2 {
+					font-family: var(--font-condensed);
+					font-size: var(--step-2);
+					color: var(--taupe);
+					margin-top: var(--space-s);
+					margin-bottom: var(--space-xs);
+					font-weight: normal;
+					font-style: normal;
+				}
+			}
+
+			.featured-testimonial-wrapper {
+				display: grid;
+				margin: 0 auto var(--space-xl);
+				max-width: 900px;
+				padding: var(--space-s);
+				position: relative;
+
+				& > * {
+					grid-area: 1 / 1;
+					width: 100%;
+					height: 100%;
+				}
+
+				.featured-frame {
+					filter: drop-shadow(0 4px 20px var(--shadow-dark));
+					object-fit: fill;
+					pointer-events: none;
+					z-index: 1;
+				}
+
+				.featured-content {
+					z-index: 2;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					padding: var(--space-2xl) var(--space-3xl);
+
+					p {
+						font-family: var(--font-base);
+						font-size: var(--step-1);
+						color: var(--taupe);
+						font-weight: 700;
+						line-height: 1.4;
+						margin: 0;
+						text-align: center;
+						letter-spacing: 0.05em;
+					}
+				}
+			}
+
+			.testimonials-grid {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: space-around;
+				gap: var(--space-l);
+				max-width: 1100px;
+				margin-inline: auto;
+			}
+
+			.testimonial-item {
+				flex: 1 1 320px;
+				max-width: 350px;
+				margin: 0;
+				padding: 2.5rem 3rem;
+				border: 1px solid var(--light-beige);
+				box-shadow: 3px 3px 10px var(--shadow-light);
+				position: relative;
+				background-color: transparent;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				transition: all 0.3s ease;
+
+				&:hover {
+					box-shadow: 5px 5px 15px var(--shadow-medium);
+					transform: translateY(-2px);
+				}
+			}
+
+			.quote {
+				font-family: var(--font-italic);
+				font-style: italic;
+				line-height: 1.6;
+				position: relative;
+				margin: 0;
+				text-align: center;
+				font-size: 1.1rem;
+				color: var(--taupe);
+
+				&::before,
+				&::after {
+					content: "“";
+					font-family: serif;
+					font-size: 2.5rem;
+					position: absolute;
+					opacity: 0.3;
+					color: var(--taupe);
+				}
+
+				&::before {
+					left: -1.5rem;
+					top: -1.2rem;
+				}
+
+				&::after {
+					content: "”";
+					transform: translateY(-16px);
+				}
+			}
+		}
 
 		h1 {
 			text-align: center;
@@ -123,12 +297,35 @@ metadata:
 			z-index: 2;
 		}
 
+		.section-heading {
+			font-family: var(--font-base);
+			font-size: var(--step-3);
+			text-transform: none;
+			letter-spacing: normal;
+			color: var(--taupe);
+			margin-block: var(--space-2xl) var(--space-l);
+			position: relative;
+			display: block;
+			text-align: center;
+
+			&::after {
+				content: "";
+				display: block;
+				width: 60px;
+				height: 1px;
+				background: var(--light-beige);
+				margin: var(--space-xs) auto 0;
+			}
+		}
+
 		.event-card h3 {
 			font-family: var(--font-base);
 			color: var(--taupe);
 			font-size: var(--step-2);
-			margin-bottom: var(--space-s);
+			margin-bottom: var(--space-xs);
 			margin-top: 0;
+			font-weight: 700;
+			line-height: 1.2;
 		}
 
 		.event-card p {
