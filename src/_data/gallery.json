@@ -5,11 +5,6 @@
 		"caption": "Lucinda Hawksley, great-great-great granddaughter of Charles and Catherine Dickens receives a proof copy of my book at the Dickens Fellowship Christmas lunch in London."
 	},
 	{
-		"src": "src/assets/images/ellie-breed.jpg",
-		"alt": "Ellie Breed at the book launch of Mr & Mrs Charles Dickens: Her Story",
-		"caption": "Ellie Breed the first person to buy the book."
-	},
-	{
 		"src": "src/assets/images/book-shop-photo-1.jpg",
 		"alt": "Annie Elliot as Mrs Dickens outside The Hunting Raven bookshop",
 		"caption": "Annie Elliot as Mrs Dickens outside The Hunting Raven bookshop on publication day between images of Mrs Dickens as she was when she met Charles and after they separated"
@@ -25,9 +20,24 @@
 		"caption": "Mrs Dickens tells her story in the wonderful Bleak House to members and guests of the Dickens Fellowship Broadstairs Branch"
 	},
 	{
-		"src": "src/assets/images/bournemouth.avif",
+		"src": "src/assets/images/Bournemouth launch.jpg",
 		"alt": "Annie Elliot speaking at Bournemouth Writing Festival",
 		"caption": "Speaking at Bournemouth Writing Festival about the different paths to publication.\n\nPhotos by Solid Imagery"
+	},
+	{
+		"src": "src/assets/images/Lillian Nayder.jpg",
+		"alt": "Annie Elliot with Lillian Nayder",
+		"caption": "At the Charles Dickens Museum in London with Lillian Nayder who signed my copy of her wonderful book about Catherine Dickens which formed the basis of my research."
+	},
+	{
+		"src": "src/assets/images/On Gad's Hill floor.jpg",
+		"alt": "Annie Elliot sitting on the tiles at Gad's Hill Place",
+		"caption": "Sitting on the tiles at Gad's Hill Place where Charles died. A photo of this floor was printed on the front cover of my book."
+	},
+	{
+		"src": "src/assets/images/Rochester and Chatham Fellowship.jpg",
+		"alt": "Signing books at Rochester & Chatham Dickens Fellowship",
+		"caption": "Signing books at Rochester & Chatham Dickens Fellowship with (left) Chairman Nick Baines and (right) Hon Secretary and Vice President Stephen Martin."
 	},
 	{
 		"src": "src/assets/images/museum-launch.jpg",
