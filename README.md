@@ -2,6 +2,13 @@
 
 This is the source code for the "Annie Elliot" website, built with Eleventy.
 
+## Managing the photo gallery
+
+The reviews-page photo gallery is sourced from a Google Drive folder the site owner
+manages directly (captions and order live in Drive, not in the repo). The
+owner-facing guide for adding, captioning, reordering, replacing, and publishing
+photos is in [`docs/managing-gallery-photos.md`](docs/managing-gallery-photos.md).
+
 ## Development
 
 This project uses [Nix](https://nixos.org/) for a reproducible development environment.
