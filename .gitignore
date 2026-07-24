@@ -2,6 +2,9 @@
 dist/
 packages/*/visualize/*
 
+# Ignore local environment secrets
+.env
+
 # Ignore installed npm modules
 node_modules/
 
