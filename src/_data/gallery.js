@@ -12,7 +12,7 @@ const SKIP_MIME = new Set(["image/heic", "image/heif"]);
 // Leading digits + one separator (- _ . or space). Bare "01name" = no prefix.
 const PREFIX_RE = /^(\d+)\s*[-_. ]\s*(.*)$/;
 
-function parsed(name) {
+function parseFilename(name) {
     const dot = name.lastIndexOf(".");
     const base = dot > 0 ? name.slice(0, dot) : name; // strip extension
     const m = base.match(PREFIX_RE);
@@ -57,13 +57,14 @@ export default async function () {
             return true;
         })
         .map((f) => {
-            const { order, cleaned } = parsed(f.name);
+            const { order, cleaned } = parseFilename(f.name);
             const description = (f.description || "").trim();
             // caption = description verbatim ("" if blank);
-            // alt = description, else cleaned filename — never empty (axe stays green).
+            // alt = description, else cleaned filename, else the raw filename —
+            // never empty (axe stays green even for a pathological name like "01 - .jpg").
             return {
                 id: f.id,
-                alt: description || cleaned,
+                alt: description || cleaned || f.name,
                 caption: description,
                 // Remote src: eleventy-img fetches+caches+transcodes.
                 // modifiedTime = cache-buster.

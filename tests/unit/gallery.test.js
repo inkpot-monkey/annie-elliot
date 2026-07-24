@@ -121,6 +121,17 @@ test("alt = description when present; = cleaned filename when blank; never empty
     }
 });
 
+test("alt falls back to the raw filename when prefix strips the stem to empty", async () => {
+    // Pathological name: prefix + separator + nothing but the extension, blank
+    // description. cleaned === "" here, so alt must fall back to the filename.
+    mockFetch({ files: [file("01 - .jpg", { description: "" })] });
+
+    const result = await gallery();
+
+    assert.equal(result[0].alt, "01 - .jpg");
+    assert.ok(result[0].alt.length > 0, "alt is never empty");
+});
+
 test("caption = description verbatim, and '' when blank", async () => {
     mockFetch({
         files: [
