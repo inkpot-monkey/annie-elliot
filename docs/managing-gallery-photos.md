@@ -69,11 +69,20 @@ Your Drive changes are **not** live automatically. The site has to be **rebuilt*
 to pick them up — this is deliberate, so you control exactly when the live site
 updates.
 
-> **To publish:** _[TODO — insert the exact rebuild step for this site here, e.g.
-> the Cloudflare Pages dashboard → the site's project → **Deployments** → **Retry
-> deployment** / **Create deployment** on the latest build.]_
+**To publish a Drive change (a new photo, an edited caption, a reorder):**
 
-After the rebuild finishes, refresh the Reviews page to see your changes.
+1. Sign in to the Cloudflare dashboard (<https://dash.cloudflare.com>) and open
+   **Workers &amp; Pages**.
+2. Open the **annie-elliot** project, then the **Deployments** tab.
+3. On the most recent deployment, open the **⋯** menu and choose **Retry
+   deployment** (or use **Create deployment** on the `main` branch). This re-runs
+   the build, which re-reads the Drive folder.
+4. Wait for the build to finish — a minute or two, until its status shows
+   **Success**.
+5. Refresh the Reviews page; your change is now live.
+
+A rebuild is only needed for **Drive** changes. Ordinary code changes pushed to the
+site's `main` branch rebuild and publish on their own.
 
 ## Keep the folder shared
 
