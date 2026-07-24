@@ -9,7 +9,16 @@ import gallery from "../../src/_data/gallery.js";
 
 const realFetch = globalThis.fetch;
 const realWarn = console.warn;
-const realKey = process.env.DRIVE_KEY;
+const realDriveKey = process.env.DRIVE_KEY;
+const realCalendarKey = process.env.CALENDAR_KEY;
+
+function restoreEnv(name, saved) {
+    if (saved === undefined) {
+        delete process.env[name];
+    } else {
+        process.env[name] = saved;
+    }
+}
 
 // Build a fake `Response` with the fields the module reads.
 function mockFetch(payload, { ok = true, status = 200, statusText = "OK" } = {}) {
@@ -39,11 +48,8 @@ beforeEach(() => {
 afterEach(() => {
     globalThis.fetch = realFetch;
     console.warn = realWarn;
-    if (realKey === undefined) {
-        delete process.env.DRIVE_KEY;
-    } else {
-        process.env.DRIVE_KEY = realKey;
-    }
+    restoreEnv("DRIVE_KEY", realDriveKey);
+    restoreEnv("CALENDAR_KEY", realCalendarKey);
 });
 
 test("orders by numeric prefix (1/2/10 numeric, not lexical; padding optional)", async () => {
@@ -184,11 +190,25 @@ test("HEIC/HEIF skipped with a console.warn naming the file", async () => {
     assert.ok(warnings.some((w) => w.includes("b.heif")), "warns naming b.heif");
 });
 
-test("throws when DRIVE_KEY is missing", async () => {
-    delete process.env.DRIVE_KEY; // module reads it at call time, even though .env sets it
+test("throws when no API key is set", async () => {
+    // The module reads the key at call time and falls back CALENDAR_KEY; clear
+    // both so neither .env value satisfies it.
+    delete process.env.DRIVE_KEY;
+    delete process.env.CALENDAR_KEY;
     mockFetch({ files: [] });
 
-    await assert.rejects(() => gallery(), /DRIVE_KEY/);
+    await assert.rejects(() => gallery(), /CALENDAR_KEY/);
+});
+
+test("falls back to CALENDAR_KEY when DRIVE_KEY is unset", async () => {
+    delete process.env.DRIVE_KEY;
+    process.env.CALENDAR_KEY = "calendar-fallback-key";
+    mockFetch({ files: [file("1 - x.jpg", { description: "ok" })] });
+
+    const result = await gallery();
+
+    assert.equal(result.length, 1);
+    assert.equal(result[0].caption, "ok");
 });
 
 test("throws on a non-OK files.list response", async () => {

@@ -23,10 +23,15 @@ function parseFilename(name) {
 }
 
 export default async function () {
-    const apiKey = process.env.DRIVE_KEY;
+    // Reuse CALENDAR_KEY by default (the Drive API is enabled on its project, so
+    // one key serves both and nothing new needs configuring in the build env).
+    // DRIVE_KEY is an optional override if a dedicated, Drive-only key is ever wanted.
+    const apiKey = process.env.DRIVE_KEY || process.env.CALENDAR_KEY;
 
     if (!apiKey) {
-        throw new Error("DRIVE_KEY not found in environment variables");
+        throw new Error(
+            "No Drive API key found: set CALENDAR_KEY (or DRIVE_KEY) in the environment",
+        );
     }
 
     const q = `'${FOLDER_ID}' in parents and mimeType contains 'image/' and trashed = false`;
