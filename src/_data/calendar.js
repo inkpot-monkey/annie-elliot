@@ -84,9 +84,10 @@ export default async function () {
     const futureEvents = events.filter(
         (event) => new Date(event.startDateTime) > now,
     );
-    const pastEvents = events.filter(
-        (event) => new Date(event.startDateTime) <= now,
-    );
+    // Past events show most-recent first (reverse of the ascending sort above).
+    const pastEvents = events
+        .filter((event) => new Date(event.startDateTime) <= now)
+        .reverse();
 
     return {
         futureEvents,
