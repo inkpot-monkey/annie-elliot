@@ -55,7 +55,13 @@ metadata:
 			<img src="/images/eventFrame.svg" alt="" class="event-frame" />
 			<div class="event-card">
 				<h3 @text="event.summary"></h3>
-				<p><strong>Date: </strong><span @text="event.start"></span></p>
+				<p webc:if="event.isMultiDay">
+					<strong>Dates: </strong><span @text="event.start"></span> –
+					<span @text="event.end"></span>
+				</p>
+				<p webc:if="!event.isMultiDay">
+					<strong>Date: </strong><span @text="event.start"></span>
+				</p>
 				<p webc:if="event.location">
 					<strong>Location: </strong
 					><a
@@ -83,7 +89,13 @@ metadata:
 			<img src="/images/eventFrame.svg" alt="" class="event-frame" />
 			<div class="event-card">
 				<h3 @text="event.summary"></h3>
-				<p><strong>Date: </strong><span @text="event.start"></span></p>
+				<p webc:if="event.isMultiDay">
+					<strong>Dates: </strong><span @text="event.start"></span> –
+					<span @text="event.end"></span>
+				</p>
+				<p webc:if="!event.isMultiDay">
+					<strong>Date: </strong><span @text="event.start"></span>
+				</p>
 				<p webc:if="event.location">
 					<strong>Location: </strong
 					><a

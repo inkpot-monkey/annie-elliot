@@ -25,13 +25,45 @@ export default async function () {
     const events = data.items
         .filter((event) => event.status !== "cancelled" && event.start)
         .map(({ summary, description, location, start, end }) => {
+            // All-day events use `date` (YYYY-MM-DD); timed events use `dateTime`.
+            const isAllDay = !start.dateTime;
             const startDt = start.dateTime || start.date;
             const endDt = end?.dateTime || end?.date || null;
             const eventTimeZone = start.timeZone || calendarTimeZone;
 
-            // Helper to format date for display if needed here,
-            // but typically raw data is better in _data and formatting in filters/templates.
-            // Keeping raw ISO strings for calculations.
+            // All-day dates are floating (no offset), so format them in UTC to
+            // avoid a spurious time appearing; timed events keep hour/minute.
+            const displayOpts = {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                timeZone: isAllDay ? 'UTC' : eventTimeZone,
+                ...(isAllDay ? {} : { hour: 'numeric', minute: '2-digit' }),
+            };
+            const format = (iso) =>
+                new Date(iso).toLocaleDateString('en-GB', displayOpts);
+
+            // Google's all-day `end.date` is exclusive — step back a day so a
+            // 13–17 range displays as ending on the 16th.
+            let endDisplayDt = endDt;
+            if (isAllDay && endDt) {
+                const d = new Date(endDt);
+                d.setUTCDate(d.getUTCDate() - 1);
+                endDisplayDt = d.toISOString().slice(0, 10);
+            }
+
+            const startDisplay = format(startDt);
+            const endDisplay = endDisplayDt ? format(endDisplayDt) : null;
+
+            // Compare calendar days only (ignore time) to detect multi-day spans.
+            const dayKey = (iso) =>
+                new Date(iso).toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                    timeZone: isAllDay ? 'UTC' : eventTimeZone,
+                });
 
             return {
                 summary,
@@ -39,16 +71,11 @@ export default async function () {
                 location,
                 startDateTime: startDt,
                 endDateTime: endDt,
-                // Pre-calculate display string to match previous client-side logic
-                start: new Date(startDt).toLocaleDateString('en-GB', {
-                    weekday: 'long',
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                    hour: 'numeric',
-                    minute: '2-digit',
-                    timeZone: eventTimeZone
-                })
+                // Pre-calculated display strings
+                start: startDisplay,
+                end: endDisplay,
+                // True when the event spans more than one calendar day.
+                isMultiDay: Boolean(endDisplayDt) && dayKey(startDt) !== dayKey(endDisplayDt),
             };
         })
         .sort((a, b) => new Date(a.startDateTime) - new Date(b.startDateTime));
