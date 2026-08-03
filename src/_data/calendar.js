@@ -4,10 +4,10 @@ dotenv.config();
 
 export default async function () {
     const calendarId = "author.annie.elliot@gmail.com";
-    const apiKey = process.env.CALENDAR_KEY;
+    const apiKey = process.env.GOOGLE_KEY;
 
     if (!apiKey) {
-        throw new Error("CALENDAR_KEY not found in environment variables");
+        throw new Error("GOOGLE_KEY not found in environment variables");
     }
 
     const response = await fetch(

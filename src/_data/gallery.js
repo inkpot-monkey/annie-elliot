@@ -23,15 +23,13 @@ function parseFilename(name) {
 }
 
 export default async function () {
-    // Reuse CALENDAR_KEY by default (the Drive API is enabled on its project, so
-    // one key serves both and nothing new needs configuring in the build env).
-    // DRIVE_KEY is an optional override if a dedicated, Drive-only key is ever wanted.
-    const apiKey = process.env.DRIVE_KEY || process.env.CALENDAR_KEY;
+    // One Google API key serves both the Drive (gallery) and Calendar APIs — they
+    // share a Google Cloud project, so GOOGLE_KEY is the single key for both here
+    // and in calendar.js.
+    const apiKey = process.env.GOOGLE_KEY;
 
     if (!apiKey) {
-        throw new Error(
-            "No Drive API key found: set CALENDAR_KEY (or DRIVE_KEY) in the environment",
-        );
+        throw new Error("GOOGLE_KEY not found in environment variables");
     }
 
     const q = `'${FOLDER_ID}' in parents and mimeType contains 'image/' and trashed = false`;

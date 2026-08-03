@@ -4,13 +4,12 @@ import assert from "node:assert/strict";
 import gallery from "../../src/_data/gallery.js";
 
 // The seam is the module's `fetch` boundary. Each test stubs `globalThis.fetch`
-// to return a fixture Drive `files.list` payload and sets `DRIVE_KEY`; both the
+// to return a fixture Drive `files.list` payload and sets `GOOGLE_KEY`; both the
 // real fetch and the env are saved/restored around every case so nothing leaks.
 
 const realFetch = globalThis.fetch;
 const realWarn = console.warn;
-const realDriveKey = process.env.DRIVE_KEY;
-const realCalendarKey = process.env.CALENDAR_KEY;
+const realGoogleKey = process.env.GOOGLE_KEY;
 
 function restoreEnv(name, saved) {
     if (saved === undefined) {
@@ -42,14 +41,13 @@ function file(name, extra = {}) {
 }
 
 beforeEach(() => {
-    process.env.DRIVE_KEY = "test-key";
+    process.env.GOOGLE_KEY = "test-key";
 });
 
 afterEach(() => {
     globalThis.fetch = realFetch;
     console.warn = realWarn;
-    restoreEnv("DRIVE_KEY", realDriveKey);
-    restoreEnv("CALENDAR_KEY", realCalendarKey);
+    restoreEnv("GOOGLE_KEY", realGoogleKey);
 });
 
 test("orders by numeric prefix (1/2/10 numeric, not lexical; padding optional)", async () => {
@@ -191,24 +189,11 @@ test("HEIC/HEIF skipped with a console.warn naming the file", async () => {
 });
 
 test("throws when no API key is set", async () => {
-    // The module reads the key at call time and falls back CALENDAR_KEY; clear
-    // both so neither .env value satisfies it.
-    delete process.env.DRIVE_KEY;
-    delete process.env.CALENDAR_KEY;
+    // The module reads GOOGLE_KEY at call time; clear it so nothing satisfies it.
+    delete process.env.GOOGLE_KEY;
     mockFetch({ files: [] });
 
-    await assert.rejects(() => gallery(), /CALENDAR_KEY/);
-});
-
-test("falls back to CALENDAR_KEY when DRIVE_KEY is unset", async () => {
-    delete process.env.DRIVE_KEY;
-    process.env.CALENDAR_KEY = "calendar-fallback-key";
-    mockFetch({ files: [file("1 - x.jpg", { description: "ok" })] });
-
-    const result = await gallery();
-
-    assert.equal(result.length, 1);
-    assert.equal(result[0].caption, "ok");
+    await assert.rejects(() => gallery(), /GOOGLE_KEY/);
 });
 
 test("throws on a non-OK files.list response", async () => {
