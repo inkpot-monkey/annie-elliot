@@ -39,8 +39,12 @@ metadata:
 		<a class="lb-backdrop" href="#gallery" aria-label="Close viewer" tabindex="-1"></a>
 		<figure class="lb-frame">
 			<div class="lb-stage">
-				<a class="lb-close" href="#gallery" aria-label="Close viewer">✕</a>
-				<a class="lb-btn lb-prev" :href="`#photo-${(i - 1 + $data.gallery.length) % $data.gallery.length}`" aria-label="Previous photo">‹</a>
+				<a class="lb-close" href="#gallery" aria-label="Close viewer">
+					<svg class="lb-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6 L18 18 M18 6 L6 18" /></svg>
+				</a>
+				<a class="lb-btn lb-prev" :href="`#photo-${(i - 1 + $data.gallery.length) % $data.gallery.length}`" aria-label="Previous photo">
+					<svg class="lb-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 6 L9 12 L15 18" /></svg>
+				</a>
 				<img
 					webc:is="eleventy-image"
 					:src="item.src"
@@ -49,7 +53,9 @@ metadata:
 					loading="eager"
 					fetchpriority="low"
 				/>
-				<a class="lb-btn lb-next" :href="`#photo-${(i + 1) % $data.gallery.length}`" aria-label="Next photo">›</a>
+				<a class="lb-btn lb-next" :href="`#photo-${(i + 1) % $data.gallery.length}`" aria-label="Next photo">
+					<svg class="lb-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6 L15 12 L9 18" /></svg>
+				</a>
 			</div>
 			<figcaption class="lb-cap">
 				<span webc:if="item.caption" @text="item.caption"></span>
@@ -359,6 +365,19 @@ metadata:
 			cursor: pointer;
 		}
 
+		/* geometrically symmetric SVG icons — centred exactly by the grid, unlike
+		   the ✕/‹/› text glyphs, whose side-bearings sat them off-centre */
+		.lb-icon {
+			display: block;
+			width: 45%;
+			height: 45%;
+			fill: none;
+			stroke: currentColor;
+			stroke-width: 2;
+			stroke-linecap: round;
+			stroke-linejoin: round;
+		}
+
 		.lb-btn:hover,
 		.lb-close:hover {
 			background: rgba(0, 0, 0, 0.8);
@@ -375,7 +394,6 @@ metadata:
 			transform: translateY(-50%);
 			width: 3rem;
 			height: 3rem;
-			font-size: 1.4rem;
 		}
 
 		.lb-prev {
@@ -391,7 +409,6 @@ metadata:
 			right: 1rem;
 			width: 2.6rem;
 			height: 2.6rem;
-			font-size: 1.3rem;
 		}
 
 		/* mobile: reclaim the fluid space-l padding so the photo fills more of the
