@@ -243,7 +243,12 @@ metadata:
 			grid-template-rows: 1fr auto;
 			gap: var(--space-s);
 			max-height: 90vh;
-			width: min(72rem, 96vw);
+			/* 100% (not 96vw) so the frame fits INSIDE .lightbox's padding — on
+			   narrow screens 96vw + padding overflowed the viewport and clipped
+			   the photo's right edge. min-width:0 lets it shrink below content. */
+			width: min(72rem, 100%);
+			max-width: 100%;
+			min-width: 0;
 			margin: 0;
 		}
 
@@ -263,6 +268,10 @@ metadata:
 		.lb-stage picture {
 			display: block;
 			line-height: 0;
+			/* keep the picture (the grid item) from growing to the image's
+			   intrinsic width and overflowing the stage on narrow viewports */
+			max-width: 100%;
+			min-width: 0;
 			border: 1px solid var(--light-beige);
 			box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
 			background-color: rgba(212, 201, 180, 0.08);
@@ -383,6 +392,37 @@ metadata:
 			width: 2.6rem;
 			height: 2.6rem;
 			font-size: 1.3rem;
+		}
+
+		/* mobile: reclaim the fluid space-l padding so the photo fills more of the
+		   screen, and drop the prev/next controls to the bottom corners (out of the
+		   photo, easier to reach with a thumb) */
+		@media (max-width: 40rem) {
+			.lightbox {
+				padding: var(--space-s);
+			}
+
+			.lb-btn {
+				top: auto;
+				bottom: 1.1rem;
+				transform: none;
+				width: 2.75rem;
+				height: 2.75rem;
+			}
+
+			.lb-prev {
+				left: 0.25rem;
+			}
+
+			.lb-next {
+				right: 0.25rem;
+			}
+
+			/* keep the caption clear of the bottom-corner arrows */
+			.lb-cap {
+				padding-inline: 3.5rem;
+				padding-bottom: 3.25rem;
+			}
 		}
 	</style>
 </section>

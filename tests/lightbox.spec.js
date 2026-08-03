@@ -56,6 +56,49 @@ test.describe('Reviews gallery lightbox (CSS-only :target)', () => {
         await expect(page.locator('#photo-0')).toBeVisible();
     });
 
+    test('the open overlay matches its snapshot', async ({ page }) => {
+        // Visual guard for the lightbox layout: the photo must fit the viewport
+        // (no clipped edge) and the controls sit where the CSS puts them — on
+        // Desktop the prev/next arrows are centred, on Mobile they drop to the
+        // bottom corners. Runs for both the Desktop and Mobile projects.
+        // The overlay is slightly translucent, so the gallery thumbnails behind it
+        // stay faintly visible. Force every image eager and wait for them all to
+        // finish first, otherwise a thumbnail streaming in mid-capture keeps the
+        // two stabilisation frames from matching.
+        await page.evaluate(() =>
+            Promise.all(
+                Array.from(document.images).map((img) => {
+                    img.loading = 'eager';
+                    return img.complete
+                        ? Promise.resolve()
+                        : new Promise((res) => {
+                              img.onload = img.onerror = res;
+                          });
+                }),
+            ),
+        );
+
+        await page.locator('.photo-gallery .thumb').first().click();
+        const overlay = page.locator('#photo-0');
+        await expect(overlay).toBeVisible();
+
+        // Wait for the eager lightbox image to actually decode, so the shot isn't
+        // taken over an empty (pulsing) frame.
+        const img = overlay.locator('.lb-stage img');
+        await img.evaluate(
+            (el) =>
+                el.complete && el.naturalWidth
+                    ? null
+                    : new Promise((res) => {
+                          el.addEventListener('load', res, { once: true });
+                          el.addEventListener('error', res, { once: true });
+                      }),
+        );
+
+        // Viewport shot (the overlay is position:fixed, so it fills the viewport).
+        await expect(page).toHaveScreenshot('lightbox-open.png', { timeout: 15000 });
+    });
+
     test('the close control dismisses the lightbox', async ({ page }) => {
         const thumbs = page.locator('.photo-gallery .thumb');
         const overlay = page.locator('#photo-0');
