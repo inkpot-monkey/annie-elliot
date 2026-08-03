@@ -7,6 +7,13 @@ import { test, expect } from '@playwright/test';
 // is deterministic.
 async function loadLazyImages(page) {
     await page.evaluate(async () => {
+        // Force every image to load up front. Tall pages (e.g. /events/) have
+        // dozens of `loading="lazy"` images that would otherwise stream in during
+        // Playwright's full-page capture scroll, so consecutive frames never match
+        // and the shot never stabilises. Making them all eager settles the page.
+        document.querySelectorAll('img[loading="lazy"]').forEach((img) => {
+            img.loading = 'eager';
+        });
         await new Promise((resolve) => {
             let y = 0;
             const step = () => {
@@ -38,6 +45,10 @@ async function loadLazyImages(page) {
 
 test.describe('Visual Regression Tests', () => {
     test('dynamic site snapshot', async ({ page }) => {
+        // Several pages are very tall and image-heavy; capturing them all in one
+        // test needs well beyond the 30s default.
+        test.setTimeout(180_000);
+
         // Step 1: Visit the Homepage
         await page.goto('/');
         await page.waitForLoadState('networkidle');
@@ -79,7 +90,10 @@ test.describe('Visual Regression Tests', () => {
             // e.g., '/' -> 'home', '/about/' -> 'about'
             const name = link === '/' ? 'home' : link.replace(/^\/|\/$/g, '').replace(/\//g, '-');
 
-            await expect(page).toHaveScreenshot(`${name}.png`, { fullPage: true });
+            // Some pages (e.g. /events/) render very tall with many lazy images,
+            // so a full-page capture needs longer than the 5s default to settle
+            // into two identical frames.
+            await expect(page).toHaveScreenshot(`${name}.png`, { fullPage: true, timeout: 30000 });
         }
     });
 });
