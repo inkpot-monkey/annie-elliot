@@ -16,17 +16,47 @@ metadata:
 
 	<h2>Photo Gallery</h2>
 
-	<section class="photo-gallery">
-		<figure class="gallery-item" webc:for="item of $data.gallery">
-			<img
-				webc:is="eleventy-image"
-				:src="item.src"
-				:alt="item.alt"
-				sizes="(min-width: 60rem) 40vw, 100vw"
-			/>
-			<figcaption @text="item.caption"></figcaption>
+	<section class="photo-gallery" id="gallery">
+		<figure class="gallery-item" webc:for="(item, i) of $data.gallery">
+			<a class="thumb" :href="`#photo-${i}`" :aria-label="`Enlarge photo: ${item.alt}`">
+				<img
+					webc:is="eleventy-image"
+					:src="item.src"
+					:alt="item.alt"
+					sizes="(min-width: 60rem) 20vw, 45vw"
+				/>
+			</a>
+			<figcaption webc:if="item.caption" @text="item.caption"></figcaption>
 		</figure>
 	</section>
+
+	<!--
+		Pure CSS/HTML lightbox (no JavaScript): one overlay per photo, revealed by
+		:target when its `#photo-N` hash is active. Prev/next/close are plain anchors;
+		the backdrop is a full-viewport close link. Keeps the site script-free.
+	-->
+	<div class="lightbox" webc:for="(item, i) of $data.gallery" :id="`photo-${i}`" role="dialog" aria-label="Photo viewer">
+		<a class="lb-backdrop" href="#gallery" aria-label="Close viewer" tabindex="-1"></a>
+		<figure class="lb-frame">
+			<div class="lb-stage">
+				<a class="lb-close" href="#gallery" aria-label="Close viewer">✕</a>
+				<a class="lb-btn lb-prev" :href="`#photo-${(i - 1 + $data.gallery.length) % $data.gallery.length}`" aria-label="Previous photo">‹</a>
+				<img
+					webc:is="eleventy-image"
+					:src="item.src"
+					:alt="item.alt"
+					sizes="90vw"
+					loading="eager"
+					fetchpriority="low"
+				/>
+				<a class="lb-btn lb-next" :href="`#photo-${(i + 1) % $data.gallery.length}`" aria-label="Next photo">›</a>
+			</div>
+			<figcaption class="lb-cap">
+				<span webc:if="item.caption" @text="item.caption"></span>
+				<span class="lb-count" @text="`${i + 1} / ${$data.gallery.length}`"></span>
+			</figcaption>
+		</figure>
+	</div>
 
 	<style>
 		#reviews-page {
@@ -114,34 +144,245 @@ metadata:
 			font-weight: normal;
 		}
 
+		/* ---- gallery (uniform 4:5 tiles; final row spread by space-around) ---- */
 		.photo-gallery {
 			display: flex;
 			flex-wrap: wrap;
-			justify-content: center;
-			gap: var(--space-xl);
+			justify-content: space-around;
+			gap: var(--space-l);
 
 			.gallery-item {
 				margin: 0;
-				flex: 1 1 280px;
-				max-width: 400px;
 				text-align: center;
+				/* Exact basis so full rows fill flush (no free space, so space-around
+				   is a no-op on them); the last, incomplete row keeps its items at
+				   their natural width and distributes the slack around them. */
+				flex: 0 1 calc((100% - 3 * var(--space-l)) / 4);
+			}
 
-				img {
-					width: 100%;
-					height: auto;
-					border: 1px solid var(--light-beige);
-					box-shadow: 3px 3px 10px var(--shadow-light);
-				}
-
-				figcaption {
-					margin-top: var(--space-s);
-					font-family: var(--font-italic);
-					font-style: italic;
-					font-size: var(--step--1);
-					color: var(--taupe);
-					line-height: 1.4;
+			/* fewer columns as the viewport narrows */
+			@media (max-width: 60rem) {
+				.gallery-item {
+					flex-basis: calc((100% - 2 * var(--space-l)) / 3);
 				}
 			}
+
+			@media (max-width: 40rem) {
+				.gallery-item {
+					flex-basis: calc((100% - var(--space-l)) / 2);
+				}
+			}
+
+			/* thumbnails are anchor links (#photo-N) so the CSS-only lightbox opens */
+			.thumb {
+				display: block;
+				width: 100%;
+				padding: 0;
+				border: 0;
+				background: none;
+				cursor: zoom-in;
+				color: inherit;
+				text-decoration: none;
+			}
+
+			.thumb:focus-visible {
+				outline: 3px solid var(--taupe);
+				outline-offset: 4px;
+			}
+
+			.thumb img {
+				display: block;
+				width: 100%;
+				height: auto;
+				aspect-ratio: 4 / 5; /* uniform tiles — full image shown in the lightbox */
+				object-fit: cover;
+				border: 1px solid var(--light-beige);
+				box-shadow: 3px 3px 10px var(--shadow-light);
+			}
+
+			figcaption {
+				margin-top: var(--space-s);
+				font-family: var(--font-italic);
+				font-style: italic;
+				font-size: var(--step--1);
+				color: var(--taupe); /* light-page colour — NOT the prototype's light-beige */
+				line-height: 1.4;
+				text-wrap: pretty;
+			}
+		}
+
+		/* ---- lightbox (pure CSS :target overlay — no JavaScript) ---- */
+		.lightbox {
+			display: none;
+			position: fixed;
+			inset: 0;
+			z-index: 100;
+			place-items: center;
+			padding: var(--space-l);
+			color: var(--cream);
+			background: rgba(10, 8, 4, 0.9);
+		}
+
+		/* revealed only while its `#photo-N` hash is active */
+		.lightbox:target {
+			display: grid;
+		}
+
+		/* full-viewport click-catcher behind the frame — clicking it closes */
+		.lb-backdrop {
+			position: fixed;
+			inset: 0;
+			z-index: 1;
+			cursor: zoom-out;
+		}
+
+		.lb-frame {
+			position: relative;
+			z-index: 2;
+			display: grid;
+			grid-template-rows: 1fr auto;
+			gap: var(--space-s);
+			max-height: 90vh;
+			width: min(72rem, 96vw);
+			margin: 0;
+		}
+
+		.lb-stage {
+			position: relative;
+			display: grid;
+			place-items: center;
+			/* reserve height so the loading frame is stable and the image loads in
+			   without the frame jumping open */
+			min-height: 70vh;
+		}
+
+		/* The <picture> wraps the <img> and is sized to it, so its pulsing background
+		   fills the whole frame the image loads into. Each photo then fades in over
+		   the panel (see lb-reveal), so every photo visibly "loads in" rather than
+		   snapping in. Pure CSS — no load event. */
+		.lb-stage picture {
+			display: block;
+			line-height: 0;
+			border: 1px solid var(--light-beige);
+			box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+			background-color: rgba(212, 201, 180, 0.08);
+			animation: lb-pulse 1.5s ease-in-out infinite;
+		}
+
+		.lb-stage img {
+			display: block;
+			max-width: 100%;
+			max-height: 78vh;
+			width: auto; /* keep intrinsic aspect ratio (portrait and landscape) */
+			height: auto;
+			animation: lb-reveal 1.1s ease both;
+		}
+
+		/* pulsing placeholder that fills the loading frame */
+		@keyframes lb-pulse {
+			0%,
+			100% {
+				background-color: rgba(212, 201, 180, 0.06);
+			}
+			50% {
+				background-color: rgba(212, 201, 180, 0.2);
+			}
+		}
+
+		/* hold the frame briefly, then fade the photo in */
+		@keyframes lb-reveal {
+			0%,
+			55% {
+				opacity: 0;
+			}
+			100% {
+				opacity: 1;
+			}
+		}
+
+		/* honour reduced-motion: no pulse, no fade */
+		@media (prefers-reduced-motion: reduce) {
+			.lb-stage picture,
+			.lb-stage img {
+				animation: none;
+			}
+		}
+
+		.lb-cap {
+			text-align: center;
+			font-family: var(--font-italic);
+			font-style: italic;
+			font-size: var(--step-0);
+			color: var(--light-beige);
+			line-height: 1.45;
+			max-width: 60ch;
+			margin-inline: auto;
+			min-height: 1.5em;
+		}
+
+		/* counter + controls are fixed to the viewport so nothing shifts between photos */
+		.lb-count {
+			position: fixed;
+			top: 1.25rem;
+			left: 1.25rem;
+			z-index: 10;
+			display: block;
+			font-family: var(--font-body);
+			font-style: normal;
+			font-size: var(--step--1);
+			color: var(--light-beige);
+			font-variant-numeric: tabular-nums;
+			letter-spacing: 0.03em;
+		}
+
+		.lb-btn,
+		.lb-close {
+			position: fixed;
+			z-index: 10;
+			display: grid;
+			place-items: center;
+			background: rgba(0, 0, 0, 0.6);
+			color: var(--cream);
+			border: 1px solid var(--battleship-gray);
+			border-radius: 50%;
+			line-height: 1;
+			text-decoration: none;
+			cursor: pointer;
+		}
+
+		.lb-btn:hover,
+		.lb-close:hover {
+			background: rgba(0, 0, 0, 0.8);
+		}
+
+		.lb-btn:focus-visible,
+		.lb-close:focus-visible {
+			outline: 3px solid var(--light-beige);
+			outline-offset: 2px;
+		}
+
+		.lb-btn {
+			top: 50%;
+			transform: translateY(-50%);
+			width: 3rem;
+			height: 3rem;
+			font-size: 1.4rem;
+		}
+
+		.lb-prev {
+			left: 0.5rem;
+		}
+
+		.lb-next {
+			right: 0.5rem;
+		}
+
+		.lb-close {
+			top: 1rem;
+			right: 1rem;
+			width: 2.6rem;
+			height: 2.6rem;
+			font-size: 1.3rem;
 		}
 	</style>
 </section>

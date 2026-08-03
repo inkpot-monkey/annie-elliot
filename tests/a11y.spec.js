@@ -6,6 +6,7 @@ test.describe('Accessibility Tests', () => {
         { url: '/', name: 'Home' },
         { url: '/author/', name: 'Author' },
         { url: '/events/', name: 'Events' },
+        { url: '/reviews/', name: 'Reviews' },
         { url: '/contact/', name: 'Contact' },
         { url: '/email-success/', name: 'Email Success' },
         { url: '/email-failure/', name: 'Email Failure' },

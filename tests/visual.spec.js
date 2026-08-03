@@ -1,5 +1,41 @@
 import { test, expect } from '@playwright/test';
 
+// eleventy-img emits `loading="lazy"` on every image, so below-the-fold photos
+// never decode on a plain `networkidle` wait — a full-page screenshot then
+// captures empty boxes and a too-short page. Scroll the whole page to trigger the
+// lazy loads, wait for every image to finish, then return to the top so the shot
+// is deterministic.
+async function loadLazyImages(page) {
+    await page.evaluate(async () => {
+        await new Promise((resolve) => {
+            let y = 0;
+            const step = () => {
+                window.scrollBy(0, window.innerHeight);
+                y += window.innerHeight;
+                if (y < document.body.scrollHeight) {
+                    setTimeout(step, 100);
+                } else {
+                    resolve();
+                }
+            };
+            step();
+        });
+        window.scrollTo(0, 0);
+    });
+    await page.evaluate(() =>
+        Promise.all(
+            Array.from(document.images)
+                .filter((img) => !img.complete)
+                .map(
+                    (img) =>
+                        new Promise((res) => {
+                            img.onload = img.onerror = res;
+                        }),
+                ),
+        ),
+    );
+}
+
 test.describe('Visual Regression Tests', () => {
     test('dynamic site snapshot', async ({ page }) => {
         // Step 1: Visit the Homepage
@@ -37,6 +73,7 @@ test.describe('Visual Regression Tests', () => {
             console.log(`Testing page: ${link}`);
             await page.goto(link);
             await page.waitForLoadState('networkidle');
+            await loadLazyImages(page);
 
             // Create a friendly filename from the path
             // e.g., '/' -> 'home', '/about/' -> 'about'
