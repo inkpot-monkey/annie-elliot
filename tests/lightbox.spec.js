@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test';
 
+import { isNarrow } from './helpers/viewport.js';
+
 // The lightbox is pure CSS/HTML (no JavaScript): each `#photo-N` overlay is
 // revealed by `:target` when its hash is active, and prev/next/close are plain
 // anchors. Everything below is derived from the rendered thumbnails, so the suite
@@ -10,10 +12,6 @@ import { test, expect } from '@playwright/test';
 // showed the same photo at the same width. Every test that opens an overlay
 // therefore runs only where one exists; the Mobile project (Pixel 5, 393px) is
 // covered instead by the "no lightbox on a phone" test at the bottom.
-const LIGHTBOX_MIN_WIDTH = 640;
-
-const isNarrow = (testInfo) =>
-    (testInfo.project.use.viewport?.width ?? 0) < LIGHTBOX_MIN_WIDTH;
 
 test.describe('Reviews gallery lightbox (CSS-only :target)', () => {
     test.beforeEach(async ({ page }) => {

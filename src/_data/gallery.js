@@ -73,37 +73,34 @@ function displayRatio(meta, name) {
 // default export's value — silently, so `$data.gallery` becomes
 // `{default, packRows}` and every loop renders "[object Object]". The packer is
 // covered through this module's public seam in tests/unit/gallery.test.js.
-function packRows(
-    items,
-    W = PACK_WIDTH,
-    target = TARGET_ROW_HEIGHT,
-    gap = ROW_GAP,
-) {
-    const n = items.length;
-    const height = (i, j) => {
-        let sum = 0;
-        for (let k = i; k < j; k++) sum += items[k].ratio;
-        return (W - gap * (j - i - 1)) / sum;
+function packRows(items) {
+    const count = items.length;
+
+    // The height a row of items[from..to) would take at the packing width.
+    const rowHeight = (from, to) => {
+        let ratioSum = 0;
+        for (let k = from; k < to; k++) ratioSum += items[k].ratio;
+        return (PACK_WIDTH - ROW_GAP * (to - from - 1)) / ratioSum;
     };
 
-    const cost = new Array(n + 1).fill(Infinity);
-    const from = new Array(n + 1).fill(-1);
-    cost[0] = 0;
+    const costTo = new Array(count + 1).fill(Infinity);
+    const rowStart = new Array(count + 1).fill(-1);
+    costTo[0] = 0;
 
-    for (let j = 1; j <= n; j++) {
-        for (let i = 0; i < j; i++) {
-            if (cost[i] === Infinity) continue;
-            const d = Math.log(height(i, j) / target);
-            const c = cost[i] + d * d;
-            if (c < cost[j]) {
-                cost[j] = c;
-                from[j] = i;
+    for (let to = 1; to <= count; to++) {
+        for (let from = 0; from < to; from++) {
+            if (costTo[from] === Infinity) continue;
+            const deviation = Math.log(rowHeight(from, to) / TARGET_ROW_HEIGHT);
+            const cost = costTo[from] + deviation * deviation;
+            if (cost < costTo[to]) {
+                costTo[to] = cost;
+                rowStart[to] = from;
             }
         }
     }
 
     const rows = [];
-    for (let j = n; j > 0; j = from[j]) rows.unshift(items.slice(from[j], j));
+    for (let to = count; to > 0; to = rowStart[to]) rows.unshift(items.slice(rowStart[to], to));
     return rows; // empty input -> [] (the reconstruction loop never runs)
 }
 
@@ -179,17 +176,19 @@ export default async function () {
 
     const rows = packRows(photos);
 
-    // `share` is the fraction of its row's width the photo occupies, and
-    // `rowCount` how many photos share that row — together the input to the
-    // per-item `sizes` strings composed in reviews.webc. Set here because only
-    // the packer knows the row (and because a nested `webc:for` does not keep the
-    // outer loop's variable in scope for a descendant's attributes); the
-    // breakpoint constants stay in the template, next to the CSS defining them.
+    // `share` is the fraction of its row's width the photo occupies and `rowCount`
+    // how many photos share that row — together the input to the per-item `sizes`
+    // strings composed in reviews.webc. `rowRatioSum` feeds the row's degenerate-
+    // gallery width cap. All three are set here because only the packer knows the
+    // row, and because a nested `webc:for` does not keep the outer loop's variable
+    // in scope for a descendant's attributes; the breakpoint constants stay in the
+    // template, next to the CSS that defines them.
     for (const row of rows) {
-        const sum = row.reduce((s, item) => s + item.ratio, 0);
+        const ratioSum = row.reduce((total, item) => total + item.ratio, 0);
         for (const item of row) {
-            item.share = item.ratio / sum;
+            item.share = item.ratio / ratioSum;
             item.rowCount = row.length;
+            item.rowRatioSum = ratioSum;
         }
     }
 

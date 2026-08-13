@@ -20,6 +20,9 @@ Drop a **JPEG** or **PNG** file into the "website gallery images" folder.
   file dropped in the folder is silently skipped, so the photo simply won't appear.
 - Anything that isn't an image (a document, a sub-folder) is ignored, so a stray
   file in the folder won't break the page.
+- **Photos are shown whole — nothing is cropped.** Portrait, landscape and square
+  all sit together, and the page arranges them into neat rows for you, so you
+  don't need to crop or resize anything before uploading.
 
 ## Set the caption
 
@@ -27,16 +30,29 @@ The caption comes from the photo's Drive **description**:
 
 1. Click the photo once to select it.
 2. Open the details panel — the **ⓘ** (**View details**) button, top-right.
-3. Under **Details**, click **Add a description** and type **one line** of text.
+3. Under **Details**, click **Add a description** and type your caption.
 
-That one line is used **both** as the visible caption **and** as the accessibility
-text a screen reader announces, so write it as a normal sentence.
+That text is used **both** as the visible caption **and** as the description a
+screen reader reads out to someone who can't see the photo, so write it as a
+normal sentence — who is in the picture, where, and what is happening.
 
-Leave the description **blank** and the photo still shows — just with no caption
-under it. You're never forced to caption everything.
+**Every photo gets a caption, so it is worth writing one.** If you leave the
+description blank, the site falls back to the photo's filename — so
+`Outside museum.jpg` would show the caption "Outside museum". That is deliberate:
+it means a missing caption is visible to you on the page rather than silently
+leaving the photo with nothing for a screen reader to announce. It is not a good
+caption, though, so replace it when you spot one.
 
-> Keep captions to a single line. If you paste text with blank lines / paragraph
-> breaks in it, run it together into one sentence.
+Where the caption appears depends on the screen:
+
+- **On a phone**, under the photo, always visible.
+- **On a computer**, over the photo when you point at it — the photos sit close
+  together, so the caption stays out of the way until you want it. Click the photo
+  to open it large, and the caption sits beneath it there too.
+
+> Length is fine — a caption can run to a few sentences. Do avoid blank lines and
+> paragraph breaks: if you paste text that has them, run it together into one
+> paragraph.
 
 ## Set the order
 

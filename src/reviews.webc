@@ -33,7 +33,7 @@ metadata:
 		times per thumbnail.
 	-->
 	<section class="photo-gallery" id="gallery">
-		<div class="row" webc:for="row of $data.gallery.rows" :style="`--sum: ${row.reduce((s, item) => s + item.ratio, 0).toFixed(4)}`">
+		<div class="row" webc:for="row of $data.gallery.rows" :style="`--sum: ${row[0].rowRatioSum.toFixed(4)}`">
 			<figure class="gallery-item" webc:for="item of row" :style="`--r: ${item.ratio.toFixed(4)}`">
 				<a
 					class="thumb"
@@ -184,8 +184,11 @@ metadata:
 
 		/* ---- gallery (justified rows, tight mosaic — nothing is cropped) ---- */
 		.photo-gallery {
-			/* Must track ROW_GAP in src/_data/gallery.js, which packs against 8px. */
-			--gap: var(--space-2xs);
+			/* 8px, and it must stay 8px: ROW_GAP in src/_data/gallery.js packs the
+			   rows against this number, and the `sizes` attribute above subtracts
+			   it per gap. A token from the spacing scale was tried and rejected —
+			   --space-2xs is a 9-10px clamp, so the three would silently disagree. */
+			--gap: 0.5rem;
 
 			display: flex;
 			flex-direction: column;

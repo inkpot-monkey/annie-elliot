@@ -1,11 +1,6 @@
 {
-	"extends": ["html-validate:recommended"],
-	"rules": {
-		"no-inline-style": [
-			"error",
-			{
-				"allowedProperties": ["display", "--r", "--sum"]
-			}
-		]
-	}
+  "extends": ["html-validate:recommended"],
+  "rules": {
+    "no-inline-style": ["error", { "allowedProperties": ["--r", "--sum"] }]
+  }
 }

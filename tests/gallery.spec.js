@@ -1,37 +1,37 @@
 import { test, expect } from '@playwright/test';
 
-// Guards for the justified-row gallery on /reviews/. Everything here is derived
-// from the rendered page rather than hard-coded to eleven photos, except the one
-// table of `sizes` strings that ticket 03 measured — so the suite survives Annie
-// adding a photo to the Drive folder.
+import { isNarrow } from './helpers/viewport.js';
+
+// Guards for the justified-row gallery on /reviews/. Every assertion is derived
+// from the rendered page rather than pinned to the eleven photos that happen to
+// be in the Drive folder today — Annie owns that folder and adding, reordering or
+// replacing a photo must not red the suite.
 //
 // Two of these assertions exist because nothing else in the suite can see what
 // they check: axe passes whether or not the caption is announced once or three
 // times, and `tests/visual.spec.js` force-sets every lazy image to eager before
 // it screenshots, so it is blind to the loading attribute.
 
-const EXPECTED_THUMBNAIL_SIZES = [
-    '(min-width: 77.5rem) 303px, (min-width: 40rem) 26vw, 100vw',
-    '(min-width: 77.5rem) 303px, (min-width: 40rem) 26vw, 100vw',
-    '(min-width: 77.5rem) 538px, (min-width: 40rem) 47vw, 100vw',
-    '(min-width: 77.5rem) 542px, (min-width: 40rem) 47vw, 100vw',
-    '(min-width: 77.5rem) 610px, (min-width: 40rem) 53vw, 100vw',
-    '(min-width: 77.5rem) 538px, (min-width: 40rem) 47vw, 100vw',
-    '(min-width: 77.5rem) 303px, (min-width: 40rem) 26vw, 100vw',
-    '(min-width: 77.5rem) 303px, (min-width: 40rem) 26vw, 100vw',
-    '(min-width: 77.5rem) 265px, (min-width: 40rem) 23vw, 100vw',
-    '(min-width: 77.5rem) 265px, (min-width: 40rem) 23vw, 100vw',
-    '(min-width: 77.5rem) 615px, (min-width: 40rem) 54vw, 100vw',
-];
+// The thumbnail `sizes` formula, restated independently of the template so the
+// test is an oracle rather than an echo. Ticket 03 measured the eleven strings
+// this produced for the gallery as it stood — e.g. symposium1 at
+// `(min-width: 77.5rem) 615px, (min-width: 40rem) 54vw, 100vw` — but the strings
+// themselves are NOT pinned here: Annie owns the Drive folder, and adding or
+// reordering a photo re-packs the rows and legitimately changes every one of
+// them. What must hold is the formula.
+const PACK_WIDTH = 1160; // the container's content box at the 77.5rem cap
+const ROW_GAP = 8; // the mosaic gap, matching --gap in reviews.webc
+
+function expectedSizes({ share, rowCount }) {
+    const px = Math.round(share * (PACK_WIDTH - ROW_GAP * (rowCount - 1)));
+    const vw = Math.round(share * 100);
+    return `(min-width: 77.5rem) ${px}px, (min-width: 40rem) ${vw}vw, 100vw`;
+}
 
 // The ladder set per-image on both <eleventy-image> calls. eleventy-img
 // substitutes the source width for the first over-sized rung, so a photo may
 // emit a candidate below 1800 that is not on this list — but never above it.
 const MAX_CANDIDATE_WIDTH = 1800;
-
-// Below 40rem the mosaic becomes a single block column, so the row arithmetic
-// does not apply (the Mobile project runs at 393px).
-const MOSAIC_MIN_WIDTH = 640;
 
 /**
  * Force the thumbnails to load and wait for them.
@@ -164,7 +164,7 @@ test.describe('Reviews photo gallery (justified rows)', () => {
 
     test('each row fills its width exactly — the rows stay flush', async ({ page }, testInfo) => {
         test.skip(
-            (testInfo.project.use.viewport?.width ?? 0) < MOSAIC_MIN_WIDTH,
+            isNarrow(testInfo),
             'below 40rem the mosaic is a single block column, so there is no row to fill',
         );
 
@@ -229,12 +229,28 @@ test.describe('Reviews photo gallery (justified rows)', () => {
         }
     });
 
-    test('thumbnails declare the per-item sizes ticket 03 measured', async ({ page }) => {
-        const sizes = await page
-            .locator('.photo-gallery .gallery-item img')
-            .evaluateAll((imgs) => imgs.map((img) => img.getAttribute('sizes')));
+    test('every thumbnail declares the sizes its share of the row implies', async ({ page }) => {
+        // `share` is not in the DOM, so it is recovered the way the browser sees
+        // the layout: each item's ratio over its row's ratio sum.
+        const items = await page.locator('.photo-gallery .row').evaluateAll((rows) =>
+            rows.flatMap((row) => {
+                const cells = [...row.querySelectorAll('.gallery-item')];
+                const sum = cells.reduce(
+                    (t, el) => t + parseFloat(getComputedStyle(el).getPropertyValue('--r')),
+                    0,
+                );
+                return cells.map((el) => ({
+                    share: parseFloat(getComputedStyle(el).getPropertyValue('--r')) / sum,
+                    rowCount: cells.length,
+                    sizes: el.querySelector('img').getAttribute('sizes'),
+                }));
+            }),
+        );
 
-        expect(sizes).toEqual(EXPECTED_THUMBNAIL_SIZES);
+        expect(items.length).toBeGreaterThan(0);
+        for (const [i, item] of items.entries()) {
+            expect(item.sizes, `photo ${i}`).toBe(expectedSizes(item));
+        }
     });
 
     test('the lightbox sizes on its own height, and loads lazily', async ({ page }) => {
