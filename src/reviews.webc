@@ -292,7 +292,7 @@ metadata:
 			   column has room and there is no mosaic rhythm left to protect.
 			   `display: block` rather than `flex-direction: column` so that --r is
 			   unambiguously inert rather than quietly not mattering. */
-			@media (max-width: 40rem) {
+			@media (max-width: 39.9375rem) {
 				.row {
 					display: block;
 					max-width: none;
@@ -347,8 +347,10 @@ metadata:
 		   rather than in the markup because the site is JavaScript-free and every
 		   viewport is served the identical HTML; `pointer-events` makes the
 		   thumbnail inert so a tap cannot push a dead `#photo-N` onto the history
-		   stack. Same 40rem boundary as the single-column tier above. */
-		@media (max-width: 40rem) {
+		   stack. Same boundary as the single-column tier above — 39.9375rem, one
+		   pixel short of 40rem, so it cannot overlap the `(min-width: 40rem)`
+		   clause in the thumbnails' `sizes`. */
+		@media (max-width: 39.9375rem) {
 			.lightbox,
 			.lightbox:target {
 				display: none;
@@ -542,11 +544,11 @@ metadata:
 		   photo, easier to reach with a thumb)
 
 		   NOTE: currently unreachable — the block above hides .lightbox entirely
-		   below this same 40rem breakpoint. Kept, not deleted, because it is
+		   below 39.9375rem, and this block stops there. Kept, not deleted, because it is
 		   measured phone styling and the "no lightbox on phones" decision is one
 		   media query away from being reverted. Delete both together if that
 		   decision hardens. */
-		@media (max-width: 40rem) {
+		@media (max-width: 39.9375rem) {
 			.lightbox {
 				padding: var(--space-s);
 			}
