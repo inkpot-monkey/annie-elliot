@@ -16,18 +16,42 @@ metadata:
 
 	<h2>Photo Gallery</h2>
 
+	<!--
+		Justified rows. `gallery.js` freezes the row BREAKS at a 1160px container
+		(DP packer) and emits each photo's displayed aspect ratio as `--r`; each
+		row is a flex container whose items carry `flex: var(--r) 1 0`, so the
+		row's whole width is distributed in proportion to ratio and every item
+		lands at the identical height at its exact aspect. One packing serves
+		every viewport — the widths stay fluid, only the height changes.
+		Nothing is cropped, so there is no aspect-ratio and no object-fit.
+
+		The caption is the photo's text alternative and is rendered ONCE, by the
+		figcaption: the link takes a short positional name and points at it with
+		aria-describedby, and both <img> tags carry alt="". An aria-label on the
+		anchor does NOT suppress a descendant image's alt — Chrome exposes it as
+		its own node — which is how the same sentence used to be announced three
+		times per thumbnail.
+	-->
 	<section class="photo-gallery" id="gallery">
-		<figure class="gallery-item" webc:for="(item, i) of $data.gallery">
-			<a class="thumb" :href="`#photo-${i}`" :aria-label="`Enlarge photo: ${item.alt}`">
-				<img
-					webc:is="eleventy-image"
-					:src="item.src"
-					:alt="item.alt"
-					sizes="(min-width: 60rem) 20vw, 45vw"
-				/>
-			</a>
-			<figcaption webc:if="item.caption" @text="item.caption"></figcaption>
-		</figure>
+		<div class="row" webc:for="row of $data.gallery.rows" :style="`--sum: ${row.reduce((s, item) => s + item.ratio, 0).toFixed(4)}`">
+			<figure class="gallery-item" webc:for="item of row" :style="`--r: ${item.ratio.toFixed(4)}`">
+				<a
+					class="thumb"
+					:href="`#photo-${item.index}`"
+					:aria-label="`Enlarge photo ${item.index + 1} of ${$data.gallery.photos.length}`"
+					:aria-describedby="`cap-${item.index}`"
+				>
+					<img
+						webc:is="eleventy-image"
+						:src="item.src"
+						alt=""
+						width="400, 640, 800, 1300, 1800"
+						:sizes="`(min-width: 77.5rem) ${Math.round(item.share * (1160 - 8 * (item.rowCount - 1)))}px, (min-width: 40rem) ${Math.round(item.share * 100)}vw, 100vw`"
+					/>
+				</a>
+				<figcaption :id="`cap-${item.index}`" @text="item.caption"></figcaption>
+			</figure>
+		</div>
 	</section>
 
 	<!--
@@ -35,31 +59,39 @@ metadata:
 		:target when its `#photo-N` hash is active. Prev/next/close are plain anchors;
 		the backdrop is a full-viewport close link. Keeps the site script-free.
 	-->
-	<div class="lightbox" webc:for="(item, i) of $data.gallery" :id="`photo-${i}`" role="dialog" aria-label="Photo viewer">
+	<div class="lightbox" webc:for="(item, i) of $data.gallery.photos" :id="`photo-${i}`" role="dialog" aria-label="Photo viewer">
 		<a class="lb-backdrop" href="#gallery" aria-label="Close viewer" tabindex="-1"></a>
 		<figure class="lb-frame">
 			<div class="lb-stage">
 				<a class="lb-close" href="#gallery" aria-label="Close viewer">
 					<svg class="lb-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6 L18 18 M18 6 L6 18" /></svg>
 				</a>
-				<a class="lb-btn lb-prev" :href="`#photo-${(i - 1 + $data.gallery.length) % $data.gallery.length}`" aria-label="Previous photo">
+				<a class="lb-btn lb-prev" :href="`#photo-${(i - 1 + $data.gallery.photos.length) % $data.gallery.photos.length}`" aria-label="Previous photo">
 					<svg class="lb-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 6 L9 12 L15 18" /></svg>
 				</a>
+				<!--
+					The frame is capped at min(72rem, 100% - padding) and the image is
+					`max-height: 78vh; width: auto`, so its rendered width is HEIGHT-driven
+					— the old `90vw` over-declared by ~2.5x and pulled the source-width
+					rendition. `lazy` (not eager) because a lazy image inside `display: none`
+					never loads: this took ~5.9 MB of upfront payload off /reviews/ to zero,
+					and lb-pulse/lb-reveal already cover the moment it does load.
+				-->
 				<img
 					webc:is="eleventy-image"
 					:src="item.src"
-					:alt="item.alt"
-					sizes="90vw"
-					loading="eager"
-					fetchpriority="low"
+					alt=""
+					width="400, 640, 800, 1300, 1800"
+					:sizes="`min(72rem, 100vw - 2.5rem, 78vh * ${item.ratio.toFixed(4)})`"
+					loading="lazy"
 				/>
-				<a class="lb-btn lb-next" :href="`#photo-${(i + 1) % $data.gallery.length}`" aria-label="Next photo">
+				<a class="lb-btn lb-next" :href="`#photo-${(i + 1) % $data.gallery.photos.length}`" aria-label="Next photo">
 					<svg class="lb-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6 L15 12 L9 18" /></svg>
 				</a>
 			</div>
 			<figcaption class="lb-cap">
-				<span webc:if="item.caption" @text="item.caption"></span>
-				<span class="lb-count" @text="`${i + 1} / ${$data.gallery.length}`"></span>
+				<span @text="item.caption"></span>
+				<span class="lb-count" @text="`${i + 1} / ${$data.gallery.photos.length}`"></span>
 			</figcaption>
 		</figure>
 	</div>
@@ -150,33 +182,33 @@ metadata:
 			font-weight: normal;
 		}
 
-		/* ---- gallery (uniform 4:5 tiles; final row spread by space-around) ---- */
+		/* ---- gallery (justified rows, tight mosaic — nothing is cropped) ---- */
 		.photo-gallery {
+			/* Must track ROW_GAP in src/_data/gallery.js, which packs against 8px. */
+			--gap: var(--space-2xs);
+
 			display: flex;
-			flex-wrap: wrap;
-			justify-content: space-around;
-			gap: var(--space-l);
+			flex-direction: column;
+			gap: var(--gap);
+
+			.row {
+				display: flex;
+				gap: var(--gap);
+				/* Safety valve for a degenerate gallery. The packer has no choice with
+				   one or two photos, and a lone photo would become a ~1500px-tall
+				   full-width slab; this caps a row at 1.5x the target row height.
+				   Never fires for the current eleven (measured). */
+				max-width: calc(1.5 * 22rem * var(--sum));
+			}
 
 			.gallery-item {
 				margin: 0;
-				text-align: center;
-				/* Exact basis so full rows fill flush (no free space, so space-around
-				   is a no-op on them); the last, incomplete row keeps its items at
-				   their natural width and distributes the slack around them. */
-				flex: 0 1 calc((100% - 3 * var(--space-l)) / 4);
-			}
-
-			/* fewer columns as the viewport narrows */
-			@media (max-width: 60rem) {
-				.gallery-item {
-					flex-basis: calc((100% - 2 * var(--space-l)) / 3);
-				}
-			}
-
-			@media (max-width: 40rem) {
-				.gallery-item {
-					flex-basis: calc((100% - var(--space-l)) / 2);
-				}
+				position: relative; /* the caption scrim is positioned against this */
+				/* basis 0 + grow proportional to ratio => every item on the row lands
+				   at the same height at its exact aspect, with no calc and no rounding */
+				flex: var(--r) 1 0;
+				min-width: 0; /* REQUIRED — the default min-width:auto floors a flex item
+				                 at the image's intrinsic width and breaks the row */
 			}
 
 			/* thumbnails are anchor links (#photo-N) so the CSS-only lightbox opens */
@@ -196,24 +228,95 @@ metadata:
 				outline-offset: 4px;
 			}
 
+			/* No aspect-ratio and no object-fit: width:100% + height:auto IS the
+			   uncropped guarantee. No border or shadow either — the framed look
+			   stays on the review cards above, and this block is a tight mosaic. */
 			.thumb img {
 				display: block;
 				width: 100%;
 				height: auto;
-				aspect-ratio: 4 / 5; /* uniform tiles — full image shown in the lightbox */
-				object-fit: cover;
-				border: 1px solid var(--light-beige);
-				box-shadow: 3px 3px 10px var(--shadow-light);
 			}
 
+			/* The scrim covers as much of the photo as its own text needs, rather
+			   than a fixed strip: these captions run 99-310 characters, and a
+			   3-line clamp on a 232px-wide portrait tile dropped ~40% of the text. */
 			figcaption {
-				margin-top: var(--space-s);
+				position: absolute;
+				inset-inline: 0;
+				bottom: 0;
+				max-height: 100%;
+				margin: 0;
+				padding: 2.25rem 0.9rem 0.85rem;
 				font-family: var(--font-italic);
 				font-style: italic;
 				font-size: var(--step--1);
-				color: var(--taupe); /* light-page colour — NOT the prototype's light-beige */
-				line-height: 1.4;
+				line-height: 1.35;
+				color: var(--cream);
+				background: linear-gradient(
+					to top,
+					rgba(20, 16, 8, 0.93) 0%,
+					rgba(20, 16, 8, 0.88) 55%,
+					rgba(20, 16, 8, 0) 100%
+				);
 				text-wrap: pretty;
+				overflow: hidden;
+				opacity: 0;
+				transition: opacity 180ms ease;
+				pointer-events: none; /* never intercept the click to the lightbox */
+			}
+
+			/* Two conditions, both necessary. `hover` because a scrim you cannot
+			   reveal is dead weight on touch. `min-width: 60rem` because below it
+			   the tiles are too small to hold these captions — measured, the scrim
+			   swells to 95% of the photo at a 761px container and starts truncating
+			   again by 647px. Nothing is lost where it is suppressed: the lightbox
+			   carries the same text. */
+			@media (hover: hover) and (min-width: 60rem) {
+				.gallery-item:hover figcaption,
+				.gallery-item:focus-within figcaption {
+					opacity: 1;
+				}
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				figcaption {
+					transition: none;
+				}
+			}
+
+			/* Phones: one full-width column. No hover, so the scrim would never be
+			   reachable — drop it and set the caption below the photo, where a single
+			   column has room and there is no mosaic rhythm left to protect.
+			   `display: block` rather than `flex-direction: column` so that --r is
+			   unambiguously inert rather than quietly not mattering. */
+			@media (max-width: 40rem) {
+				.row {
+					display: block;
+					max-width: none;
+				}
+
+				.gallery-item {
+					width: 100%;
+				}
+
+				/* The caption belongs to the photo above it, so it sits tight
+				   under that photo and the mosaic gap moves to between the pairs.
+				   The other way round reads as a caption floating between two
+				   photos, closer to the one it does not describe. */
+				.gallery-item + .gallery-item {
+					margin-top: var(--space-s);
+				}
+
+				figcaption {
+					position: static;
+					opacity: 1;
+					padding: var(--gap) 0 0;
+					background: none;
+					color: var(--taupe); /* light-page colour */
+					line-height: 1.4;
+					overflow: visible;
+					transition: none;
+				}
 			}
 		}
 

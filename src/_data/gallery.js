@@ -12,6 +12,15 @@ const SKIP_MIME = new Set(["image/heic", "image/heif"]);
 // Leading digits + one separator (- _ . or space). Bare "01name" = no prefix.
 const PREFIX_RE = /^(\d+)\s*[-_. ]\s*(.*)$/;
 
+// The desktop container: --grid-max-width (77.5rem) less 2 x --grid-gutter
+// (2.5rem at that size) = 72.5rem = 1160px at a 16px root. Row BREAKS are frozen
+// at this width; the widths themselves stay fluid (each row is a flex container
+// whose items carry `flex: var(--r) 1 0`), so rows remain flush and uncropped at
+// every container width — measured 647-1240px in the ticket-02 prototype.
+const PACK_WIDTH = 1160;
+const TARGET_ROW_HEIGHT = 352; // 22rem
+const ROW_GAP = 8; // 0.5rem — must track the gallery's --gap in reviews.webc
+
 function parseFilename(name) {
     const dot = name.lastIndexOf(".");
     const base = dot > 0 ? name.slice(0, dot) : name; // strip extension
@@ -20,6 +29,82 @@ function parseFilename(name) {
     const stem = m ? m[2] : base;
     const cleaned = stem.replace(/[-_]+/g, " ").trim(); // "cleaned filename"
     return { order, cleaned };
+}
+
+/**
+ * The aspect ratio the photo is *displayed* at, once eleventy-img/sharp has
+ * baked EXIF orientation into the pixels (it does, and then strips the tag —
+ * verified empirically in ticket 01).
+ *
+ * Drive's imageMediaMetadata width/height are the STORED orientation and
+ * `rotation` is quarter-turns clockwise, so an odd rotation swaps the axes.
+ * Missing dimensions fall back to 1:1 with a warning: never fail the build and
+ * never drop a photo Annie has just uploaded.
+ */
+function displayRatio(meta, name) {
+    const w = meta?.width;
+    const h = meta?.height;
+
+    if (!w || !h) {
+        console.warn(
+            `[gallery] no image dimensions from Drive, assuming 1:1: ${name}`,
+        );
+        return 1;
+    }
+
+    const swap = (meta.rotation ?? 0) % 2 !== 0;
+    return swap ? h / w : w / h;
+}
+
+/**
+ * Justified-row packing (the Flickr/Google-Photos shape), O(n²) DP — 121
+ * iterations for 11 photos. Minimises the sum of squared log-deviation of each
+ * row's height from the target, log so "twice too tall" and "half as tall" cost
+ * the same. Every row is costed INCLUDING the last, which is what makes the
+ * final row come out flush and near-target instead of ragged — the map's
+ * "stretch the last row, clamped to 1.5x" rule then never has to fire.
+ *
+ * Greedy was tried in the prototype and is worse: it commits to a locally-good
+ * row that strands the tail (3+2+4+2, spread 0.90-1.31x, against DP's 3+2+3+3
+ * at 1.00-1.16x).
+ */
+// NOT exported. An Eleventy `_data/*.js` module with any named export beside
+// `default` is handed to templates as the whole module namespace rather than the
+// default export's value — silently, so `$data.gallery` becomes
+// `{default, packRows}` and every loop renders "[object Object]". The packer is
+// covered through this module's public seam in tests/unit/gallery.test.js.
+function packRows(
+    items,
+    W = PACK_WIDTH,
+    target = TARGET_ROW_HEIGHT,
+    gap = ROW_GAP,
+) {
+    const n = items.length;
+    const height = (i, j) => {
+        let sum = 0;
+        for (let k = i; k < j; k++) sum += items[k].ratio;
+        return (W - gap * (j - i - 1)) / sum;
+    };
+
+    const cost = new Array(n + 1).fill(Infinity);
+    const from = new Array(n + 1).fill(-1);
+    cost[0] = 0;
+
+    for (let j = 1; j <= n; j++) {
+        for (let i = 0; i < j; i++) {
+            if (cost[i] === Infinity) continue;
+            const d = Math.log(height(i, j) / target);
+            const c = cost[i] + d * d;
+            if (c < cost[j]) {
+                cost[j] = c;
+                from[j] = i;
+            }
+        }
+    }
+
+    const rows = [];
+    for (let j = n; j > 0; j = from[j]) rows.unshift(items.slice(from[j], j));
+    return rows; // empty input -> [] (the reconstruction loop never runs)
 }
 
 export default async function () {
@@ -36,7 +121,9 @@ export default async function () {
     const url =
         `https://www.googleapis.com/drive/v3/files` +
         `?q=${encodeURIComponent(q)}` +
-        `&fields=${encodeURIComponent("files(id,name,description,mimeType,modifiedTime)")}` +
+        // imageMediaMetadata rides along on the same call with only the API key,
+        // so build-time aspect ratios cost no extra request.
+        `&fields=${encodeURIComponent("files(id,name,description,mimeType,modifiedTime,imageMediaMetadata(width,height,rotation))")}` +
         `&orderBy=name&pageSize=1000&key=${apiKey}`;
 
     const res = await fetch(url);
@@ -50,7 +137,7 @@ export default async function () {
 
     const { files = [] } = await res.json();
 
-    return files
+    const photos = files
         .filter((f) => f.mimeType?.startsWith("image/"))
         .filter((f) => {
             if (SKIP_MIME.has(f.mimeType)) {
@@ -62,13 +149,16 @@ export default async function () {
         .map((f) => {
             const { order, cleaned } = parseFilename(f.name);
             const description = (f.description || "").trim();
-            // caption = description verbatim ("" if blank);
-            // alt = description, else cleaned filename, else the raw filename —
-            // never empty (axe stays green even for a pathological name like "01 - .jpg").
+            // ONE never-empty field. The Drive description is the photo's text
+            // alternative (ticket 05), rendered once as the figcaption — both
+            // <img> tags carry alt="", which is only safe if a figcaption always
+            // exists to be that alternative. Falling back to the cleaned filename
+            // is a poor caption, but it is visible to Annie on the page in a way
+            // a silent alt never was.
             return {
                 id: f.id,
-                alt: description || cleaned || f.name,
-                caption: description,
+                caption: description || cleaned || f.name,
+                ratio: displayRatio(f.imageMediaMetadata, f.name),
                 // Remote src: eleventy-img fetches+caches+transcodes.
                 // modifiedTime = cache-buster.
                 src:
@@ -85,5 +175,25 @@ export default async function () {
             if (b._order != null) return 1;
             return a._name.localeCompare(b._name);
         })
-        .map(({ _order, _name, ...item }) => item); // emit only {id, alt, caption, src}
+        .map(({ _order, _name, ...item }, index) => ({ ...item, index }));
+
+    const rows = packRows(photos);
+
+    // `share` is the fraction of its row's width the photo occupies, and
+    // `rowCount` how many photos share that row — together the input to the
+    // per-item `sizes` strings composed in reviews.webc. Set here because only
+    // the packer knows the row (and because a nested `webc:for` does not keep the
+    // outer loop's variable in scope for a descendant's attributes); the
+    // breakpoint constants stay in the template, next to the CSS defining them.
+    for (const row of rows) {
+        const sum = row.reduce((s, item) => s + item.ratio, 0);
+        for (const item of row) {
+            item.share = item.ratio / sum;
+            item.rowCount = row.length;
+        }
+    }
+
+    // `rows` (grouped, for the mosaic) and `photos` (flat, for the lightbox and
+    // the #photo-N anchors) hold the SAME objects.
+    return { photos, rows };
 }
