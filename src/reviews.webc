@@ -337,6 +337,26 @@ metadata:
 			display: grid;
 		}
 
+		/* ---- no lightbox on phones ----
+		   Under 40rem the gallery is already a single full-width column with the
+		   caption printed below each photo, so the overlay only added a modal to
+		   dismiss — it showed the same photo at the same width. Suppressed here
+		   rather than in the markup because the site is JavaScript-free and every
+		   viewport is served the identical HTML; `pointer-events` makes the
+		   thumbnail inert so a tap cannot push a dead `#photo-N` onto the history
+		   stack. Same 40rem boundary as the single-column tier above. */
+		@media (max-width: 40rem) {
+			.lightbox,
+			.lightbox:target {
+				display: none;
+			}
+
+			.photo-gallery .thumb {
+				pointer-events: none;
+				cursor: default;
+			}
+		}
+
 		/* full-viewport click-catcher behind the frame — clicking it closes */
 		.lb-backdrop {
 			position: fixed;
@@ -516,7 +536,13 @@ metadata:
 
 		/* mobile: reclaim the fluid space-l padding so the photo fills more of the
 		   screen, and drop the prev/next controls to the bottom corners (out of the
-		   photo, easier to reach with a thumb) */
+		   photo, easier to reach with a thumb)
+
+		   NOTE: currently unreachable — the block above hides .lightbox entirely
+		   below this same 40rem breakpoint. Kept, not deleted, because it is
+		   measured phone styling and the "no lightbox on phones" decision is one
+		   media query away from being reverted. Delete both together if that
+		   decision hardens. */
 		@media (max-width: 40rem) {
 			.lightbox {
 				padding: var(--space-s);

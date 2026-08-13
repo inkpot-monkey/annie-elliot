@@ -4,6 +4,17 @@ import { test, expect } from '@playwright/test';
 // revealed by `:target` when its hash is active, and prev/next/close are plain
 // anchors. Everything below is derived from the rendered thumbnails, so the suite
 // stays green regardless of how many photos are in Annie's Drive folder.
+//
+// It is also suppressed below 40rem: under that width the gallery is a single
+// full-width column with the caption printed below each photo, so the overlay
+// showed the same photo at the same width. Every test that opens an overlay
+// therefore runs only where one exists; the Mobile project (Pixel 5, 393px) is
+// covered instead by the "no lightbox on a phone" test at the bottom.
+const LIGHTBOX_MIN_WIDTH = 640;
+
+const isNarrow = (testInfo) =>
+    (testInfo.project.use.viewport?.width ?? 0) < LIGHTBOX_MIN_WIDTH;
+
 test.describe('Reviews gallery lightbox (CSS-only :target)', () => {
     test.beforeEach(async ({ page }) => {
         await page.goto('/reviews/');
@@ -17,7 +28,8 @@ test.describe('Reviews gallery lightbox (CSS-only :target)', () => {
         expect(tags.every((t) => t === 'A')).toBe(true);
     });
 
-    test('an overlay stays hidden until its thumbnail is activated', async ({ page }) => {
+    test('an overlay stays hidden until its thumbnail is activated', async ({ page }, testInfo) => {
+        test.skip(isNarrow(testInfo), 'the lightbox is suppressed below 40rem');
         const thumbs = page.locator('.photo-gallery .thumb');
         const n = await thumbs.count();
         const first = page.locator('#photo-0');
@@ -31,7 +43,8 @@ test.describe('Reviews gallery lightbox (CSS-only :target)', () => {
         expect(src).toBeTruthy();
     });
 
-    test('prev / next navigate with wrap-around', async ({ page }) => {
+    test('prev / next navigate with wrap-around', async ({ page }, testInfo) => {
+        test.skip(isNarrow(testInfo), 'the lightbox is suppressed below 40rem');
         const thumbs = page.locator('.photo-gallery .thumb');
         const n = await thumbs.count();
 
@@ -56,11 +69,11 @@ test.describe('Reviews gallery lightbox (CSS-only :target)', () => {
         await expect(page.locator('#photo-0')).toBeVisible();
     });
 
-    test('the open overlay matches its snapshot', async ({ page }) => {
+    test('the open overlay matches its snapshot', async ({ page }, testInfo) => {
+        test.skip(isNarrow(testInfo), 'the lightbox is suppressed below 40rem');
         // Visual guard for the lightbox layout: the photo must fit the viewport
-        // (no clipped edge) and the controls sit where the CSS puts them — on
-        // Desktop the prev/next arrows are centred, on Mobile they drop to the
-        // bottom corners. Runs for both the Desktop and Mobile projects.
+        // (no clipped edge) and the prev/next arrows sit centred where the CSS
+        // puts them.
         // The overlay is slightly translucent, so the gallery thumbnails behind it
         // stay faintly visible. Force every image eager and wait for them all to
         // finish first, otherwise a thumbnail streaming in mid-capture keeps the
@@ -99,7 +112,8 @@ test.describe('Reviews gallery lightbox (CSS-only :target)', () => {
         await expect(page).toHaveScreenshot('lightbox-open.png', { timeout: 15000 });
     });
 
-    test('the close control dismisses the lightbox', async ({ page }) => {
+    test('the close control dismisses the lightbox', async ({ page }, testInfo) => {
+        test.skip(isNarrow(testInfo), 'the lightbox is suppressed below 40rem');
         const thumbs = page.locator('.photo-gallery .thumb');
         const overlay = page.locator('#photo-0');
 
@@ -109,7 +123,8 @@ test.describe('Reviews gallery lightbox (CSS-only :target)', () => {
         await expect(overlay).toBeHidden();
     });
 
-    test('a backdrop click closes the lightbox', async ({ page }) => {
+    test('a backdrop click closes the lightbox', async ({ page }, testInfo) => {
+        test.skip(isNarrow(testInfo), 'the lightbox is suppressed below 40rem');
         const thumbs = page.locator('.photo-gallery .thumb');
         const overlay = page.locator('#photo-0');
 
@@ -119,5 +134,20 @@ test.describe('Reviews gallery lightbox (CSS-only :target)', () => {
         // top-left corner that is clear of the frame and the fixed controls.
         await overlay.locator('.lb-backdrop').click({ position: { x: 5, y: 5 } });
         await expect(overlay).toBeHidden();
+    });
+
+    test('a phone gets no lightbox at all', async ({ page }, testInfo) => {
+        test.skip(!isNarrow(testInfo), 'this is the sub-40rem behaviour');
+
+        // The markup is identical at every width — the site is JavaScript-free,
+        // so one HTML file serves every viewport and CSS alone decides this.
+        await expect(page.locator('.lightbox').first()).toBeHidden();
+
+        // The thumbnail is inert, so a tap cannot push a dead #photo-N onto the
+        // history stack. force:true because pointer-events:none is the mechanism.
+        const before = page.url();
+        await page.locator('.photo-gallery .thumb').first().click({ force: true });
+        await expect(page.locator('#photo-0')).toBeHidden();
+        expect(page.url()).toBe(before);
     });
 });
