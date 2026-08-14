@@ -1,0 +1,81 @@
+{
+  "_comment": [
+    "Stands in for the Google Calendar events.list response when FIXTURE_DATA is set.",
+    "Shape mirrors the fields calendar.js destructures, so the real formatting,",
+    "multi-day handling and future/past partition all still run against it.",
+    "",
+    "calendar.js splits on `new Date()` at build time, so fixture dates are parked",
+    "far either side of now — past events in 2019, future events in 2099 — and the",
+    "partition cannot flip as real time passes. That drift is what made the events",
+    "baseline unstable in the first place.",
+    "",
+    "Between them these cover every branch the template renders: timed and all-day",
+    "events, a multi-day span (Google's all-day `end.date` is exclusive, so the",
+    "13th-17th entry must display as ending on the 16th), events with and without",
+    "a location, and enough past events to keep the faded `.is-past` styling under",
+    "the accessibility check."
+  ],
+  "timeZone": "Europe/London",
+  "items": [
+    {
+      "status": "confirmed",
+      "summary": "Bookshop Reading",
+      "description": "An evening reading and Q&A, followed by signing.",
+      "location": "The Assembly Rooms, High Street, Exampleton, EX1 2AB, UK",
+      "start": { "dateTime": "2099-03-04T19:00:00+00:00", "timeZone": "Europe/London" },
+      "end": { "dateTime": "2099-03-04T20:30:00+00:00", "timeZone": "Europe/London" }
+    },
+    {
+      "status": "confirmed",
+      "summary": "Literary Festival Weekend",
+      "description": "A weekend of talks, panels and workshops across the festival site.",
+      "location": "Riverside Pavilion, Mill Lane, Exampleton, EX2 3CD, UK",
+      "start": { "date": "2099-06-13" },
+      "end": { "date": "2099-06-17" }
+    },
+    {
+      "status": "confirmed",
+      "summary": "Library Talk",
+      "description": "A lunchtime talk on researching a historical novel.",
+      "start": { "date": "2099-09-21" },
+      "end": { "date": "2099-09-22" }
+    },
+    {
+      "status": "cancelled",
+      "summary": "Cancelled Event (must never render)",
+      "description": "Filtered out by calendar.js before the template ever sees it.",
+      "start": { "dateTime": "2099-10-01T18:00:00+00:00" },
+      "end": { "dateTime": "2099-10-01T19:00:00+00:00" }
+    },
+    {
+      "status": "confirmed",
+      "summary": "Museum Lecture",
+      "description": "A lecture to members of the museum's literary society, followed by a drinks reception in the reading room. The talk covered the research behind the novel and the archival sources it draws on.",
+      "location": "The Old Museum, Museum Square, Exampleton, EX3 4EF, UK",
+      "start": { "dateTime": "2019-11-08T18:30:00+00:00", "timeZone": "Europe/London" },
+      "end": { "dateTime": "2019-11-08T20:00:00+00:00", "timeZone": "Europe/London" }
+    },
+    {
+      "status": "confirmed",
+      "summary": "Writers' Circle Visit",
+      "description": "A workshop session with a local writers' circle.",
+      "location": "Parish Hall, Church Road, Exampleton, EX4 5GH, UK",
+      "start": { "dateTime": "2019-07-16T14:00:00+01:00", "timeZone": "Europe/London" },
+      "end": { "dateTime": "2019-07-16T16:00:00+01:00", "timeZone": "Europe/London" }
+    },
+    {
+      "status": "confirmed",
+      "summary": "Summer Book Fair",
+      "description": "A stall at the annual book fair, with readings on the hour.",
+      "start": { "date": "2019-05-04" },
+      "end": { "date": "2019-05-06" }
+    },
+    {
+      "status": "confirmed",
+      "summary": "Radio Interview",
+      "description": "A morning interview about the book's publication.",
+      "start": { "dateTime": "2019-02-12T09:15:00+00:00", "timeZone": "Europe/London" },
+      "end": { "dateTime": "2019-02-12T09:45:00+00:00", "timeZone": "Europe/London" }
+    }
+  ]
+}

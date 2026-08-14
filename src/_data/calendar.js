@@ -1,8 +1,24 @@
 import dotenv from "dotenv";
+import { readFile } from "node:fs/promises";
 
 dotenv.config();
 
-export default async function () {
+/**
+ * The raw events.list payload. Under FIXTURE_DATA it comes from a checked-in
+ * file instead of the live calendar, so the visual baselines stop drifting every
+ * time Annie adds an event (see tests/fixtures/calendar-events.json). Only the
+ * fetch is swapped: everything below still formats and partitions for real.
+ */
+async function fetchEvents() {
+    if (process.env.FIXTURE_DATA) {
+        return JSON.parse(
+            await readFile(
+                new URL("../../tests/fixtures/calendar-events.json", import.meta.url),
+                "utf8",
+            ),
+        );
+    }
+
     const calendarId = "author.annie.elliot@gmail.com";
     const apiKey = process.env.GOOGLE_KEY;
 
@@ -20,7 +36,11 @@ export default async function () {
         );
     }
 
-    const data = await response.json();
+    return response.json();
+}
+
+export default async function () {
+    const data = await fetchEvents();
     const calendarTimeZone = data.timeZone || 'Europe/London';
     const events = data.items
         .filter((event) => event.status !== "cancelled" && event.start)

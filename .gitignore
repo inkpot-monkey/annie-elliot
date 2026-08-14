@@ -1,5 +1,7 @@
 # Generated files
 dist/
+# Fixture build served to Playwright (see playwright.config.js) — never deployable
+dist-test/
 packages/*/visualize/*
 
 # Ignore local environment secrets

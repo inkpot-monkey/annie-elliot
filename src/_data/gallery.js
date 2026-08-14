@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import { readFile } from "node:fs/promises";
 
 dotenv.config();
 
@@ -104,7 +105,22 @@ function packRows(items) {
     return rows; // empty input -> [] (the reconstruction loop never runs)
 }
 
-export default async function () {
+/**
+ * The raw files.list payload. Under FIXTURE_DATA it comes from a checked-in file
+ * instead of the live Drive folder, so the visual baselines stop drifting every
+ * time Annie adds a photo (see tests/fixtures/drive-files.json). Only the fetch
+ * is swapped: the filtering, ordering, ratio and packing below all still run.
+ */
+async function listFiles() {
+    if (process.env.FIXTURE_DATA) {
+        return JSON.parse(
+            await readFile(
+                new URL("../../tests/fixtures/drive-files.json", import.meta.url),
+                "utf8",
+            ),
+        );
+    }
+
     // One Google API key serves both the Drive (gallery) and Calendar APIs — they
     // share a Google Cloud project, so GOOGLE_KEY is the single key for both here
     // and in calendar.js.
@@ -132,7 +148,29 @@ export default async function () {
         );
     }
 
-    const { files = [] } = await res.json();
+    return res.json();
+}
+
+/**
+ * What eleventy-img is pointed at. Fixture photos are files in the repo, so they
+ * resolve to a path rather than a Drive media URL — the transcode pipeline treats
+ * both the same.
+ */
+function mediaSrc(file, apiKey) {
+    if (process.env.FIXTURE_DATA) {
+        return `./tests/fixtures/gallery-images/${file.name}`;
+    }
+
+    // Remote src: eleventy-img fetches+caches+transcodes.
+    // modifiedTime = cache-buster.
+    return (
+        `https://www.googleapis.com/drive/v3/files/${file.id}` +
+        `?alt=media&key=${apiKey}&v=${encodeURIComponent(file.modifiedTime)}`
+    );
+}
+
+export default async function () {
+    const { files = [] } = await listFiles();
 
     const photos = files
         .filter((f) => f.mimeType?.startsWith("image/"))
@@ -156,11 +194,7 @@ export default async function () {
                 id: f.id,
                 caption: description || cleaned || f.name,
                 ratio: displayRatio(f.imageMediaMetadata, f.name),
-                // Remote src: eleventy-img fetches+caches+transcodes.
-                // modifiedTime = cache-buster.
-                src:
-                    `https://www.googleapis.com/drive/v3/files/${f.id}` +
-                    `?alt=media&key=${apiKey}&v=${encodeURIComponent(f.modifiedTime)}`,
+                src: mediaSrc(f, process.env.GOOGLE_KEY),
                 _order: order,
                 _name: f.name,
             };

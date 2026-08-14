@@ -1,0 +1,105 @@
+{
+  "_comment": [
+    "Stands in for the Google Drive files.list response when FIXTURE_DATA is set.",
+    "Shape mirrors the `fields` gallery.js asks for, so the real parsing, ordering,",
+    "ratio and caption-fallback code all still run against it.",
+    "",
+    "The eleven ratios match the live folder, so the packer lays these out as the",
+    "same 3+2+3+3 rows the production page uses. `imageMediaMetadata` is the STORED",
+    "orientation: 04 carries rotation:1 to exercise the axis swap, so its metadata",
+    "reads 601x800 while the file on disk is the displayed 800x601.",
+    "",
+    "10 deliberately has no description: that is the caption falling back to the",
+    "cleaned filename, and the baseline should show what that looks like."
+  ],
+  "files": [
+    {
+      "id": "fixture-01",
+      "name": "01-portrait-one.png",
+      "description": "The author with a first proof copy of the novel at a literary lunch",
+      "mimeType": "image/png",
+      "modifiedTime": "2026-01-05T09:00:00.000Z",
+      "imageMediaMetadata": { "width": 600, "height": 800, "rotation": 0 }
+    },
+    {
+      "id": "fixture-02",
+      "name": "02-portrait-two.png",
+      "description": "In costume outside an independent bookshop on publication day, beside images of the character as she appears before and after the separation",
+      "mimeType": "image/png",
+      "modifiedTime": "2026-01-05T09:01:00.000Z",
+      "imageMediaMetadata": { "width": 600, "height": 800, "rotation": 0 }
+    },
+    {
+      "id": "fixture-03",
+      "name": "03-landscape-one.png",
+      "description": "With the honorary secretary and chair of a local literary society branch",
+      "mimeType": "image/png",
+      "modifiedTime": "2026-01-05T09:02:00.000Z",
+      "imageMediaMetadata": { "width": 800, "height": 600, "rotation": 0 }
+    },
+    {
+      "id": "fixture-04",
+      "name": "04-landscape-two.png",
+      "description": "Telling the story to members and guests at a country house evening",
+      "mimeType": "image/png",
+      "modifiedTime": "2026-01-05T09:03:00.000Z",
+      "imageMediaMetadata": { "width": 601, "height": 800, "rotation": 1 }
+    },
+    {
+      "id": "fixture-05",
+      "name": "05-wide-one.png",
+      "description": "Speaking at a regional writing festival about the different paths to publication",
+      "mimeType": "image/png",
+      "modifiedTime": "2026-01-05T09:04:00.000Z",
+      "imageMediaMetadata": { "width": 900, "height": 600, "rotation": 0 }
+    },
+    {
+      "id": "fixture-06",
+      "name": "06-landscape-three.png",
+      "description": "Signing books at a fellowship meeting with the branch chairman and vice president",
+      "mimeType": "image/png",
+      "modifiedTime": "2026-01-05T09:05:00.000Z",
+      "imageMediaMetadata": { "width": 800, "height": 600, "rotation": 0 }
+    },
+    {
+      "id": "fixture-07",
+      "name": "07-portrait-three.png",
+      "description": "At a museum in London with the biographer whose work formed the basis of the research",
+      "mimeType": "image/png",
+      "modifiedTime": "2026-01-05T09:06:00.000Z",
+      "imageMediaMetadata": { "width": 600, "height": 800, "rotation": 0 }
+    },
+    {
+      "id": "fixture-08",
+      "name": "08-portrait-four.png",
+      "description": "Sitting on the tiled floor that was photographed for the front cover",
+      "mimeType": "image/png",
+      "modifiedTime": "2026-01-05T09:07:00.000Z",
+      "imageMediaMetadata": { "width": 600, "height": 800, "rotation": 0 }
+    },
+    {
+      "id": "fixture-09",
+      "name": "09-portrait-five.png",
+      "description": "Visiting an exhibition following a successful book launch",
+      "mimeType": "image/png",
+      "modifiedTime": "2026-01-05T09:08:00.000Z",
+      "imageMediaMetadata": { "width": 600, "height": 800, "rotation": 0 }
+    },
+    {
+      "id": "fixture-10",
+      "name": "10-portrait-six.png",
+      "description": "",
+      "mimeType": "image/png",
+      "modifiedTime": "2026-01-05T09:09:00.000Z",
+      "imageMediaMetadata": { "width": 600, "height": 800, "rotation": 0 }
+    },
+    {
+      "id": "fixture-11",
+      "name": "11-wide-two.png",
+      "description": "At an academic symposium with professors of English and literature from four universities",
+      "mimeType": "image/png",
+      "modifiedTime": "2026-01-05T09:10:00.000Z",
+      "imageMediaMetadata": { "width": 871, "height": 500, "rotation": 0 }
+    }
+  ]
+}

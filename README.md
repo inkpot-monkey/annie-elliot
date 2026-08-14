@@ -48,6 +48,40 @@ We use visual regression testing to catch unintended visual changes across the s
     npm run test:update
     ```
 
+#### Fixture data
+
+Two pages are built from live remote data: the reviews gallery reads a Google
+Drive folder and the events page reads a Google Calendar. Screenshotting those
+directly meant the baselines drifted whenever Annie added a photo or an event —
+and the events page drifted on its own regardless, because `calendar.js` splits
+future from past against `new Date()` at build time, so an event silently moved
+sections as it passed.
+
+Playwright therefore builds with `FIXTURE_DATA=1`, which swaps just the two
+`fetch` calls for checked-in files:
+
+| Fixture | Stands in for |
+| --- | --- |
+| `tests/fixtures/drive-files.json` + `gallery-images/` | the Drive `files.list` response |
+| `tests/fixtures/calendar-events.json` | the Calendar `events.list` response |
+
+Only the fetch is swapped. Filename ordering, caption fallback, EXIF-rotation
+handling, the justified-row packer, date formatting and the future/past split all
+still run for real — the fixture photos carry the same eleven aspect ratios as the
+live folder, so they pack into the same 3+2+3+3 rows, and the fixture events sit
+in 2019 and 2099 so the partition cannot flip.
+
+The test server runs on **port 8081 with its own `dist-test/` output**, kept
+separate from `npm run dev` on 8080 so a live-data build can never be reused for a
+screenshot run, and so a fixture build is never left where a deploy might find it.
+A consequence worth knowing: the suite no longer needs `GOOGLE_KEY` and runs
+offline.
+
+To refresh a fixture, edit the JSON by hand — it is a trimmed copy of the API
+response shape. Adding a gallery photo also needs an image in
+`tests/fixtures/gallery-images/` whose real dimensions match the
+`imageMediaMetadata` you declare, or the packed ratio will disagree with the file.
+
 ### 2. Accessibility Testing
 
 We use `@axe-core/playwright` to ensure the website is accessible to all users and complies with WCAG standards (A, AA).
