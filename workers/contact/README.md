@@ -62,7 +62,10 @@ enabled).
 
 ## Tests
 
-`test/index.spec.js` is **still the generated Hello World scaffold** and does not
-test this worker — it asserts the response body is `"Hello World!"`, which it
-never is. `npm test` fails. Treat the file as a stub to be replaced, not as
+This worker has **no tests** and there is no `npm test`. It carried only the
+generated Hello World scaffold, which asserted a `"Hello World!"` response body
+this worker never returns; that has been deleted rather than left to look like
 coverage.
+
+Worth covering if you add them: the origin check, the method check, and that a
+failed send still redirects to `/email-failure/` rather than surfacing an error.

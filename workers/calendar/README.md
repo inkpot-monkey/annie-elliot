@@ -57,6 +57,6 @@ Cloudflare dashboard (`observability` is enabled).
 ## Known cruft
 
 - `@octokit/core` is a declared dependency and is not used.
-- `test/index.spec.js` is the generated Hello World scaffold. It calls
-  `worker.fetch()`, which does not exist here, so `npm test` fails. Treat it as a
-  stub, not as coverage.
+- This worker has **no tests**. It had only the generated Hello World scaffold,
+  which called a `worker.fetch()` that does not exist here; it has been deleted
+  rather than left to look like coverage. There is no `npm test`.
