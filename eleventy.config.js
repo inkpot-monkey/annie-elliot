@@ -1,24 +1,12 @@
 import pluginWebc from "@11ty/eleventy-plugin-webc";
 import { eleventyImagePlugin } from "@11ty/eleventy-img";
 import dotenv from "dotenv";
-import { getStructuredData } from "./src/_data/structuredData.js";
 
 dotenv.config();
 
 /** @param {import('@11ty/eleventy').UserConfig} eleventyConfig */
 export default function (eleventyConfig) {
 	eleventyConfig.ignores.add("*.md");
-
-	// Add filter for structured data
-	eleventyConfig.addFilter("getStructuredData", function (page, metadata) {
-		return getStructuredData(page, metadata);
-	});
-
-	// Shortcode to render raw JSON-LD to bypass WebC escaping
-	eleventyConfig.addShortcode("renderStructuredData", function (json) {
-		if (!json) return "";
-		return `<script type="application/ld+json">${json}</script>`;
-	});
 
 	// Add date filter for sitemap
 	eleventyConfig.addFilter("date", function (date, format) {
