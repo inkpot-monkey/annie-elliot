@@ -1,4 +1,4 @@
-import { getStructuredData } from "./_data/structuredData.js";
+import { getStructuredData } from "./_lib/structuredData.js";
 
 export default {
 	layout: "./html.webc",

@@ -1,3 +1,10 @@
+/**
+ * Deliberately not in `src/_data/`. Every `.js` there is a data file, and one
+ * exporting no `default` is handed to templates as the whole module namespace —
+ * this file used to leak a `structuredData` global equal to
+ * `{ getStructuredData }`. It is a helper, so it lives outside the cascade and
+ * is imported explicitly by `src/src.11tydata.js`.
+ */
 import { readFileSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
