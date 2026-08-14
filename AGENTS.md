@@ -27,6 +27,22 @@ templates as the **whole module namespace**. Add a second named export and
 This is why the row packer is private and is tested through the `fetch` seam in
 `tests/unit/gallery.test.js` rather than imported directly. Keep it that way.
 
+## A `_data/*.js` function is called once per build, not once per page
+
+Eleventy calls a function-exported global data file **once for the whole build**
+and passes it the config-API global data (`eleventyConfig.addGlobalData()`), not
+a page's data cascade. This project registers none, so the argument arrives as
+`{ eleventy }` — `page`, `metadata` and `calendar` are all absent.
+
+Anything that varies per page belongs in `eleventyComputed` in a `*.11tydata.js`
+file: `src/src.11tydata.js` computes `structuredDataJson` this way, and
+`src/index.11tydata.js` the LCP preload.
+
+Get this wrong and every page silently receives the same value. The JSON-LD did
+exactly that — Book on all seven pages, Event on none — and nothing failed:
+the build was green, the pages rendered, and the schema was wrong everywhere.
+`tests/seo.spec.js` "Per-page structured data" is the guard.
+
 ## The book cover's image options live in two files and must match
 
 `src/index.11tydata.js` pre-runs `eleventy-img` on the cover to emit an LCP
