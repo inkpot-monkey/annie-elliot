@@ -12,7 +12,13 @@ const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
 
 const siteUrl = "https://annieelliot.co.uk";
 
-export async function getStructuredData(page, metadata, externalData = {}) {
+/**
+ * Build the page's JSON-LD. Called per page from `src/src.11tydata.js`, so
+ * `page`, `metadata` and `calendar` are the values from that page's data
+ * cascade — `metadata` is the page's own front matter, `calendar` is the global
+ * `_data/calendar.js` export (`{ futureEvents, pastEvents }`).
+ */
+export async function getStructuredData(page, metadata, calendar) {
 	// Prioritize metadata.pageType, fallback to checking page URL
 	let pageType = metadata?.pageType;
 	if (!pageType) {
@@ -106,15 +112,10 @@ export async function getStructuredData(page, metadata, externalData = {}) {
 
 	// Event schemas - for events page
 	if (pageType === "events") {
-		// Expecting events to be passed in externalData.calendar or just events array
-		const events = externalData.calendar || { futureEvents: [] };
+		const futureEvents = calendar?.futureEvents;
 
-		if (
-			events &&
-			Array.isArray(events.futureEvents) &&
-			events.futureEvents.length > 0
-		) {
-			events.futureEvents.forEach((event) => {
+		if (Array.isArray(futureEvents)) {
+			futureEvents.forEach((event) => {
 				if (event.startDateTime) {
 					const eventSchema = {
 						"@context": "https://schema.org",
@@ -152,13 +153,4 @@ export async function getStructuredData(page, metadata, externalData = {}) {
 	}
 
 	return JSON.stringify(structuredData);
-}
-
-function getPageName(url) {
-	const pageNames = {
-		"/author/": "About the Author",
-		"/events/": "Events",
-		"/contact/": "Contact",
-	};
-	return pageNames[url] || "Page";
 }
