@@ -1,7 +1,7 @@
 {
   "name": "annie-elliot",
   "version": "0.0.1",
-  "description": "A website for the novel Mr & Mrs Dickens, Her Story by the author Annie Elliot",
+  "description": "A website for the novel Mr & Mrs Charles Dickens: Her Story by the author Annie Elliot",
   "type": "module",
   "main": "index.js",
   "homepage": "https://annieelliot.co.uk",
