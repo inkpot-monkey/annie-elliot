@@ -1,54 +1,86 @@
-# Annie Elliot - Mr & Mrs Charles Dickens
+# annieelliot.co.uk
 
-This is the source code for the "Annie Elliot" website, built with Eleventy.
+The website for _Mr & Mrs Charles Dickens: Her Story_, a novel by Annie Elliot.
 
-## Managing the photo gallery
+An [Eleventy](https://www.11ty.dev/) static site templated entirely in
+[WebC](https://www.11ty.dev/docs/languages/webc/), deployed to Cloudflare Pages.
+Every page ships a **0-byte JavaScript bundle** — the gallery lightbox, the
+navigation and the layout are all CSS. Two pages are built from live Google data
+at build time: the events page reads a Google Calendar, and the reviews gallery
+reads a Google Drive folder.
 
-The reviews-page photo gallery is sourced from a Google Drive folder the site owner
-manages directly (captions and order live in Drive, not in the repo). The
-owner-facing guide for adding, captioning, reordering, replacing, and publishing
-photos is in [`docs/managing-gallery-photos.md`](docs/managing-gallery-photos.md).
+## Quick start
 
-## Development
-
-This project uses [Nix](https://nixos.org/) for a reproducible development environment.
+The development environment is provided by [Nix](https://nixos.org/).
 
 ```bash
-# Enter the development environment
-direnv allow
-# OR
-nix develop
-
-# Start the dev server
-npm run dev
+direnv allow      # or: nix develop
+npm install
+npm run dev       # http://localhost:8080
 ```
 
-**Note for Nix Users:**
-The development environment (`flake.nix`) is configured to:
-1.  Provide a system-compatible Chromium binary.
-2.  Automatically set `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` so Playwright uses it instead of downloading incompatible binaries.
-3.  Set `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1` to speed up installation.
+You need a `.env` in the repo root containing a Google API key:
+
+```
+GOOGLE_KEY=...
+```
+
+One key serves both Drive and Calendar. **A build without it fails immediately** —
+`calendar.js` and `gallery.js` both throw rather than render an empty page. The
+test suite is the exception: it uses fixtures and needs neither the key nor a
+network connection.
+
+**Note for Nix users:** `flake.nix` provides a system-compatible Chromium, sets
+`PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` so Playwright uses it instead of
+downloading incompatible binaries, and sets `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1`.
+Outside Nix, Playwright will want to fetch its own browsers.
+
+## How it's built
+
+| | |
+| --- | --- |
+| Input | `src/` — pages are top-level `.webc` files, one layout in `src/_layouts/` |
+| Output | `dist/` |
+| Components | `src/_components/**/*.webc`, globbed by the WebC plugin |
+| Global data | `src/_data/` |
+| Images | `@11ty/eleventy-img`, at build time, for local **and** remote sources |
+
+There are no collections. `src/sitemap.njk` uses the implicit `collections.all`.
+
+Data flows in at build time:
+
+- **`src/_data/calendar.js`** — Google Calendar `events.list`. Formats en-GB
+  display strings, handles all-day vs timed events, and partitions into
+  `futureEvents` / `pastEvents` against `new Date()`.
+- **`src/_data/gallery.js`** — Google Drive `files.list` for a public folder.
+  Derives captions and ordering from Drive metadata, computes each photo's
+  display aspect ratio, and packs the photos into justified rows.
+- **`src/_data/reviews.json`** — static, edited in the repo.
+
+Both remote fetches are cached by `eleventy-fetch` in `.cache/`.
 
 ## Testing
 
-This project maintains a robust testing suite using [Playwright](https://playwright.dev/) to ensure visual consistency and accessibility standards.
+Everything runs through [Playwright](https://playwright.dev/) except the unit
+tests, which use `node --test`.
 
-### 1. Visual Regression Testing
+| Command | Covers |
+| --- | --- |
+| `npm run test:unit` | `src/_data/gallery.js` — ratios, ordering, the row packer |
+| `npm run test:visual` | **The whole Playwright suite** — visual, a11y, SEO, gallery, lightbox |
+| `npm run test:seo` | Title, description, Open Graph, canonical, JSON-LD |
+| `npm run test:a11y` | `axe` against WCAG 2 A/AA over seven pages |
+| `npm run test:html` | `html-validate` over `dist/` — **run `npm run build` first** |
+| `npm run test:all` | `test:unit` → `test:seo` → `test:html` |
+| `npm run test:update` | Rewrite the visual baselines after an intentional design change |
+| `npm run report` | Open the Playwright HTML report, including visual diffs |
 
-We use visual regression testing to catch unintended visual changes across the site. The tests crawl the website, identify all internal pages, and compare their current appearance against a set of "golden" baseline snapshots.
+`npm run test:visual` is named for its most expensive job but is literally
+`npx playwright test`, so it runs every spec in `tests/`.
 
-*   **Command:** `npm run test:visual`
-*   **What it does:**
-    *   Starts the local development server.
-    *   Visits the homepage and dynamically finds all internal links (including `/email-success/` and `/email-failure/`).
-    *   Captures a full-page screenshot of each page.
-    *   Compares it pixel-by-pixel with the baseline.
-*   **Updating Snapshots:** If you make intentional design changes, the tests will fail. To update the baselines to match your new design, run:
-    ```bash
-    npm run test:update
-    ```
+> **Run `npm run test:all` before you push.** There is no CI — this is the gate.
 
-#### Fixture data
+### Fixture data
 
 Two pages are built from live remote data: the reviews gallery reads a Google
 Drive folder and the events page reads a Google Calendar. Screenshotting those
@@ -82,48 +114,68 @@ response shape. Adding a gallery photo also needs an image in
 `tests/fixtures/gallery-images/` whose real dimensions match the
 `imageMediaMetadata` you declare, or the packed ratio will disagree with the file.
 
-### 2. Accessibility Testing
-
-We use `@axe-core/playwright` to ensure the website is accessible to all users and complies with WCAG standards (A, AA).
-
-*   **Command:** `npm run test:a11y`
-*   **What it does:**
-    *   Starts the local development server.
-    *   Navigates to key pages (`/`, `/author/`, `/events/`, `/contact/`, etc.).
-    *   Runs the `axe` accessibility engine on each page.
-    *   Checks for violations such as low color contrast, missing labels, or structural issues.
-
-### 3. Other Tests
-
-*   **SEO Checks:** `npm run test:seo`
-*   **HTML Validation:** `npm run test:html` (run `npm run build` first — it lints `dist/`)
-*   **Full Suite:** `npm run test:all`
+### HTML validation
 
 `html-validate` lints Eleventy's build output rather than hand-written source, so
 two of its stock rules are re-tuned in `.htmlvalidate.json`:
 
-*   `doctype-style` is set to `lowercase`. The layout authors `<!DOCTYPE HTML>`,
-    but WebC re-serialises it as `<!doctype html>`; both are valid HTML5, and the
-    source can't win that argument.
-*   `no-trailing-whitespace` is off. Stripping a `webc:if` element leaves its
-    indentation behind on an otherwise empty line. Nobody reads `dist/`
-    whitespace, and contorting the templates to satisfy the rule would cost more
-    than it's worth.
+- `doctype-style` is set to `lowercase`. The layout authors `<!DOCTYPE HTML>`,
+  but WebC re-serialises it as `<!doctype html>`; both are valid HTML5, and the
+  source can't win that argument.
+- `no-trailing-whitespace` is off. Stripping a `webc:if` element leaves its
+  indentation behind on an otherwise empty line. Nobody reads `dist/`
+  whitespace, and contorting the templates to satisfy the rule would cost more
+  than it's worth.
 
 `no-inline-style` stays on, with an allowlist for the CSS custom properties that
 components legitimately set per instance (the gallery's `--r` / `--sum`, the nav's
 `--font-size` / `--dot-color` / `--margin`). Any other inline style is still an error.
 
-## Reporting
+### Occasional checks
 
-Playwright generates an HTML report after each run, which provides detailed insights, including "diff" views for visual tests and specific violation details for accessibility tests.
+These two run against `npm run dev` on port 8080, so they need it running in
+another terminal. They aren't part of the pre-push gate.
 
-## SEO & Indexing
+```bash
+npm run test:lighthouse   # accessibility + SEO, writes lighthouse-report.html
+npm run test:links        # internal broken-link crawl
+```
 
-To ensure Google indexes your changes (especially the new "Mrs Dickens" keywords and Event schema) quickly:
+`npm run debug` re-runs the build with `DEBUG=Eleventy*` when a template is
+behaving strangely.
 
-1.  **Google Search Console**: Use the "URL Inspection" tool on the homepage and click **Request Indexing**.
-2.  **Sitemaps**: Resubmit `sitemap.xml` in the Search Console.
-3.  **Verification**: Use "Test Live URL" to confirm that the server-side JSON-LD and meta descriptions are visible to Google's crawler.
+## Deploying
 
-For a detailed breakdown of the SEO strategy and implementation, see the `audit_report.md` and `walkthrough.md` in the documentation folder.
+The site is a **Cloudflare Pages** project (`annie-elliot`) building from the
+`main` branch. Pushing to `main` builds and publishes on its own. The build
+command and `GOOGLE_KEY` live in the Cloudflare dashboard, not in this repo.
+
+Because the events and gallery pages read live Google data **at build time**, a
+change made in Calendar or Drive does not appear until the site is rebuilt.
+`workers/calendar` exists to solve exactly that: a daily cron that pokes a Pages
+deploy hook so those changes surface without anyone doing anything. Waiting up to
+24 hours is usually fine; when it isn't, retry the deployment from the dashboard.
+
+Never deploy `dist-test/`. It is a fixture build that looks like the real site.
+
+### Getting changes indexed
+
+After a change that matters for search — new copy, new Event schema, a changed
+description:
+
+1. **Google Search Console** → **URL Inspection** on the affected page →
+   **Request Indexing**.
+2. Resubmit `sitemap.xml` under **Sitemaps**.
+3. Use **Test Live URL** to confirm the server-rendered JSON-LD and meta
+   description are visible to the crawler.
+
+## Related
+
+- [`AGENTS.md`](AGENTS.md) — the constraints that break this project silently.
+  Read it before changing the gallery, the fixtures or the image pipeline.
+- [`workers/contact/`](workers/contact/) — the contact form's mail worker.
+- [`workers/calendar/`](workers/calendar/) — the daily rebuild cron.
+- [`docs/managing-gallery-photos.md`](docs/managing-gallery-photos.md) — written
+  for Annie: adding, captioning and reordering gallery photos in Drive.
+- [`docs/adding-events.md`](docs/adding-events.md) — written for Annie: adding
+  book events to the calendar.
