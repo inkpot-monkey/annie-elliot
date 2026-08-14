@@ -15,9 +15,16 @@ The development environment is provided by [Nix](https://nixos.org/).
 
 ```bash
 direnv allow      # or: nix develop
-npm install
+pnpm install
 npm run dev       # http://localhost:8080
 ```
+
+**Install with `pnpm`, not `npm`.** `pnpm-lock.yaml` is the lockfile, and it is
+what pins the versions Cloudflare builds with. Running `npm install` writes a
+competing `package-lock.json`; Cloudflare picks its package manager from
+whichever lockfile it finds, so an accidental one silently changes what
+production installs. The `npm run …` scripts are fine — it is only the install
+that must be pnpm.
 
 You need a `.env` in the repo root containing a Google API key:
 

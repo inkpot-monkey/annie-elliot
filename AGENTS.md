@@ -103,6 +103,24 @@ It is a **fixture** build — placeholder photos, events dated 2019 and 2099 —
 looks enough like the real site to be mistaken for it. Playwright writes it on
 port 8081; `npm run dev` and `npm run build` use `dist/`.
 
+## `pnpm-lock.yaml` is the only thing pinning production's dependencies
+
+Install with **pnpm**. Cloudflare Pages picks its package manager from whichever
+lockfile it finds, so an `npm install` that leaves a `package-lock.json` behind
+redirects the production build onto a different resolver and a different set of
+versions.
+
+The repo ran with no root lockfile at all until 2026-08-14, and it cost a
+deploy: production had been building on Eleventy 3.1.2, and one build silently
+resolved 3.1.6, Playwright 1.62.1 and axe-core 4.13.0 instead. The build was
+green and the site looked fine — it was simply built by software nobody had
+tested against. A stale `package-lock.json` from before the Playwright migration
+was also sitting in the repo; the day pnpm detection lapsed, `npm ci` read it
+and the build died.
+
+Chromium is pinned by `flake.nix`, not by Playwright, so the visual baselines
+survive a Playwright bump. They would not survive a Nix chromium bump.
+
 ## There is no CI
 
 `npm run test:all` before pushing is the only gate, and pushing to `main`
