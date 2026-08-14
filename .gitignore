@@ -2,7 +2,6 @@
 dist/
 # Fixture build served to Playwright (see playwright.config.js) — never deployable
 dist-test/
-packages/*/visualize/*
 
 # Ignore local environment secrets
 .env
@@ -13,10 +12,6 @@ node_modules/
 # Ignore build tool output, e.g. code coverage
 .nyc_output/
 coverage/
-docs/_data/coverage.json
-
-# Ignore API documentation
-api-docs/
 
 # Ignore folders from source code editors
 .vscode
@@ -27,7 +22,9 @@ _site/
 
 # Ignore test files
 .cache
-test/stubs-layout-cache/_includes/*.js
+
+# Scratch space for design notes and working files — never part of the build
+.scratch/
 
 # Ignore build outputs from performing a nix-build or `nix build` command
 result
