@@ -279,8 +279,12 @@ metadata:
 			padding: var(--space-s);
 		}
 
+		/* Past events read as faded, but the fade composites the body text
+		   against the cream page: at 0.7 the taupe lands on #7b766c, which is
+		   4.33:1 and fails WCAG AA. 0.8 keeps the card visibly dimmed while
+		   holding the text above the 4.5:1 floor. */
 		.event-wrapper.is-past {
-			opacity: 0.7;
+			opacity: 0.8;
 		}
 
 		/* Frame comes from .ornate-frame; the border-width supplies the inset, so
