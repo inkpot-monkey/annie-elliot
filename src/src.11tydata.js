@@ -1,3 +1,3 @@
 export default {
-  layout: "./html.webc",
+	layout: "./html.webc",
 };

@@ -33,10 +33,10 @@ This is why the row packer is private and is tested through the `fetch` seam in
 `<link rel="preload">`. It only lines up with the in-memory cache if its options
 match what `src/index.webc` asks for:
 
-| `src/index.webc` | `src/index.11tydata.js` |
-| --- | --- |
-| `width="400, 640, 800, 1000"` (line 28) | `widths: [400, 640, 800, 1000]` |
-| `sizes="(min-width: 60rem) min(34rem, 42vw), calc(100vw - 3rem)"` | `LCP_SIZES` |
+| `src/index.webc`                                                  | `src/index.11tydata.js`         |
+| ----------------------------------------------------------------- | ------------------------------- |
+| `width="400, 640, 800, 1000"` (line 28)                           | `widths: [400, 640, 800, 1000]` |
+| `sizes="(min-width: 60rem) min(34rem, 42vw), calc(100vw - 3rem)"` | `LCP_SIZES`                     |
 
 Note the attribute is `width` (singular) in WebC and it **overrides the plugin's
 `widths`** in `eleventy.config.js`. Quality and formats must still match the
@@ -49,12 +49,12 @@ browser never uses — a slower page, a green build, and no error anywhere.
 
 These describe the same container and must move together:
 
-| File | Values |
-| --- | --- |
-| `src/_data/gallery.js` | `PACK_WIDTH = 1160`, `ROW_GAP = 8`, `TARGET_ROW_HEIGHT = 352` |
-| `src/reviews.webc` | `--gap: 0.5rem`, and the `1160` / `8` in the thumbnails' `sizes` expression |
-| `tests/gallery.spec.js` | `PACK_WIDTH = 1160`, `ROW_GAP = 8` — an independent oracle, deliberately not imported |
-| `tests/helpers/viewport.js` | `MOSAIC_MIN_WIDTH = 640`, matching the `39.9375rem` CSS tier |
+| File                        | Values                                                                                |
+| --------------------------- | ------------------------------------------------------------------------------------- |
+| `src/_data/gallery.js`      | `PACK_WIDTH = 1160`, `ROW_GAP = 8`, `TARGET_ROW_HEIGHT = 352`                         |
+| `src/reviews.webc`          | `--gap: 0.5rem`, and the `1160` / `8` in the thumbnails' `sizes` expression           |
+| `tests/gallery.spec.js`     | `PACK_WIDTH = 1160`, `ROW_GAP = 8` — an independent oracle, deliberately not imported |
+| `tests/helpers/viewport.js` | `MOSAIC_MIN_WIDTH = 640`, matching the `39.9375rem` CSS tier                          |
 
 Change one and the layout drifts from what the tests assert, or the `sizes`
 attribute starts lying to the browser about how wide the image will be.

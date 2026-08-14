@@ -54,11 +54,13 @@ metadata:
 			<div class="event-card ornate-frame">
 				<h3 @text="event.summary"></h3>
 				<p webc:if="event.isMultiDay">
-					<strong>Dates<span class="label-colon">:</span> </strong><span @text="event.start"></span> –
+					<strong>Dates<span class="label-colon">:</span> </strong
+					><span @text="event.start"></span> –
 					<span @text="event.end"></span>
 				</p>
 				<p webc:if="!event.isMultiDay">
-					<strong>Date<span class="label-colon">:</span> </strong><span @text="event.start"></span>
+					<strong>Date<span class="label-colon">:</span> </strong
+					><span @text="event.start"></span>
 				</p>
 				<p webc:if="event.location">
 					<strong>Location<span class="label-colon">:</span> </strong
@@ -87,11 +89,13 @@ metadata:
 			<div class="event-card ornate-frame">
 				<h3 @text="event.summary"></h3>
 				<p webc:if="event.isMultiDay">
-					<strong>Dates<span class="label-colon">:</span> </strong><span @text="event.start"></span> –
+					<strong>Dates<span class="label-colon">:</span> </strong
+					><span @text="event.start"></span> –
 					<span @text="event.end"></span>
 				</p>
 				<p webc:if="!event.isMultiDay">
-					<strong>Date<span class="label-colon">:</span> </strong><span @text="event.start"></span>
+					<strong>Date<span class="label-colon">:</span> </strong
+					><span @text="event.start"></span>
 				</p>
 				<p webc:if="event.location">
 					<strong>Location<span class="label-colon">:</span> </strong

@@ -1,168 +1,170 @@
 @font-face {
-  font-family: 'Playfair Display';
-  src: url("/fonts/PlayfairDisplay-Regular.woff2") format("woff2");
-  font-display: block;
-  font-weight: 400;
-  font-style: normal;
+	font-family: "Playfair Display";
+	src: url("/fonts/PlayfairDisplay-Regular.woff2") format("woff2");
+	font-display: block;
+	font-weight: 400;
+	font-style: normal;
 }
 
 @font-face {
-  font-family: 'Playfair Display';
-  src: url("/fonts/PlayfairDisplay-Bold.woff2") format("woff2");
-  font-display: block;
-  font-weight: 700;
-  font-style: normal;
+	font-family: "Playfair Display";
+	src: url("/fonts/PlayfairDisplay-Bold.woff2") format("woff2");
+	font-display: block;
+	font-weight: 700;
+	font-style: normal;
 }
 
 @font-face {
-  font-family: CrimsonPro;
-  src: url("/fonts/CrimsonPro.woff2") format("woff2");
-  font-display: block;
-  font-weight: normal;
-  font-style: normal;
+	font-family: CrimsonPro;
+	src: url("/fonts/CrimsonPro.woff2") format("woff2");
+	font-display: block;
+	font-weight: normal;
+	font-style: normal;
 }
 
 @font-face {
-  font-family: Tangerine;
-  src: url("/fonts/Tangerine.woff2") format("woff2");
-  font-display: block;
-  font-weight: normal;
-  font-style: normal;
+	font-family: Tangerine;
+	src: url("/fonts/Tangerine.woff2") format("woff2");
+	font-display: block;
+	font-weight: normal;
+	font-style: normal;
 }
 
 @font-face {
-  font-family: 'Barlow Condensed';
-  src: url("/fonts/BarlowCondensed-Regular.woff2") format("woff2");
-  font-display: block;
-  font-weight: 400;
-  font-style: normal;
+	font-family: "Barlow Condensed";
+	src: url("/fonts/BarlowCondensed-Regular.woff2") format("woff2");
+	font-display: block;
+	font-weight: 400;
+	font-style: normal;
 }
 
 @font-face {
-  font-family: 'Barlow Condensed';
-  src: url("/fonts/BarlowCondensed-Bold.woff2") format("woff2");
-  font-display: block;
-  font-weight: 700;
-  font-style: normal;
+	font-family: "Barlow Condensed";
+	src: url("/fonts/BarlowCondensed-Bold.woff2") format("woff2");
+	font-display: block;
+	font-weight: 700;
+	font-style: normal;
 }
 
 @font-face {
-  font-family: 'Raleway';
-  src: url("/fonts/Raleway-Variable.woff2") format("woff2");
-  font-display: block;
-  font-weight: 100 900;
-  font-style: normal;
+	font-family: "Raleway";
+	src: url("/fonts/Raleway-Variable.woff2") format("woff2");
+	font-display: block;
+	font-weight: 100 900;
+	font-style: normal;
 }
 
 @font-face {
-  font-family: 'Raleway';
-  src: url("/fonts/Raleway-Italic-Variable.woff2") format("woff2");
-  font-display: block;
-  font-weight: 100 900;
-  font-style: italic;
+	font-family: "Raleway";
+	src: url("/fonts/Raleway-Italic-Variable.woff2") format("woff2");
+	font-display: block;
+	font-weight: 100 900;
+	font-style: italic;
 }
 
 :root {
-  --black-olive: hsla(43, 23%, 16%, 1);
-  --battleship-gray: hsla(41, 13%, 52%, 1);
-  --antiflash-white: hsla(60, 3%, 93%, 1);
-  --taupe: hsla(38, 14%, 23%, 1);
-  --eerie-black: hsla(47, 26%, 11%, 1);
+	--black-olive: hsla(43, 23%, 16%, 1);
+	--battleship-gray: hsla(41, 13%, 52%, 1);
+	--antiflash-white: hsla(60, 3%, 93%, 1);
+	--taupe: hsla(38, 14%, 23%, 1);
+	--eerie-black: hsla(47, 26%, 11%, 1);
 
-  /* Pure colors */
-  --white: #ffffff;
-  --black: #000000;
+	/* Pure colors */
+	--white: #ffffff;
+	--black: #000000;
 
-  /* Extended palette */
-  --taupe-dark: hsla(38, 14%, 20%, 1);
-  --cream: #fefaf2;
-  --light-beige: #d4c9b4;
+	/* Extended palette */
+	--taupe-dark: hsla(38, 14%, 20%, 1);
+	--cream: #fefaf2;
+	--light-beige: #d4c9b4;
 
-  /* Shadow colors */
-  --shadow-light: rgba(0, 0, 0, 0.05);
-  --shadow-medium: rgba(0, 0, 0, 0.1);
-  --shadow-dark: rgba(0, 0, 0, 0.15);
+	/* Shadow colors */
+	--shadow-light: rgba(0, 0, 0, 0.05);
+	--shadow-medium: rgba(0, 0, 0, 0.1);
+	--shadow-dark: rgba(0, 0, 0, 0.15);
 
-  --font-base: 'Playfair Display', system-ui, sans-serif;
-  --font-italic: CrimsonPro, system-ui, sans-serif;
-  --font-cursive: Tangerine, system-ui, sans-serif;
-  --font-condensed: 'Barlow Condensed', system-ui, sans-serif;
-  --font-body: 'Raleway', system-ui, sans-serif;
+	--font-base: "Playfair Display", system-ui, sans-serif;
+	--font-italic: CrimsonPro, system-ui, sans-serif;
+	--font-cursive: Tangerine, system-ui, sans-serif;
+	--font-condensed: "Barlow Condensed", system-ui, sans-serif;
+	--font-body: "Raleway", system-ui, sans-serif;
 
-  /* @link https://utopia.fyi/type/calculator?c=366,18,1.2,1240,20,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
-  --step--2: clamp(0.7813rem, 0.7734rem + 0.0343vw, 0.8rem);
-  --step--1: clamp(0.9375rem, 0.9113rem + 0.1144vw, 1rem);
-  --step-0: clamp(1.125rem, 1.0727rem + 0.2288vw, 1.25rem);
-  --step-1: clamp(1.35rem, 1.261rem + 0.389vw, 1.5625rem);
-  /* Floor lowered from the Utopia default (1.62rem) to 1.5rem/24px, anchored so
+	/* @link https://utopia.fyi/type/calculator?c=366,18,1.2,1240,20,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
+	--step--2: clamp(0.7813rem, 0.7734rem + 0.0343vw, 0.8rem);
+	--step--1: clamp(0.9375rem, 0.9113rem + 0.1144vw, 1rem);
+	--step-0: clamp(1.125rem, 1.0727rem + 0.2288vw, 1.25rem);
+	--step-1: clamp(1.35rem, 1.261rem + 0.389vw, 1.5625rem);
+	/* Floor lowered from the Utopia default (1.62rem) to 1.5rem/24px, anchored so
      iPhone XR (414px) and narrower phones render 24px; desktop max unchanged. */
-  --step-2: clamp(1.5rem, 1.2729rem + 0.8777vw, 1.9531rem);
-  --step-3: clamp(1.944rem, 1.7357rem + 0.9106vw, 2.4414rem);
-  --step-4: clamp(2.3328rem, 2.0317rem + 1.3162vw, 3.0518rem);
-  --step-5: clamp(2.7994rem, 2.3742rem + 1.8587vw, 3.8147rem);
+	--step-2: clamp(1.5rem, 1.2729rem + 0.8777vw, 1.9531rem);
+	--step-3: clamp(1.944rem, 1.7357rem + 0.9106vw, 2.4414rem);
+	--step-4: clamp(2.3328rem, 2.0317rem + 1.3162vw, 3.0518rem);
+	--step-5: clamp(2.7994rem, 2.3742rem + 1.8587vw, 3.8147rem);
 
-  /* @link https://utopia.fyi/space/calculator?c=366,18,1.2,1240,20,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
-  --space-3xs: clamp(0.3125rem, 0.3125rem + 0vw, 0.3125rem);
-  --space-2xs: clamp(0.5625rem, 0.5363rem + 0.1144vw, 0.625rem);
-  --space-xs: clamp(0.875rem, 0.8488rem + 0.1144vw, 0.9375rem);
-  --space-s: clamp(1.125rem, 1.0727rem + 0.2288vw, 1.25rem);
-  --space-m: clamp(1.6875rem, 1.609rem + 0.3432vw, 1.875rem);
-  --space-l: clamp(2.25rem, 2.1453rem + 0.4577vw, 2.5rem);
-  --space-xl: clamp(3.375rem, 3.218rem + 0.6865vw, 3.75rem);
-  --space-2xl: clamp(4.5rem, 4.2906rem + 0.9153vw, 5rem);
-  --space-3xl: clamp(6.75rem, 6.4359rem + 1.373vw, 7.5rem);
+	/* @link https://utopia.fyi/space/calculator?c=366,18,1.2,1240,20,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
+	--space-3xs: clamp(0.3125rem, 0.3125rem + 0vw, 0.3125rem);
+	--space-2xs: clamp(0.5625rem, 0.5363rem + 0.1144vw, 0.625rem);
+	--space-xs: clamp(0.875rem, 0.8488rem + 0.1144vw, 0.9375rem);
+	--space-s: clamp(1.125rem, 1.0727rem + 0.2288vw, 1.25rem);
+	--space-m: clamp(1.6875rem, 1.609rem + 0.3432vw, 1.875rem);
+	--space-l: clamp(2.25rem, 2.1453rem + 0.4577vw, 2.5rem);
+	--space-xl: clamp(3.375rem, 3.218rem + 0.6865vw, 3.75rem);
+	--space-2xl: clamp(4.5rem, 4.2906rem + 0.9153vw, 5rem);
+	--space-3xl: clamp(6.75rem, 6.4359rem + 1.373vw, 7.5rem);
 
-  /* One-up pairs */
-  --space-3xs-2xs: clamp(0.3125rem, 0.1816rem + 0.5721vw, 0.625rem);
-  --space-2xs-xs: clamp(0.5625rem, 0.4055rem + 0.6865vw, 0.9375rem);
-  --space-xs-s: clamp(0.875rem, 0.718rem + 0.6865vw, 1.25rem);
-  --space-s-m: clamp(1.125rem, 0.8109rem + 1.373vw, 1.875rem);
-  --space-m-l: clamp(1.6875rem, 1.3473rem + 1.4874vw, 2.5rem);
-  --space-l-xl: clamp(2.25rem, 1.6219rem + 2.746vw, 3.75rem);
-  --space-xl-2xl: clamp(3.375rem, 2.6945rem + 2.9748vw, 5rem);
-  --space-2xl-3xl: clamp(4.5rem, 3.2437rem + 5.492vw, 7.5rem);
+	/* One-up pairs */
+	--space-3xs-2xs: clamp(0.3125rem, 0.1816rem + 0.5721vw, 0.625rem);
+	--space-2xs-xs: clamp(0.5625rem, 0.4055rem + 0.6865vw, 0.9375rem);
+	--space-xs-s: clamp(0.875rem, 0.718rem + 0.6865vw, 1.25rem);
+	--space-s-m: clamp(1.125rem, 0.8109rem + 1.373vw, 1.875rem);
+	--space-m-l: clamp(1.6875rem, 1.3473rem + 1.4874vw, 2.5rem);
+	--space-l-xl: clamp(2.25rem, 1.6219rem + 2.746vw, 3.75rem);
+	--space-xl-2xl: clamp(3.375rem, 2.6945rem + 2.9748vw, 5rem);
+	--space-2xl-3xl: clamp(4.5rem, 3.2437rem + 5.492vw, 7.5rem);
 
-  /* Custom pairs */
-  --space-s-l: clamp(1.125rem, 0.5492rem + 2.5172vw, 2.5rem);
+	/* Custom pairs */
+	--space-s-l: clamp(1.125rem, 0.5492rem + 2.5172vw, 2.5rem);
 
-  /* @link https://utopia.fyi/grid/calculator?c=366,18,1.2,1240,20,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
-  --grid-max-width: 77.5rem;
-  --grid-gutter: var(--space-s-l,
-      clamp(1.125rem, 0.5492rem + 2.5172vw, 2.5rem));
-  --grid-columns: 12;
+	/* @link https://utopia.fyi/grid/calculator?c=366,18,1.2,1240,20,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
+	--grid-max-width: 77.5rem;
+	--grid-gutter: var(
+		--space-s-l,
+		clamp(1.125rem, 0.5492rem + 2.5172vw, 2.5rem)
+	);
+	--grid-columns: 12;
 
-  /* Personal exploration */
-  --img-xs: clamp(5rem, 4.5rem + 2.5vw, 8rem);
-  --img-sm: clamp(8rem, 7rem + 4.5vw, 12rem);
-  --img-md: clamp(12rem, 10rem + 8vw, 20rem);
-  --img-lg: clamp(20rem, 15rem + 15vw, 30rem);
-  --img-xl: clamp(30rem, 25rem + 20vw, 45rem);
-  --img-full: 100%;
+	/* Personal exploration */
+	--img-xs: clamp(5rem, 4.5rem + 2.5vw, 8rem);
+	--img-sm: clamp(8rem, 7rem + 4.5vw, 12rem);
+	--img-md: clamp(12rem, 10rem + 8vw, 20rem);
+	--img-lg: clamp(20rem, 15rem + 15vw, 30rem);
+	--img-xl: clamp(30rem, 25rem + 20vw, 45rem);
+	--img-full: 100%;
 }
 
 .u-container {
-  max-width: var(--grid-max-width);
-  padding-inline: var(--grid-gutter);
-  margin-inline: auto;
+	max-width: var(--grid-max-width);
+	padding-inline: var(--grid-gutter);
+	margin-inline: auto;
 }
 
 .u-grid {
-  display: grid;
-  gap: var(--grid-gutter);
+	display: grid;
+	gap: var(--grid-gutter);
 }
 
 html {
-  background: var(--eerie-black);
-  color: var(--cream);
+	background: var(--eerie-black);
+	color: var(--cream);
 }
 
 p,
 a {
-  font-family: var(--font-body);
-  font-size: var(--step-0);
+	font-family: var(--font-body);
+	font-size: var(--step-0);
 }
 
 h1 {
-  font-family: var(--font-base);
-  font-size: var(--step-4);
+	font-family: var(--font-base);
+	font-size: var(--step-4);
 }

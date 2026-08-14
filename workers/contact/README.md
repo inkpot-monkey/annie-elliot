@@ -9,7 +9,7 @@ of the main site.
 
 The form in `src/contact.webc` posts directly to this worker:
 
-```html
+```
 <form action="https://contact.annieelliot.co.uk" method="post">
 ```
 
@@ -17,11 +17,11 @@ On a valid POST it builds a MIME message with `mimetext`, sends it through the
 Cloudflare Email binding, and answers with a **303 redirect** back to
 `/email-success` or `/email-failure` on the main site.
 
-| | |
-| --- | --- |
-| From | `info@annieelliot.co.uk` |
-| To | `author.annie.elliot@gmail.com` |
-| Subject | `A message from <the sender's address>` |
+|            |                                              |
+| ---------- | -------------------------------------------- |
+| From       | `info@annieelliot.co.uk`                     |
+| To         | `author.annie.elliot@gmail.com`              |
+| Subject    | `A message from <the sender's address>`      |
 | `Reply-To` | the sender's address, when it looks like one |
 
 Requests are rejected with **403** unless `Origin` or `Referer` starts with
@@ -35,7 +35,7 @@ why the worker answers with a 303 to a real page rather than a status code —
 `/email-success/` and `/email-failure/` are ordinary Eleventy pages that exist to
 be redirect targets.
 
-The `Reply-To` header is what makes replying work: the mail is *sent* by
+The `Reply-To` header is what makes replying work: the mail is _sent_ by
 `info@annieelliot.co.uk` because Cloudflare Email Routing will only send as a
 verified address, so the visitor's address has to travel in `Reply-To` instead of
 `From`.

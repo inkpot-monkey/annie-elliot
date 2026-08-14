@@ -1,48 +1,48 @@
 {
-  "name": "annie-elliot",
-  "version": "0.0.1",
-  "description": "A website for the novel Mr & Mrs Charles Dickens: Her Story by the author Annie Elliot",
-  "type": "module",
-  "main": "index.js",
-  "homepage": "https://annieelliot.co.uk",
-  "scripts": {
-    "build": "npx @11ty/eleventy",
-    "dev": "npx @11ty/eleventy --serve --incremental --port=8080",
-    "debug": "DEBUG=Eleventy* npx @11ty/eleventy",
-    "test:seo": "npx playwright test tests/seo.spec.js",
-    "test:a11y": "npx playwright test tests/a11y.spec.js",
-    "test:lighthouse": "lighthouse http://localhost:8080 --output html --output-path ./lighthouse-report.html --only-categories=accessibility,seo",
-    "test:html": "html-validate \"dist/**/*.html\"",
-    "test:links": "blc http://localhost:8080 -ro --exclude-external",
-    "test:all": "npm run test:unit && npm run test:seo && npm run test:html",
-    "test:unit": "node --test \"tests/unit/**/*.test.js\"",
-    "test:visual": "npx playwright test",
-    "test:update": "npx playwright test --update-snapshots",
-    "report": "npx playwright show-report",
-    "format": "npx prettier --write ."
-  },
-  "keywords": [
-    "annie elliot",
-    "charles dickens",
-    "book",
-    "novel",
-    "author website",
-    "literary fiction"
-  ],
-  "author": "Pale Blue Bytes",
-  "license": "ISC",
-  "dependencies": {
-    "@11ty/eleventy": "^3.1.2",
-    "@11ty/eleventy-img": "^6.0.4",
-    "@11ty/eleventy-plugin-webc": "^0.11.2",
-    "dotenv": "^17.2.2"
-  },
-  "devDependencies": {
-    "@axe-core/playwright": "^4.11.0",
-    "@playwright/test": "^1.57.0",
-    "broken-link-checker": "^0.7.8",
-    "html-validate": "^10.3.1",
-    "lighthouse": "^13.0.1",
-    "prettier": "^3.6.2"
-  }
+	"name": "annie-elliot",
+	"version": "0.0.1",
+	"description": "A website for the novel Mr & Mrs Charles Dickens: Her Story by the author Annie Elliot",
+	"type": "module",
+	"main": "index.js",
+	"homepage": "https://annieelliot.co.uk",
+	"scripts": {
+		"build": "npx @11ty/eleventy",
+		"dev": "npx @11ty/eleventy --serve --incremental --port=8080",
+		"debug": "DEBUG=Eleventy* npx @11ty/eleventy",
+		"test:seo": "npx playwright test tests/seo.spec.js",
+		"test:a11y": "npx playwright test tests/a11y.spec.js",
+		"test:lighthouse": "lighthouse http://localhost:8080 --output html --output-path ./lighthouse-report.html --only-categories=accessibility,seo",
+		"test:html": "html-validate \"dist/**/*.html\"",
+		"test:links": "blc http://localhost:8080 -ro --exclude-external",
+		"test:all": "npm run test:unit && npm run test:seo && npm run test:html",
+		"test:unit": "node --test \"tests/unit/**/*.test.js\"",
+		"test:visual": "npx playwright test",
+		"test:update": "npx playwright test --update-snapshots",
+		"report": "npx playwright show-report",
+		"format": "npx prettier --write ."
+	},
+	"keywords": [
+		"annie elliot",
+		"charles dickens",
+		"book",
+		"novel",
+		"author website",
+		"literary fiction"
+	],
+	"author": "Pale Blue Bytes",
+	"license": "ISC",
+	"dependencies": {
+		"@11ty/eleventy": "^3.1.2",
+		"@11ty/eleventy-img": "^6.0.4",
+		"@11ty/eleventy-plugin-webc": "^0.11.2",
+		"dotenv": "^17.2.2"
+	},
+	"devDependencies": {
+		"@axe-core/playwright": "^4.11.0",
+		"@playwright/test": "^1.57.0",
+		"broken-link-checker": "^0.7.8",
+		"html-validate": "^10.3.1",
+		"lighthouse": "^13.0.1",
+		"prettier": "^3.6.2"
+	}
 }

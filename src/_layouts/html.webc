@@ -1,135 +1,147 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en-GB">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link
-      webc:if="lcpBookCoverPreload"
-      rel="preload"
-      as="image"
-      type="image/webp"
-      fetchpriority="high"
-      :href="lcpBookCoverPreload.href"
-      :imagesrcset="lcpBookCoverPreload.imagesrcset"
-      :imagesizes="lcpBookCoverPreload.imagesizes"
-    />
+		<link
+			webc:if="lcpBookCoverPreload"
+			rel="preload"
+			as="image"
+			type="image/webp"
+			fetchpriority="high"
+			:href="lcpBookCoverPreload.href"
+			:imagesrcset="lcpBookCoverPreload.imagesrcset"
+			:imagesizes="lcpBookCoverPreload.imagesizes"
+		/>
 
-    <!-- Preload only fonts needed for first paint (nav + hero); rest load via @font-face -->
-    <link
-      rel="preload"
-      href="/fonts/PlayfairDisplay-Regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preload"
-      href="/fonts/BarlowCondensed-Regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preload"
-      href="/fonts/Raleway-Variable.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preload"
-      href="/fonts/CrimsonPro.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
+		<!-- Preload only fonts needed for first paint (nav + hero); rest load via @font-face -->
+		<link
+			rel="preload"
+			href="/fonts/PlayfairDisplay-Regular.woff2"
+			as="font"
+			type="font/woff2"
+			crossorigin="anonymous"
+		/>
+		<link
+			rel="preload"
+			href="/fonts/BarlowCondensed-Regular.woff2"
+			as="font"
+			type="font/woff2"
+			crossorigin="anonymous"
+		/>
+		<link
+			rel="preload"
+			href="/fonts/Raleway-Variable.woff2"
+			as="font"
+			type="font/woff2"
+			crossorigin="anonymous"
+		/>
+		<link
+			rel="preload"
+			href="/fonts/CrimsonPro.woff2"
+			as="font"
+			type="font/woff2"
+			crossorigin="anonymous"
+		/>
 
-    <title @text="metadata.title"></title>
-    <meta name="description" :content="metadata.description" />
-    <meta name="author" content="Annie Elliot" />
-    <meta name="generator" :content="eleventy.generator" />
-    <meta name="creator" content="Pale Blue Bytes" />
-    <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#a1866f" />
-    <link
-      rel="canonical"
-      :href="metadata.canonical || 'https://annieelliot.co.uk' + page.url"
-    />
+		<title @text="metadata.title"></title>
+		<meta name="description" :content="metadata.description" />
+		<meta name="author" content="Annie Elliot" />
+		<meta name="generator" :content="eleventy.generator" />
+		<meta name="creator" content="Pale Blue Bytes" />
+		<meta name="robots" content="index, follow" />
+		<meta name="theme-color" content="#a1866f" />
+		<link
+			rel="canonical"
+			:href="metadata.canonical || 'https://annieelliot.co.uk' + page.url"
+		/>
 
-    <link rel="manifest" href="/favicon/site.webmanifest" />
-    <link
-      rel="icon"
-      type="image/png"
-      href="/favicon/favicon-96x96.png"
-      sizes="96x96"
-    />
-    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
-    <link rel="shortcut icon" href="/favicon/favicon.ico" />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="/favicon/apple-touch-icon.png"
-    />
+		<link rel="manifest" href="/favicon/site.webmanifest" />
+		<link
+			rel="icon"
+			type="image/png"
+			href="/favicon/favicon-96x96.png"
+			sizes="96x96"
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+		<link rel="shortcut icon" href="/favicon/favicon.ico" />
+		<link
+			rel="apple-touch-icon"
+			sizes="180x180"
+			href="/favicon/apple-touch-icon.png"
+		/>
 
-    <!-- Critical CSS: Base stylesheets bundled and inlined to prevent FOUC -->
-    <link rel="stylesheet" href="reset.css" webc:bucket="base" />
-    <link rel="stylesheet" href="design-system.css" webc:bucket="base" />
+		<!-- Critical CSS: Base stylesheets bundled and inlined to prevent FOUC -->
+		<link rel="stylesheet" href="reset.css" webc:bucket="base" />
+		<link rel="stylesheet" href="design-system.css" webc:bucket="base" />
 
-    <!-- Bundled CSS from components -->
-    <style webc:keep @raw="getBundle('css', 'base')"></style>
-    <style webc:keep @raw="getBundle('css')"></style>
+		<!-- Bundled CSS from components -->
+		<style webc:keep @raw="getBundle('css', 'base')"></style>
+		<style webc:keep @raw="getBundle('css')"></style>
 
-    <!-- Critical layout styles -->
-    <style webc:keep>
-      main {
-        background-color: var(--cream);
-        color: var(--black-olive);
-      }
+		<!-- Critical layout styles -->
+		<style webc:keep>
+			main {
+				background-color: var(--cream);
+				color: var(--black-olive);
+			}
 
-      /* Focus indicators for keyboard navigation */
-      a:focus-visible,
-      button:focus-visible,
-      input:focus-visible,
-      textarea:focus-visible {
-        outline: 2px solid var(--taupe);
-        outline-offset: 2px;
-      }
+			/* Focus indicators for keyboard navigation */
+			a:focus-visible,
+			button:focus-visible,
+			input:focus-visible,
+			textarea:focus-visible {
+				outline: 2px solid var(--taupe);
+				outline-offset: 2px;
+			}
 
-      /* Ensure focus is visible on navigation links */
-      nav a:focus-visible {
-        outline: 2px solid var(--antiflash-white);
-        outline-offset: 2px;
-      }
-    </style>
+			/* Ensure focus is visible on navigation links */
+			nav a:focus-visible {
+				outline: 2px solid var(--antiflash-white);
+				outline-offset: 2px;
+			}
+		</style>
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" :content="metadata.canonical || 'https://annieelliot.co.uk' + page.url" />
-    <meta property="og:title" :content="metadata.title" />
-    <meta property="og:description" :content="metadata.description" />
-    <meta property="og:image" content="https://annieelliot.co.uk/images/book-cover.jpg" />
-    <meta property="og:site_name" content="Annie Elliot" />
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta
+			property="og:url"
+			:content="metadata.canonical || 'https://annieelliot.co.uk' + page.url"
+		/>
+		<meta property="og:title" :content="metadata.title" />
+		<meta property="og:description" :content="metadata.description" />
+		<meta
+			property="og:image"
+			content="https://annieelliot.co.uk/images/book-cover.jpg"
+		/>
+		<meta property="og:site_name" content="Annie Elliot" />
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" :content="metadata.canonical || 'https://annieelliot.co.uk' + page.url" />
-    <meta property="twitter:title" :content="metadata.title" />
-    <meta property="twitter:description" :content="metadata.description" />
-    <meta property="twitter:image" content="https://annieelliot.co.uk/images/book-cover.jpg" />
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta
+			property="twitter:url"
+			:content="metadata.canonical || 'https://annieelliot.co.uk' + page.url"
+		/>
+		<meta property="twitter:title" :content="metadata.title" />
+		<meta property="twitter:description" :content="metadata.description" />
+		<meta
+			property="twitter:image"
+			content="https://annieelliot.co.uk/images/book-cover.jpg"
+		/>
 
-    <!-- Structured Data (JSON-LD) -->
-    <script
-      type="application/ld+json"
-      webc:if="structuredDataJson"
-      webc:keep
-      @raw="structuredDataJson"
-    ></script>
-  </head>
-  <body>
-    <header webc:nokeep></header>
-    <main @raw="content"></main>
-    <footer webc:nokeep></footer>
-    <script type="module" webc:keep @raw="getBundle('js')"></script>
-  </body>
+		<!-- Structured Data (JSON-LD) -->
+		<script
+			type="application/ld+json"
+			webc:if="structuredDataJson"
+			webc:keep
+			@raw="structuredDataJson"
+		></script>
+	</head>
+	<body>
+		<header webc:nokeep></header>
+		<main @raw="content"></main>
+		<footer webc:nokeep></footer>
+		<script type="module" webc:keep @raw="getBundle('js')"></script>
+	</body>
 </html>

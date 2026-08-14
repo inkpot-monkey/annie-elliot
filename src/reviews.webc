@@ -33,8 +33,16 @@ metadata:
 		times per thumbnail.
 	-->
 	<section class="photo-gallery" id="gallery">
-		<div class="row" webc:for="row of $data.gallery.rows" :style="`--sum: ${row[0].rowRatioSum.toFixed(4)}`">
-			<figure class="gallery-item" webc:for="item of row" :style="`--r: ${item.ratio.toFixed(4)}`">
+		<div
+			class="row"
+			webc:for="row of $data.gallery.rows"
+			:style="`--sum: ${row[0].rowRatioSum.toFixed(4)}`"
+		>
+			<figure
+				class="gallery-item"
+				webc:for="item of row"
+				:style="`--r: ${item.ratio.toFixed(4)}`"
+			>
 				<a
 					class="thumb"
 					:href="`#photo-${item.index}`"
@@ -59,15 +67,44 @@ metadata:
 		:target when its `#photo-N` hash is active. Prev/next/close are plain anchors;
 		the backdrop is a full-viewport close link. Keeps the site script-free.
 	-->
-	<div class="lightbox" webc:for="(item, i) of $data.gallery.photos" :id="`photo-${i}`" role="dialog" aria-label="Photo viewer">
-		<a class="lb-backdrop" href="#gallery" aria-label="Close viewer" tabindex="-1"></a>
+	<div
+		class="lightbox"
+		webc:for="(item, i) of $data.gallery.photos"
+		:id="`photo-${i}`"
+		role="dialog"
+		aria-label="Photo viewer"
+	>
+		<a
+			class="lb-backdrop"
+			href="#gallery"
+			aria-label="Close viewer"
+			tabindex="-1"
+		></a>
 		<figure class="lb-frame">
 			<div class="lb-stage">
 				<a class="lb-close" href="#gallery" aria-label="Close viewer">
-					<svg class="lb-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6 L18 18 M18 6 L6 18" /></svg>
+					<svg
+						class="lb-icon"
+						viewBox="0 0 24 24"
+						aria-hidden="true"
+						focusable="false"
+					>
+						<path d="M6 6 L18 18 M18 6 L6 18" />
+					</svg>
 				</a>
-				<a class="lb-btn lb-prev" :href="`#photo-${(i - 1 + $data.gallery.photos.length) % $data.gallery.photos.length}`" aria-label="Previous photo">
-					<svg class="lb-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 6 L9 12 L15 18" /></svg>
+				<a
+					class="lb-btn lb-prev"
+					:href="`#photo-${(i - 1 + $data.gallery.photos.length) % $data.gallery.photos.length}`"
+					aria-label="Previous photo"
+				>
+					<svg
+						class="lb-icon"
+						viewBox="0 0 24 24"
+						aria-hidden="true"
+						focusable="false"
+					>
+						<path d="M15 6 L9 12 L15 18" />
+					</svg>
 				</a>
 				<!--
 					The frame is capped at min(72rem, 100% - padding) and the image is
@@ -85,13 +122,27 @@ metadata:
 					:sizes="`min(72rem, 100vw - 2.5rem, 78vh * ${item.ratio.toFixed(4)})`"
 					loading="lazy"
 				/>
-				<a class="lb-btn lb-next" :href="`#photo-${(i + 1) % $data.gallery.photos.length}`" aria-label="Next photo">
-					<svg class="lb-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6 L15 12 L9 18" /></svg>
+				<a
+					class="lb-btn lb-next"
+					:href="`#photo-${(i + 1) % $data.gallery.photos.length}`"
+					aria-label="Next photo"
+				>
+					<svg
+						class="lb-icon"
+						viewBox="0 0 24 24"
+						aria-hidden="true"
+						focusable="false"
+					>
+						<path d="M9 6 L15 12 L9 18" />
+					</svg>
 				</a>
 			</div>
 			<figcaption class="lb-cap">
 				<span @text="item.caption"></span>
-				<span class="lb-count" @text="`${i + 1} / ${$data.gallery.photos.length}`"></span>
+				<span
+					class="lb-count"
+					@text="`${i + 1} / ${$data.gallery.photos.length}`"
+				></span>
 			</figcaption>
 		</figure>
 	</div>

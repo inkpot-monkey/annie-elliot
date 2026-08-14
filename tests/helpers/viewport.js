@@ -11,4 +11,4 @@ export const MOSAIC_MIN_WIDTH = 640;
 
 /** True when this project's viewport is in the single-column tier. */
 export const isNarrow = (testInfo) =>
-    (testInfo.project.use.viewport?.width ?? 0) < MOSAIC_MIN_WIDTH;
+	(testInfo.project.use.viewport?.width ?? 0) < MOSAIC_MIN_WIDTH;

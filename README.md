@@ -37,13 +37,13 @@ Outside Nix, Playwright will want to fetch its own browsers.
 
 ## How it's built
 
-| | |
-| --- | --- |
-| Input | `src/` — pages are top-level `.webc` files, one layout in `src/_layouts/` |
-| Output | `dist/` |
-| Components | `src/_components/**/*.webc`, globbed by the WebC plugin |
-| Global data | `src/_data/` |
-| Images | `@11ty/eleventy-img`, at build time, for local **and** remote sources |
+|             |                                                                           |
+| ----------- | ------------------------------------------------------------------------- |
+| Input       | `src/` — pages are top-level `.webc` files, one layout in `src/_layouts/` |
+| Output      | `dist/`                                                                   |
+| Components  | `src/_components/**/*.webc`, globbed by the WebC plugin                   |
+| Global data | `src/_data/`                                                              |
+| Images      | `@11ty/eleventy-img`, at build time, for local **and** remote sources     |
 
 There are no collections. `src/sitemap.njk` uses the implicit `collections.all`.
 
@@ -64,16 +64,16 @@ Both remote fetches are cached by `eleventy-fetch` in `.cache/`.
 Everything runs through [Playwright](https://playwright.dev/) except the unit
 tests, which use `node --test`.
 
-| Command | Covers |
-| --- | --- |
-| `npm run test:unit` | `src/_data/gallery.js` — ratios, ordering, the row packer |
+| Command               | Covers                                                                |
+| --------------------- | --------------------------------------------------------------------- |
+| `npm run test:unit`   | `src/_data/gallery.js` — ratios, ordering, the row packer             |
 | `npm run test:visual` | **The whole Playwright suite** — visual, a11y, SEO, gallery, lightbox |
-| `npm run test:seo` | Title, description, Open Graph, canonical, JSON-LD |
-| `npm run test:a11y` | `axe` against WCAG 2 A/AA over seven pages |
-| `npm run test:html` | `html-validate` over `dist/` — **run `npm run build` first** |
-| `npm run test:all` | `test:unit` → `test:seo` → `test:html` |
-| `npm run test:update` | Rewrite the visual baselines after an intentional design change |
-| `npm run report` | Open the Playwright HTML report, including visual diffs |
+| `npm run test:seo`    | Title, description, Open Graph, canonical, JSON-LD                    |
+| `npm run test:a11y`   | `axe` against WCAG 2 A/AA over seven pages                            |
+| `npm run test:html`   | `html-validate` over `dist/` — **run `npm run build` first**          |
+| `npm run test:all`    | `test:unit` → `test:seo` → `test:html`                                |
+| `npm run test:update` | Rewrite the visual baselines after an intentional design change       |
+| `npm run report`      | Open the Playwright HTML report, including visual diffs               |
 
 `npm run test:visual` is named for its most expensive job but is literally
 `npx playwright test`, so it runs every spec in `tests/`.
@@ -92,10 +92,10 @@ sections as it passed.
 Playwright therefore builds with `FIXTURE_DATA=1`, which swaps just the two
 `fetch` calls for checked-in files:
 
-| Fixture | Stands in for |
-| --- | --- |
-| `tests/fixtures/drive-files.json` + `gallery-images/` | the Drive `files.list` response |
-| `tests/fixtures/calendar-events.json` | the Calendar `events.list` response |
+| Fixture                                               | Stands in for                       |
+| ----------------------------------------------------- | ----------------------------------- |
+| `tests/fixtures/drive-files.json` + `gallery-images/` | the Drive `files.list` response     |
+| `tests/fixtures/calendar-events.json`                 | the Calendar `events.list` response |
 
 Only the fetch is swapped. Filename ordering, caption fallback, EXIF-rotation
 handling, the justified-row packer, date formatting and the future/past split all

@@ -11,7 +11,7 @@ There is no `fetch` handler. The worker is not reachable over HTTP.
 
 ## Why it exists
 
-Two pages are built from live remote data *at build time*:
+Two pages are built from live remote data _at build time_:
 
 - the events page reads Annie's Google Calendar,
 - the reviews gallery reads a Google Drive folder.
@@ -28,7 +28,7 @@ hours; when that is too slow, retry the deployment from the Cloudflare dashboard
 (the path Annie is given in
 [`docs/managing-gallery-photos.md`](../../docs/managing-gallery-photos.md)).
 
-> Historically this worker was built to *receive* a Google Calendar
+> Historically this worker was built to _receive_ a Google Calendar
 > `events.watch` webhook and rebuild on demand. That channel expired and was not
 > renewed — Calendar push channels are short-lived and need re-registering — so
 > it was reduced to a cron. Nothing in the codebase still registers a webhook.

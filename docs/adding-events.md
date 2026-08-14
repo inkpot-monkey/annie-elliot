@@ -14,12 +14,12 @@ date has passed, so there is nothing to tidy up afterwards.
 Create the event in Google Calendar on your `author.annie.elliot@gmail.com`
 account. Four things you type become four things on the page:
 
-| In Google Calendar | On the website |
-| --- | --- |
-| **Title** | the event heading |
-| **Date and time** | the date line underneath |
-| **Location** | shown under the date, and links to Google Maps |
-| **Description** | the paragraph describing the event |
+| In Google Calendar | On the website                                 |
+| ------------------ | ---------------------------------------------- |
+| **Title**          | the event heading                              |
+| **Date and time**  | the date line underneath                       |
+| **Location**       | shown under the date, and links to Google Maps |
+| **Description**    | the paragraph describing the event             |
 
 Only the **title** and the **date** are required. Location and description are
 each left out if you leave them blank.
@@ -57,7 +57,7 @@ The description is shown as a single plain paragraph, so:
 - **Deleting** an event removes it from the site.
 - **Cancelling** an event (rather than deleting it) also removes it — the site
   skips cancelled events entirely, so it will not show as a struck-through or
-  "cancelled" entry. If you want people to *know* it was cancelled, keep the
+  "cancelled" entry. If you want people to _know_ it was cancelled, keep the
   event and say so in the description instead.
 
 ## Publish your changes

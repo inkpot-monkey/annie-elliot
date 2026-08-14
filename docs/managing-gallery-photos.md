@@ -1,12 +1,12 @@
 # How Annie manages the reviews-page photo gallery
 
-The **Photo Gallery** on the *Reviews* page is built from one Google Drive folder
+The **Photo Gallery** on the _Reviews_ page is built from one Google Drive folder
 you own: **"website gallery images"**. You control the photos, their captions, and
 their order entirely from Drive — no developer and no code change needed.
 
 The website reads that folder each time it is rebuilt. So a change you make in
-Drive appears on the live site only **after the site is rebuilt** (see *Publish
-your changes* below).
+Drive appears on the live site only **after the site is rebuilt** (see _Publish
+your changes_ below).
 
 ---
 
