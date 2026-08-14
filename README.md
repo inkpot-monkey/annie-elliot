@@ -62,8 +62,23 @@ We use `@axe-core/playwright` to ensure the website is accessible to all users a
 ### 3. Other Tests
 
 *   **SEO Checks:** `npm run test:seo`
-*   **HTML Validation:** `npm run test:html`
+*   **HTML Validation:** `npm run test:html` (run `npm run build` first — it lints `dist/`)
 *   **Full Suite:** `npm run test:all`
+
+`html-validate` lints Eleventy's build output rather than hand-written source, so
+two of its stock rules are re-tuned in `.htmlvalidate.json`:
+
+*   `doctype-style` is set to `lowercase`. The layout authors `<!DOCTYPE HTML>`,
+    but WebC re-serialises it as `<!doctype html>`; both are valid HTML5, and the
+    source can't win that argument.
+*   `no-trailing-whitespace` is off. Stripping a `webc:if` element leaves its
+    indentation behind on an otherwise empty line. Nobody reads `dist/`
+    whitespace, and contorting the templates to satisfy the rule would cost more
+    than it's worth.
+
+`no-inline-style` stays on, with an allowlist for the CSS custom properties that
+components legitimately set per instance (the gallery's `--r` / `--sum`, the nav's
+`--font-size` / `--dot-color` / `--margin`). Any other inline style is still an error.
 
 ## Reporting
 

@@ -12,7 +12,7 @@
     "test:seo": "npx playwright test tests/seo.spec.js",
     "test:a11y": "npx playwright test tests/a11y.spec.js",
     "test:lighthouse": "lighthouse http://localhost:8080 --output html --output-path ./lighthouse-report.html --only-categories=accessibility,seo",
-    "test:html": "html-validate dist/**/*.html",
+    "test:html": "html-validate \"dist/**/*.html\"",
     "test:links": "blc http://localhost:8080 -ro --exclude-external",
     "test:all": "npm run test:unit && npm run test:seo && npm run test:html",
     "test:unit": "node --test \"tests/unit/**/*.test.js\"",

@@ -1,6 +1,13 @@
 {
   "extends": ["html-validate:recommended"],
   "rules": {
-    "no-inline-style": ["error", { "allowedProperties": ["--r", "--sum"] }]
+    "no-inline-style": [
+      "error",
+      {
+        "allowedProperties": ["--r", "--sum", "--font-size", "--dot-color", "--margin"]
+      }
+    ],
+    "doctype-style": ["error", { "style": "lowercase" }],
+    "no-trailing-whitespace": "off"
   }
 }
