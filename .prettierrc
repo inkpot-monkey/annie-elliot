@@ -1,0 +1,17 @@
+{
+	"useTabs": true,
+	"overrides": [
+		{
+			"files": "*.webc",
+			"options": {
+				"parser": "html"
+			}
+		},
+		{
+			"files": "*.md",
+			"options": {
+				"useTabs": false
+			}
+		}
+	]
+}

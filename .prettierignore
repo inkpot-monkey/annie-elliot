@@ -1,0 +1,19 @@
+# Build output
+dist/
+dist-test/
+_site/
+.cache/
+
+# Test output
+test-results/
+playwright-report/
+blob-report/
+
+# Dependencies and lockfiles — machine-written, never hand-edited
+node_modules/
+package-lock.json
+pnpm-lock.yaml
+flake.lock
+
+# Working notes
+.scratch/

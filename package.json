@@ -18,7 +18,8 @@
     "test:unit": "node --test \"tests/unit/**/*.test.js\"",
     "test:visual": "npx playwright test",
     "test:update": "npx playwright test --update-snapshots",
-    "report": "npx playwright show-report"
+    "report": "npx playwright show-report",
+    "format": "npx prettier --write ."
   },
   "keywords": [
     "annie elliot",
@@ -30,7 +31,6 @@
   ],
   "author": "Pale Blue Bytes",
   "license": "ISC",
-  "packageManager": "pnpm@10.13.1",
   "dependencies": {
     "@11ty/eleventy": "^3.1.2",
     "@11ty/eleventy-img": "^6.0.4",
