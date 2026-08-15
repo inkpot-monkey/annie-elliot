@@ -150,7 +150,26 @@ async function listFiles() {
 		);
 	}
 
-	return res.json();
+	const data = await res.json();
+
+	// `res.ok` is not enough. Drive answers a files.list against a folder this
+	// key can no longer read with `200 {"files": []}` — a sharing change reads as
+	// a successful request that found nothing, and the build would go green with
+	// a blank gallery. An API-key consumer cannot even diagnose it: permissions.list
+	// rejects API keys outright ("API keys are not supported by this API").
+	//
+	// A zero-length list is ambiguous in principle — Annie could have emptied the
+	// folder — but in practice she never does, and hard-failing is what this
+	// module already does with every other bad response.
+	if (!data.files?.length) {
+		throw new Error(
+			`Drive gallery listing came back empty (HTTP 200). The folder ` +
+				`${FOLDER_ID} is either empty or no longer shared with "Anyone with ` +
+				`the link"; a 200 with no files is what a sharing change looks like.`,
+		);
+	}
+
+	return data;
 }
 
 /**
@@ -169,6 +188,17 @@ async function listFiles() {
  * is exactly what eleventy-img wants. It is public-link-only — it ignores an
  * Authorization header entirely — which is fine because this folder is public
  * and the API-key listing above already depends on that.
+ *
+ * One thing this URL does NOT do is fail when the file is unreadable: a
+ * non-public id answers `200 text/html` with ~900 KB of sign-in page, and
+ * eleventy-fetch throws only on `!res.ok`, so it caches that as image bytes.
+ * Not guarded here, deliberately. The folder-level case — the one that would
+ * otherwise go green — is caught by the empty-listing check above, and the
+ * residual per-file case is already loud: sharp cannot decode HTML, so the
+ * build dies (on a poisoned .cache/ entry — clear it before retrying). Catching
+ * it here would mean fetching every photo's bytes ourselves at build time,
+ * which is both a second download of the whole gallery and the exact traffic
+ * shape that trips Google's IP-scoped anti-abuse throttle on media downloads.
  */
 function mediaSrc(file) {
 	if (process.env.FIXTURE_DATA) {

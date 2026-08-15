@@ -227,6 +227,21 @@ test("throws on a non-OK files.list response", async () => {
 	await assert.rejects(() => gallery(), /403/);
 });
 
+test("throws on a 200 that lists no files — a folder gone non-public looks like this", async () => {
+	// Drive answers files.list on a folder the key can no longer read with
+	// `200 {"files": []}`, and a key consumer cannot even ask permissions.list
+	// why. Left unguarded that is a blank gallery on a green build.
+	mockFetch({ files: [] });
+
+	await assert.rejects(() => gallery(), /empty/i);
+});
+
+test("throws on a 200 with no files key at all", async () => {
+	mockFetch({});
+
+	await assert.rejects(() => gallery(), /empty/i);
+});
+
 test("src is the file's webContentLink with the &v=modifiedTime cache-buster", async () => {
 	mockFetch({
 		files: [
@@ -272,7 +287,7 @@ test("requests imageMediaMetadata and webContentLink so both cost no extra call"
 			ok: true,
 			status: 200,
 			statusText: "OK",
-			json: async () => ({ files: [] }),
+			json: async () => ({ files: [file("1 - x.jpg")] }),
 		};
 	};
 
@@ -389,8 +404,17 @@ test("rows partition the photos in order — nothing lost, nothing duplicated", 
 	}
 });
 
-test("an empty gallery yields no rows rather than throwing", async () => {
-	mockFetch({ files: [] });
+test("a list whose every file is skipped yields no rows rather than throwing", async () => {
+	// The packer's empty-input path. It can no longer be reached with an empty
+	// files.list — that is now a hard failure — but the soft-skips above still
+	// get there, and HEIC-only is the realistic way.
+	captureWarnings();
+	mockFetch({
+		files: [
+			file("a.heic", { mimeType: "image/heic" }),
+			file("b.heif", { mimeType: "image/heif" }),
+		],
+	});
 
 	const { photos, rows } = await gallery();
 
