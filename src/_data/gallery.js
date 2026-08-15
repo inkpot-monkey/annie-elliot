@@ -136,8 +136,9 @@ async function listFiles() {
 		`https://www.googleapis.com/drive/v3/files` +
 		`?q=${encodeURIComponent(q)}` +
 		// imageMediaMetadata rides along on the same call with only the API key,
-		// so build-time aspect ratios cost no extra request.
-		`&fields=${encodeURIComponent("files(id,name,description,mimeType,modifiedTime,imageMediaMetadata(width,height,rotation))")}` +
+		// so build-time aspect ratios cost no extra request. webContentLink comes
+		// along for the same price and is what mediaSrc() points eleventy-img at.
+		`&fields=${encodeURIComponent("files(id,name,description,mimeType,modifiedTime,webContentLink,imageMediaMetadata(width,height,rotation))")}` +
 		`&orderBy=name&pageSize=1000&key=${apiKey}`;
 
 	const res = await fetch(url);
@@ -156,18 +157,38 @@ async function listFiles() {
  * What eleventy-img is pointed at. Fixture photos are files in the repo, so they
  * resolve to a path rather than a Drive media URL — the transcode pipeline treats
  * both the same.
+ *
+ * The src MUST NOT carry the API key. eleventy-img hashes the raw source string
+ * into every output filename (`image.js` getHash() — identical bytes at
+ * `?key=AAA` and `?key=BBB` produce different filenames), so a key in the URL is
+ * a key in the name of every rendition in dist/img/, and rotating it renames and
+ * re-transcodes the whole gallery.
+ *
+ * Drive's own `webContentLink` avoids that: it is credential-free, permanent,
+ * deterministic from the file id, and serves the byte-identical original, which
+ * is exactly what eleventy-img wants. It is public-link-only — it ignores an
+ * Authorization header entirely — which is fine because this folder is public
+ * and the API-key listing above already depends on that.
  */
-function mediaSrc(file, apiKey) {
+function mediaSrc(file) {
 	if (process.env.FIXTURE_DATA) {
 		return `./tests/fixtures/gallery-images/${file.name}`;
 	}
 
+	if (!file.webContentLink) {
+		// Drive populates this for any file with binary content, so its absence
+		// means the field was dropped from `fields=` or the file is not what we
+		// think it is. Falling back to the key-bearing media URL would silently
+		// reintroduce the hash hazard for one photo, which is worse than stopping.
+		throw new Error(
+			`No webContentLink for Drive file ${file.name} (${file.id}) — ` +
+				`check the fields= list in listFiles().`,
+		);
+	}
+
 	// Remote src: eleventy-img fetches+caches+transcodes.
-	// modifiedTime = cache-buster.
-	return (
-		`https://www.googleapis.com/drive/v3/files/${file.id}` +
-		`?alt=media&key=${apiKey}&v=${encodeURIComponent(file.modifiedTime)}`
-	);
+	// modifiedTime = cache-buster; Drive ignores the extra parameter.
+	return `${file.webContentLink}&v=${encodeURIComponent(file.modifiedTime)}`;
 }
 
 export default async function () {
@@ -195,7 +216,7 @@ export default async function () {
 				id: f.id,
 				caption: description || cleaned || f.name,
 				ratio: displayRatio(f.imageMediaMetadata, f.name),
-				src: mediaSrc(f, process.env.GOOGLE_KEY),
+				src: mediaSrc(f),
 				_order: order,
 				_name: f.name,
 			};

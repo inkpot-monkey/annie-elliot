@@ -41,12 +41,18 @@ function mockFetch(
 // square so cases that are not about ratios need not carry them.
 function file(name, extra = {}) {
 	const { width = 1000, height = 1000, rotation, ...rest } = extra;
+	const id = rest.id ?? `id-${name}`;
 	return {
-		id: rest.id ?? `id-${name}`,
+		id,
 		name,
 		mimeType: rest.mimeType ?? "image/jpeg",
 		description: rest.description,
 		modifiedTime: rest.modifiedTime ?? "2024-01-01T00:00:00.000Z",
+		// The exact string Drive returns, and what mediaSrc() builds the src from.
+		webContentLink:
+			"webContentLink" in extra
+				? extra.webContentLink
+				: `https://drive.google.com/uc?id=${id}&export=download`,
 		imageMediaMetadata:
 			"imageMediaMetadata" in extra
 				? extra.imageMediaMetadata
@@ -221,7 +227,7 @@ test("throws on a non-OK files.list response", async () => {
 	await assert.rejects(() => gallery(), /403/);
 });
 
-test("src is the media URL for the file id with the &v=modifiedTime cache-buster", async () => {
+test("src is the file's webContentLink with the &v=modifiedTime cache-buster", async () => {
 	mockFetch({
 		files: [
 			file("1 - x.jpg", {
@@ -234,15 +240,31 @@ test("src is the media URL for the file id with the &v=modifiedTime cache-buster
 	const { photos } = await gallery();
 	const { src } = photos[0];
 
-	assert.ok(src.includes("files/abc123"), "src targets the file id");
-	assert.ok(src.includes("alt=media"), "src is the media (bytes) URL");
+	assert.ok(src.startsWith("https://drive.google.com/uc?id=abc123"));
 	assert.ok(
 		src.includes(`v=${encodeURIComponent("2024-05-01T10:00:00.000Z")}`),
 		"src carries the modifiedTime cache-buster",
 	);
 });
 
-test("requests imageMediaMetadata so ratios cost no extra call", async () => {
+test("src carries no API key — eleventy-img hashes it into every filename", async () => {
+	// The whole point of Fix 2: a key in the src is a key in the name of every
+	// rendition in dist/img/, so rotating it renames and re-transcodes the lot.
+	mockFetch({ files: [file("1 - x.jpg")] });
+
+	const { photos } = await gallery();
+
+	assert.ok(!photos[0].src.includes("test-key"), "no key value in the src");
+	assert.ok(!photos[0].src.includes("key="), "no key parameter at all");
+});
+
+test("throws rather than falling back to a key-bearing URL when webContentLink is missing", async () => {
+	mockFetch({ files: [file("1 - x.jpg", { webContentLink: undefined })] });
+
+	await assert.rejects(() => gallery(), /webContentLink/);
+});
+
+test("requests imageMediaMetadata and webContentLink so both cost no extra call", async () => {
 	let requested = "";
 	globalThis.fetch = async (url) => {
 		requested = decodeURIComponent(url);
@@ -257,6 +279,7 @@ test("requests imageMediaMetadata so ratios cost no extra call", async () => {
 	await gallery();
 
 	assert.match(requested, /imageMediaMetadata\(width,height,rotation\)/);
+	assert.match(requested, /webContentLink/);
 });
 
 // ---------------------------------------------------------------- ratios (01)
