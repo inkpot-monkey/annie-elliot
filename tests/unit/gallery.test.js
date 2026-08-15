@@ -15,6 +15,7 @@ import gallery from "../../src/_data/gallery.js";
 const realFetch = globalThis.fetch;
 const realWarn = console.warn;
 const realGoogleKey = process.env.GOOGLE_KEY;
+const realFixtureData = process.env.FIXTURE_DATA;
 
 function restoreEnv(name, saved) {
 	if (saved === undefined) {
@@ -69,12 +70,18 @@ function captureWarnings() {
 
 beforeEach(() => {
 	process.env.GOOGLE_KEY = "test-key";
+	// The fixture branch short-circuits the fetch entirely, so a stray
+	// FIXTURE_DATA would quietly bypass every live-path assertion below — the
+	// empty-listing hard fail and the webContentLink src most of all — and the
+	// suite would still be green.
+	delete process.env.FIXTURE_DATA;
 });
 
 afterEach(() => {
 	globalThis.fetch = realFetch;
 	console.warn = realWarn;
 	restoreEnv("GOOGLE_KEY", realGoogleKey);
+	restoreEnv("FIXTURE_DATA", realFixtureData);
 });
 
 test("orders by numeric prefix (1/2/10 numeric, not lexical; padding optional)", async () => {
