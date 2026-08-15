@@ -73,7 +73,7 @@ tests, which use `node --test`.
 
 | Command               | Covers                                                                |
 | --------------------- | --------------------------------------------------------------------- |
-| `npm run test:unit`   | `src/_data/gallery.js` — ratios, ordering, the row packer             |
+| `npm run test:unit`   | The two `src/_data/` modules, through their `fetch` seam — see below  |
 | `npm run test:visual` | **The whole Playwright suite** — visual, a11y, SEO, gallery, lightbox |
 | `npm run test:seo`    | Title, description, Open Graph, canonical, JSON-LD                    |
 | `npm run test:a11y`   | `axe` against WCAG 2 A/AA over seven pages                            |
@@ -84,6 +84,13 @@ tests, which use `node --test`.
 
 `npm run test:visual` is named for its most expensive job but is literally
 `npx playwright test`, so it runs every spec in `tests/`.
+
+Both unit suites drive their data module through its `fetch` seam, so they need
+neither `GOOGLE_KEY` nor a network. `tests/unit/gallery.test.js` covers aspect
+ratios, filename ordering, caption fallback and the row packer, plus the
+`files.list` guards and the credential-free image `src`;
+`tests/unit/calendar.test.js` covers the `events.list` query contract —
+recurrence expansion, ordering, and the walk through every page of results.
 
 > **Run `npm run test:all` before you push.** There is no CI — this is the gate.
 
