@@ -229,34 +229,42 @@ metadata:
 				}
 			}
 
+			/*
+				The quote marks are inline, not absolutely positioned: these
+				testimonials wrap to two lines at most widths, and an absolute
+				mark anchors to the block's corners rather than to the text, so
+				it drifts away from the first/last words as the wrap changes.
+				`line-height: 0` keeps the oversized glyphs from stretching the
+				line box.
+			*/
 			.quote {
 				font-family: var(--font-italic);
 				font-style: italic;
 				line-height: 1.6;
-				position: relative;
 				margin: 0;
 				text-align: center;
 				font-size: 1.1rem;
 				color: var(--taupe);
+				text-wrap: balance;
 
 				&::before,
 				&::after {
-					content: "“";
 					font-family: serif;
-					font-size: 2.5rem;
-					position: absolute;
+					font-size: 1.9rem;
+					line-height: 0;
+					vertical-align: -0.15em;
 					opacity: 0.3;
 					color: var(--taupe);
 				}
 
 				&::before {
-					left: -1.5rem;
-					top: -1.2rem;
+					content: "“";
+					margin-inline-end: 0.1em;
 				}
 
 				&::after {
 					content: "”";
-					transform: translateY(-16px);
+					margin-inline-start: 0.1em;
 				}
 			}
 		}
