@@ -139,9 +139,12 @@ metadata:
 			.audience-header {
 				margin-bottom: var(--space-xl);
 
+				/* Deliberately no font-size: the h1 takes --step-4 from
+				   design-system.css, so it matches the h1 on every other page. It
+				   is still the largest type here — the next heading down,
+				   .section-heading, is --step-3. */
 				h1 {
 					font-family: var(--font-base);
-					font-size: var(--step-5);
 					color: var(--taupe);
 					margin: 0;
 					font-weight: 700;
