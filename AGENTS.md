@@ -24,8 +24,11 @@ templates as the **whole module namespace**. Add a second named export and
 `$data.gallery` silently becomes `{ default, packRows }`, rendering
 `[object Object]` instead of the gallery.
 
-This is why the row packer is private and is tested through the `fetch` seam in
-`tests/unit/gallery.test.js` rather than imported directly. Keep it that way.
+Both `_data` modules satisfy this **by construction**: everything worth naming —
+the Drive and Calendar transports, the row packer, the date formatting — lives in
+`src/_lib/` and is imported, so each `_data/*.js` file is one default export over
+imports and there is nothing to accidentally name. Add code there rather than a
+second export here.
 
 ## A `_data/*.js` function is called once per build, not once per page
 
@@ -65,12 +68,12 @@ browser never uses — a slower page, a green build, and no error anywhere.
 
 These describe the same container and must move together:
 
-| File                        | Values                                                                                |
-| --------------------------- | ------------------------------------------------------------------------------------- |
-| `src/_data/gallery.js`      | `PACK_WIDTH = 1160`, `ROW_GAP = 8`, `TARGET_ROW_HEIGHT = 352`                         |
-| `src/reviews.webc`          | `--gap: 0.5rem`, and the `1160` / `8` in the thumbnails' `sizes` expression           |
-| `tests/gallery.spec.js`     | `PACK_WIDTH = 1160`, `ROW_GAP = 8` — an independent oracle, deliberately not imported |
-| `tests/helpers/viewport.js` | `MOSAIC_MIN_WIDTH = 640`, matching the `39.9375rem` CSS tier                          |
+| File                         | Values                                                                                |
+| ---------------------------- | ------------------------------------------------------------------------------------- |
+| `src/_lib/gallery-layout.js` | `PACK_WIDTH = 1160`, `ROW_GAP = 8`, `TARGET_ROW_HEIGHT = 352`                         |
+| `src/reviews.webc`           | `--gap: 0.5rem`, and the `1160` / `8` in the thumbnails' `sizes` expression           |
+| `tests/gallery.spec.js`      | `PACK_WIDTH = 1160`, `ROW_GAP = 8` — an independent oracle, deliberately not imported |
+| `tests/helpers/viewport.js`  | `MOSAIC_MIN_WIDTH = 640`, matching the `39.9375rem` CSS tier                          |
 
 Change one and the layout drifts from what the tests assert, or the `sizes`
 attribute starts lying to the browser about how wide the image will be.

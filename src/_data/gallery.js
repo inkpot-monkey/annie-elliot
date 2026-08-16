@@ -1,167 +1,67 @@
 import dotenv from "dotenv";
 import { readFile } from "node:fs/promises";
+import { apiKey } from "../_lib/google-auth.js";
+import { fetchPhotos, normalisePhotos } from "../_lib/google-drive.js";
+import { packRows, parseFilename, SKIP_MIME } from "../_lib/gallery-layout.js";
 
 dotenv.config();
+
+// This module exports ONLY `default`, and now does so by construction: an
+// Eleventy `_data/*.js` module with any other export is handed to templates as
+// the whole module namespace, so `$data.gallery` silently becomes
+// `{default, packRows}` and every loop renders "[object Object]". Everything
+// worth naming lives in `src/_lib/` and is imported here.
 
 // Public folder id — not secret (it's in every share URL). Mirrors calendar.js's
 // hard-coded calendarId. Verified live in ticket 05.
 const FOLDER_ID = "1yPcvB5KwY7XdKJN2jTyEmGfErgGagmFD";
 
-// HEIC/HEIF skipped by default (browser + CI-decode risk).
-const SKIP_MIME = new Set(["image/heic", "image/heif"]);
-
-// Leading digits + one separator (- _ . or space). Bare "01name" = no prefix.
-const PREFIX_RE = /^(\d+)\s*[-_. ]\s*(.*)$/;
-
-// The desktop container: --grid-max-width (77.5rem) less 2 x --grid-gutter
-// (2.5rem at that size) = 72.5rem = 1160px at a 16px root. Row BREAKS are frozen
-// at this width; the widths themselves stay fluid (each row is a flex container
-// whose items carry `flex: var(--r) 1 0`), so rows remain flush and uncropped at
-// every container width — measured 647-1240px in the ticket-02 prototype.
-const PACK_WIDTH = 1160;
-const TARGET_ROW_HEIGHT = 352; // 22rem
-const ROW_GAP = 8; // 0.5rem — must track the gallery's --gap in reviews.webc
-
-function parseFilename(name) {
-	const dot = name.lastIndexOf(".");
-	const base = dot > 0 ? name.slice(0, dot) : name; // strip extension
-	const m = base.match(PREFIX_RE);
-	const order = m ? parseInt(m[1], 10) : null;
-	const stem = m ? m[2] : base;
-	const cleaned = stem.replace(/[-_]+/g, " ").trim(); // "cleaned filename"
-	return { order, cleaned };
-}
-
 /**
- * The aspect ratio the photo is *displayed* at, once eleventy-img/sharp has
- * baked EXIF orientation into the pixels (it does, and then strips the tag —
- * verified empirically in ticket 01).
+ * Every photo in the folder, normalised. Under FIXTURE_DATA it comes from a
+ * checked-in payload instead of the live Drive folder, so the visual baselines
+ * stop drifting every time Annie adds a photo (see
+ * tests/fixtures/drive-files.json).
  *
- * Drive's imageMediaMetadata width/height are the STORED orientation and
- * `rotation` is quarter-turns clockwise, so an odd rotation swaps the axes.
- * Missing dimensions fall back to 1:1 with a warning: never fail the build and
- * never drop a photo Annie has just uploaded.
+ * Only the FETCH is swapped — the fixture goes through the same normaliser the
+ * live path runs, so ratios, the rotation swap and the caption fallback are all
+ * still exercised, and there is no `Response` to fake.
  */
-function displayRatio(meta, name) {
-	const w = meta?.width;
-	const h = meta?.height;
-
-	if (!w || !h) {
-		console.warn(
-			`[gallery] no image dimensions from Drive, assuming 1:1: ${name}`,
-		);
-		return 1;
-	}
-
-	const swap = (meta.rotation ?? 0) % 2 !== 0;
-	return swap ? h / w : w / h;
-}
-
-/**
- * Justified-row packing (the Flickr/Google-Photos shape), O(n²) DP — 121
- * iterations for 11 photos. Minimises the sum of squared log-deviation of each
- * row's height from the target, log so "twice too tall" and "half as tall" cost
- * the same. Every row is costed INCLUDING the last, which is what makes the
- * final row come out flush and near-target instead of ragged — the map's
- * "stretch the last row, clamped to 1.5x" rule then never has to fire.
- *
- * Greedy was tried in the prototype and is worse: it commits to a locally-good
- * row that strands the tail (3+2+4+2, spread 0.90-1.31x, against DP's 3+2+3+3
- * at 1.00-1.16x).
- */
-// NOT exported. An Eleventy `_data/*.js` module with any named export beside
-// `default` is handed to templates as the whole module namespace rather than the
-// default export's value — silently, so `$data.gallery` becomes
-// `{default, packRows}` and every loop renders "[object Object]". The packer is
-// covered through this module's public seam in tests/unit/gallery.test.js.
-function packRows(items) {
-	const count = items.length;
-
-	// The height a row of items[from..to) would take at the packing width.
-	const rowHeight = (from, to) => {
-		let ratioSum = 0;
-		for (let k = from; k < to; k++) ratioSum += items[k].ratio;
-		return (PACK_WIDTH - ROW_GAP * (to - from - 1)) / ratioSum;
-	};
-
-	const costTo = new Array(count + 1).fill(Infinity);
-	const rowStart = new Array(count + 1).fill(-1);
-	costTo[0] = 0;
-
-	for (let to = 1; to <= count; to++) {
-		for (let from = 0; from < to; from++) {
-			if (costTo[from] === Infinity) continue;
-			const deviation = Math.log(rowHeight(from, to) / TARGET_ROW_HEIGHT);
-			const cost = costTo[from] + deviation * deviation;
-			if (cost < costTo[to]) {
-				costTo[to] = cost;
-				rowStart[to] = from;
-			}
-		}
-	}
-
-	const rows = [];
-	for (let to = count; to > 0; to = rowStart[to])
-		rows.unshift(items.slice(rowStart[to], to));
-	return rows; // empty input -> [] (the reconstruction loop never runs)
-}
-
-/**
- * The raw files.list payload. Under FIXTURE_DATA it comes from a checked-in file
- * instead of the live Drive folder, so the visual baselines stop drifting every
- * time Annie adds a photo (see tests/fixtures/drive-files.json). Only the fetch
- * is swapped: the filtering, ordering, ratio and packing below all still run.
- */
-async function listFiles() {
+async function load() {
 	if (process.env.FIXTURE_DATA) {
-		return JSON.parse(
-			await readFile(
-				new URL("../../tests/fixtures/drive-files.json", import.meta.url),
-				"utf8",
+		return normalisePhotos(
+			JSON.parse(
+				await readFile(
+					new URL("../../tests/fixtures/drive-files.json", import.meta.url),
+					"utf8",
+				),
 			),
 		);
 	}
 
 	// One Google API key serves both the Drive (gallery) and Calendar APIs — they
 	// share a Google Cloud project, so GOOGLE_KEY is the single key for both here
-	// and in calendar.js.
-	const apiKey = process.env.GOOGLE_KEY;
-
-	if (!apiKey) {
+	// and in calendar.js. The key is read HERE and passed in: `_lib/google-drive.js`
+	// reads no environment.
+	if (!process.env.GOOGLE_KEY) {
 		throw new Error("GOOGLE_KEY not found in environment variables");
 	}
 
-	const q = `'${FOLDER_ID}' in parents and mimeType contains 'image/' and trashed = false`;
-	const url =
-		`https://www.googleapis.com/drive/v3/files` +
-		`?q=${encodeURIComponent(q)}` +
-		// imageMediaMetadata rides along on the same call with only the API key,
-		// so build-time aspect ratios cost no extra request. webContentLink comes
-		// along for the same price and is what mediaSrc() points eleventy-img at.
-		`&fields=${encodeURIComponent("files(id,name,description,mimeType,modifiedTime,webContentLink,imageMediaMetadata(width,height,rotation))")}` +
-		`&orderBy=name&pageSize=1000&key=${apiKey}`;
+	const photos = await fetchPhotos({
+		folderId: FOLDER_ID,
+		auth: apiKey(process.env.GOOGLE_KEY),
+	});
 
-	const res = await fetch(url);
-
-	if (!res.ok) {
-		// Hard-fail, like calendar.js.
-		throw new Error(
-			`Failed to list Drive gallery: ${res.status} ${res.statusText}`,
-		);
-	}
-
-	const data = await res.json();
-
-	// `res.ok` is not enough. Drive answers a files.list against a folder this
-	// key can no longer read with `200 {"files": []}` — a sharing change reads as
-	// a successful request that found nothing, and the build would go green with
-	// a blank gallery. An API-key consumer cannot even diagnose it: permissions.list
-	// rejects API keys outright ("API keys are not supported by this API").
+	// `res.ok` is not enough, and neither is an empty list. Drive answers a
+	// files.list against a folder this key can no longer read with
+	// `200 {"files": []}` — a sharing change reads as a successful request that
+	// found nothing, and the build would go green with a blank gallery. An
+	// API-key consumer cannot even diagnose it: permissions.list rejects API keys
+	// outright ("API keys are not supported by this API").
 	//
 	// A zero-length list is ambiguous in principle — Annie could have emptied the
-	// folder — but in practice she never does, and hard-failing is what this
-	// module already does with every other bad response.
-	if (!data.files?.length) {
+	// folder — which is why `fetchPhotos` returns `[]` rather than throwing. Only
+	// this site knows she never does, so the hard fail lives here.
+	if (!photos.length) {
 		throw new Error(
 			`Drive gallery listing came back empty (HTTP 200). The folder ` +
 				`${FOLDER_ID} is either empty or no longer shared with "Anyone with ` +
@@ -169,7 +69,7 @@ async function listFiles() {
 		);
 	}
 
-	return data;
+	return photos;
 }
 
 /**
@@ -200,55 +100,58 @@ async function listFiles() {
  * which is both a second download of the whole gallery and the exact traffic
  * shape that trips Google's IP-scoped anti-abuse throttle on media downloads.
  */
-function mediaSrc(file) {
+function mediaSrc(photo) {
 	if (process.env.FIXTURE_DATA) {
-		return `./tests/fixtures/gallery-images/${file.name}`;
+		return `./tests/fixtures/gallery-images/${photo.name}`;
 	}
 
-	if (!file.webContentLink) {
-		// Drive populates this for any file with binary content, so its absence
-		// means the field was dropped from `fields=` or the file is not what we
-		// think it is. Falling back to the key-bearing media URL would silently
-		// reintroduce the hash hazard for one photo, which is worse than stopping.
+	if (!photo.url) {
+		// Drive populates webContentLink for any file with binary content, so its
+		// absence means the field was dropped from the listing's `fields=` or the
+		// file is not what we think it is. Falling back to the key-bearing media
+		// URL would silently reintroduce the hash hazard for one photo, which is
+		// worse than stopping.
 		throw new Error(
-			`No webContentLink for Drive file ${file.name} (${file.id}) — ` +
-				`check the fields= list in listFiles().`,
+			`No webContentLink for Drive file ${photo.name} (${photo.id}) — ` +
+				`check the fields= list in _lib/google-drive.js.`,
 		);
 	}
 
 	// Remote src: eleventy-img fetches+caches+transcodes.
 	// modifiedTime = cache-buster; Drive ignores the extra parameter.
-	return `${file.webContentLink}&v=${encodeURIComponent(file.modifiedTime)}`;
+	return `${photo.url}&v=${encodeURIComponent(photo.modifiedTime)}`;
 }
 
 export default async function () {
-	const { files = [] } = await listFiles();
-
-	const photos = files
-		.filter((f) => f.mimeType?.startsWith("image/"))
-		.filter((f) => {
-			if (SKIP_MIME.has(f.mimeType)) {
-				console.warn(`[gallery] skipping HEIC (re-export as JPEG): ${f.name}`);
+	const photos = (await load())
+		.filter((photo) => photo.mimeType?.startsWith("image/"))
+		.filter((photo) => {
+			// A site policy, not Google's: _lib/google-drive.js returns every
+			// mimeType and filters none of them.
+			if (SKIP_MIME.has(photo.mimeType)) {
+				console.warn(
+					`[gallery] skipping HEIC (re-export as JPEG): ${photo.name}`,
+				);
 				return false; // soft-skip, no build failure
 			}
 			return true;
 		})
-		.map((f) => {
-			const { order, cleaned } = parseFilename(f.name);
-			const description = (f.description || "").trim();
-			// ONE never-empty field. The Drive description is the photo's text
-			// alternative (ticket 05), rendered once as the figcaption — both
-			// <img> tags carry alt="", which is only safe if a figcaption always
-			// exists to be that alternative. Falling back to the cleaned filename
-			// is a poor caption, but it is visible to Annie on the page in a way
-			// a silent alt never was.
+		.map((photo) => {
+			const { order, cleaned } = parseFilename(photo.name);
 			return {
-				id: f.id,
-				caption: description || cleaned || f.name,
-				ratio: displayRatio(f.imageMediaMetadata, f.name),
-				src: mediaSrc(f),
+				id: photo.id,
+				// ONE never-empty field. The Drive description is the photo's text
+				// alternative (ticket 05), rendered once as the figcaption — both
+				// <img> tags carry alt="", which is only safe if a figcaption always
+				// exists to be that alternative. `photo.caption` is already
+				// non-empty (`description || name`); this refines its filename half
+				// into something readable, which is a convention of this site's and
+				// not of Drive's.
+				caption: photo.description || cleaned || photo.caption,
+				ratio: photo.ratio,
+				src: mediaSrc(photo),
 				_order: order,
-				_name: f.name,
+				_name: photo.name,
 			};
 		})
 		// Numbered first (ascending); prefix-less fall to the end, alpha by filename.
