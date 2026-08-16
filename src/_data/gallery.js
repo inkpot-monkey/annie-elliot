@@ -49,6 +49,11 @@ async function load() {
 	const photos = await fetchPhotos({
 		folderId: FOLDER_ID,
 		auth: apiKey(process.env.GOOGLE_KEY),
+		// Asking Drive for images only is this site's business, not the
+		// transport's — which returns every mimeType and filters none of them.
+		// It saves a listing entry per stray file; the real filtering is below,
+		// because the fixture payload never goes near a query.
+		extraQuery: "mimeType contains 'image/'",
 	});
 
 	// `res.ok` is not enough, and neither is an empty list. Drive answers a

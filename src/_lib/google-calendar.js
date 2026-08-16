@@ -4,8 +4,8 @@
  *
  * Nothing here knows about annie-elliot, and nothing here formats, sorts or
  * partitions — that needs a locale and a clock, and both live in
- * `event-display.js`. Destined to leave this repo as `<pkg>/calendar`; see
- * `.scratch/google-data-package/assets/06-interface-spec.md`.
+ * `event-display.js`. Shaped to leave this repo as one subpath of a package
+ * later; the design notes are untracked, under `.scratch/google-data-package/`.
  *
  * Nothing here assumes the Drive half is in use, either.
  */

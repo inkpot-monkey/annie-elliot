@@ -4,8 +4,9 @@
  *
  * Nothing here knows about annie-elliot. No environment reads, no filtering by
  * MIME type, no ordering, no packing — those are the site's, and they live in
- * `gallery-layout.js` and `src/_data/gallery.js`. Destined to leave this repo as
- * `<pkg>/drive`; see `.scratch/google-data-package/assets/06-interface-spec.md`.
+ * `gallery-layout.js` and `src/_data/gallery.js`. Shaped to leave this repo as
+ * one subpath of a package later; the design notes are untracked, under
+ * `.scratch/google-data-package/`.
  */
 
 // Everything the gallery needs, in one call. `imageMediaMetadata` rides along
@@ -79,11 +80,12 @@ export async function listFiles({
 		);
 	}
 
-	const clauses = [
-		`'${folderId}' in parents`,
-		"mimeType contains 'image/'",
-		"trashed = false",
-	];
+	// The folder and the trash are all this module decides. WHICH files a caller
+	// wants — images only, a name pattern — is the caller's, and it arrives as
+	// `extraQuery`: AND-ed on, never replacing, so nothing here can be lost by
+	// asking for more. (`@localnerve/google-drive-folder`'s `fileQuery` replaces
+	// its own `trashed = false` default; that trap is worth not reproducing.)
+	const clauses = [`'${folderId}' in parents`, "trashed = false"];
 	if (extraQuery) clauses.push(`(${extraQuery})`);
 
 	const params = new URLSearchParams({

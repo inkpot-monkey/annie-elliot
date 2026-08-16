@@ -226,6 +226,26 @@ test("a list whose every file is skipped yields no rows rather than throwing", a
 	assert.deepEqual(rows, []);
 });
 
+test("the site asks Drive for images only — the transport does not", async () => {
+	// A stray document in the folder should not cost a listing entry. The
+	// transport's base query says nothing about mimeType, so this clause has to
+	// come from here.
+	let requested;
+	globalThis.fetch = async (request) => {
+		requested = new URL(request.url);
+		return {
+			ok: true,
+			status: 200,
+			statusText: "OK",
+			json: async () => ({ files: [file("1 - x.jpg")] }),
+		};
+	};
+
+	await gallery();
+
+	assert.match(requested.searchParams.get("q"), /mimeType contains 'image\/'/);
+});
+
 // ------------------------------------------------------------------- failures
 
 test("throws when no API key is set", async () => {

@@ -16,8 +16,8 @@
  * invisible coupling; the key is passed in from `src/_data/`, where `.env` is
  * loaded.
  *
- * Destined to leave this repo as `<pkg>/auth` — see
- * `.scratch/google-data-package/assets/06-interface-spec.md`.
+ * Shaped to leave this repo as one subpath of a package later; the design notes
+ * are untracked, under `.scratch/google-data-package/`.
  *
  * @typedef {(request: Request) => Request | Promise<Request>} Auth
  */

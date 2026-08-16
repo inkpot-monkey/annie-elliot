@@ -213,15 +213,17 @@ test("an empty or absent file list normalises to an empty array", () => {
 
 // -------------------------------------------------------------------- listFiles
 
-test("the query scopes to the folder, to images, and excludes the trash", async () => {
+test("the query scopes to the folder and excludes the trash — and nothing else", async () => {
+	// WHICH files are wanted is the caller's decision, so the base query says
+	// nothing about mimeType.
 	const { fetch, requested } = serve({ files: [] });
 
 	await listFiles({ folderId: FOLDER, auth, fetch });
 
 	const q = requested[0].searchParams.get("q");
 	assert.match(q, /'folder-id' in parents/);
-	assert.match(q, /mimeType contains 'image\/'/);
 	assert.match(q, /trashed = false/);
+	assert.ok(!q.includes("mimeType"), "no mimeType clause of its own");
 });
 
 test("imageMediaMetadata and webContentLink ride along on the listing call", async () => {
