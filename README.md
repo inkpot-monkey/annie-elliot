@@ -49,7 +49,7 @@ Outside Nix, Playwright will want to fetch its own browsers.
 | Input       | `src/` — pages are top-level `.webc` files, one layout in `src/_layouts/` |
 | Output      | `dist/`                                                                   |
 | Components  | `src/_components/**/*.webc`, globbed by the WebC plugin                   |
-| Global data | `src/_data/`                                                              |
+| Global data | `src/_data/` — thin wrappers over the modules in `src/_lib/`              |
 | Images      | `@11ty/eleventy-img`, at build time, for local **and** remote sources     |
 
 There are no collections. `src/sitemap.njk` uses the implicit `collections.all`.
@@ -66,6 +66,24 @@ Data flows in at build time:
 
 Both remote fetches are cached by `eleventy-fetch` in `.cache/`.
 
+Each `_data` module is a `default`-only wrapper — Eleventy insists on that, see
+[`AGENTS.md`](AGENTS.md) — over five modules in `src/_lib/`, split along the
+line between what Google says and what this site decides:
+
+| Module                    | Holds                                                                         |
+| ------------------------- | ----------------------------------------------------------------------------- |
+| `_lib/google-auth.js`     | `apiKey()`. An `Auth` is a function from `Request` to authorised `Request`    |
+| `_lib/google-drive.js`    | `listFiles` / `normalisePhotos` / `fetchPhotos` — displayed aspect ratios     |
+| `_lib/google-calendar.js` | `listEvents` / `normaliseEvents` / `fetchEvents` — ISO strings, never `Date`s |
+| `_lib/gallery-layout.js`  | `packRows` / `parseFilename` / `SKIP_MIME` and the packing geometry           |
+| `_lib/event-display.js`   | en-GB date strings, and the future/past partition around a given instant      |
+
+The three `google-*` modules read no environment, format nothing and know no
+site: the key, the folder and calendar ids, the HEIC skip, the ordering, the
+`"Europe/London"` fallback and the empty-folder hard fail all live in
+`src/_data/`. They are shaped to be lifted out into a package later — the
+reasoning is in `.scratch/google-data-package/` (untracked).
+
 ## Testing
 
 Everything runs through [Playwright](https://playwright.dev/) except the unit
@@ -73,7 +91,7 @@ tests, which use `node --test`.
 
 | Command               | Covers                                                                |
 | --------------------- | --------------------------------------------------------------------- |
-| `npm run test:unit`   | The two `src/_data/` modules, through their `fetch` seam — see below  |
+| `npm run test:unit`   | `src/_lib/` directly, and the two `src/_data/` wrappers — see below   |
 | `npm run test:visual` | **The whole Playwright suite** — visual, a11y, SEO, gallery, lightbox |
 | `npm run test:seo`    | Title, description, Open Graph, canonical, JSON-LD                    |
 | `npm run test:a11y`   | `axe` against WCAG 2 A/AA over seven pages                            |
@@ -85,12 +103,20 @@ tests, which use `node --test`.
 `npm run test:visual` is named for its most expensive job but is literally
 `npx playwright test`, so it runs every spec in `tests/`.
 
-Both unit suites drive their data module through its `fetch` seam, so they need
-neither `GOOGLE_KEY` nor a network. `tests/unit/gallery.test.js` covers aspect
-ratios, filename ordering, caption fallback and the row packer, plus the
-`files.list` guards and the credential-free image `src`;
-`tests/unit/calendar.test.js` covers the `events.list` query contract —
-recurrence expansion, ordering, and the walk through every page of results.
+No unit suite needs `GOOGLE_KEY` or a network. The pure modules —
+`gallery-layout`, `event-display`, and the `normalise*` half of each transport —
+are called directly; the transports take their `fetch` as an option; and the two
+`_data` wrappers, which fix the transport to the global `fetch`, still stub it.
+
+| Suite                                | Covers                                                                             |
+| ------------------------------------ | ---------------------------------------------------------------------------------- |
+| `tests/unit/gallery-layout.test.js`  | Filename parsing, the skip list, and the row packer                                |
+| `tests/unit/event-display.test.js`   | en-GB formatting and the partition, against an injected clock                      |
+| `tests/unit/google-drive.test.js`    | Displayed aspect ratios, the caption guarantee, the `files.list` query             |
+| `tests/unit/google-calendar.test.js` | Recurrence expansion, the page walk, the inclusive all-day end                     |
+| `tests/unit/google-auth.test.js`     | The key reaches the request, and nothing else changes                              |
+| `tests/unit/gallery.test.js`         | The site's ordering, caption refinement, HEIC skip, empty-folder fail, image `src` |
+| `tests/unit/calendar.test.js`        | The site's sort, its `"Europe/London"` fallback, and the fixture path              |
 
 > **Run `npm run test:all` before you push.** There is no CI — this is the gate.
 
