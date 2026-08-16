@@ -146,6 +146,13 @@ test.describe("Per-page structured data", () => {
 			"Library Talk",
 		]);
 
+		// Google's all-day `end.date` is EXCLUSIVE — the festival arrives ending on
+		// the 17th — and the calendar layer steps it back, so the schema's endDate
+		// is the same last day the page prints ("Tuesday, 16 June 2099").
+		const festival = events[1];
+		expect(festival.startDate).toBe("2099-06-13");
+		expect(festival.endDate).toBe("2099-06-16");
+
 		const reading = events[0];
 		expect(reading.startDate).toBe("2099-03-04T19:00:00+00:00");
 		expect(reading.location["@type"]).toBe("Place");

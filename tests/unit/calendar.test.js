@@ -3,13 +3,14 @@ import assert from "node:assert/strict";
 
 import calendar from "../../src/_data/calendar.js";
 
-// The seam is the module's `fetch` boundary, matching tests/unit/gallery.test.js:
-// each test stubs `globalThis.fetch` with a canned events.list payload and sets
-// GOOGLE_KEY, and both are restored afterwards so nothing leaks.
+// The Eleventy data module: what this SITE does with a normalised calendar —
+// which key it reads, which zone it falls back to, and the ordering and
+// future/past split the events page renders.
 //
-// These cases are about the REQUEST — which parameters the module sends and how
-// it walks pages. Get those wrong and the build is green and the events page is
-// quietly incomplete, which is the only reason this file exists.
+// The request contract and the pagination walk have their own direct tests
+// (tests/unit/google-calendar.test.js), and so do the formatting and the
+// partition (tests/unit/event-display.test.js). This file still stubs
+// `globalThis.fetch`, because the wrapper is what fixes the module's transport.
 
 const realFetch = globalThis.fetch;
 const realGoogleKey = process.env.GOOGLE_KEY;
@@ -23,38 +24,22 @@ function restoreEnv(name, saved) {
 	}
 }
 
-// Serve the given pages in order, recording every URL asked for. A page is a
-// raw events.list body: `{ timeZone, items, nextPageToken }`.
+// Serve the given pages in order. A page is a raw events.list body:
+// `{ timeZone, items, nextPageToken }`.
 function mockPages(...pages) {
-	const requested = [];
 	let call = 0;
-	globalThis.fetch = async (url) => {
-		requested.push(new URL(url));
+	globalThis.fetch = async () => {
 		const page = pages[Math.min(call++, pages.length - 1)];
-		return {
-			ok: true,
-			status: 200,
-			statusText: "OK",
-			json: async () => page,
-		};
+		return { ok: true, status: 200, statusText: "OK", json: async () => page };
 	};
-	return requested;
 }
 
-function mockError({ status = 403, statusText = "Forbidden" } = {}) {
-	globalThis.fetch = async () => ({
-		ok: false,
-		status,
-		statusText,
-		json: async () => ({}),
-	});
-}
-
-// A timed events.list item. Dates are explicit in every test: `calendar.js`
+// A timed events.list item. Dates are explicit in every test: this module
 // partitions future from past against `new Date()`, so a case that cares about
 // the partition has to say which side it is on.
 function event(summary, startDateTime) {
 	return {
+		id: `id-${summary}`,
 		status: "confirmed",
 		summary,
 		description: `${summary} description`,
@@ -67,7 +52,7 @@ function event(summary, startDateTime) {
 beforeEach(() => {
 	process.env.GOOGLE_KEY = "test-key";
 	// The fixture branch short-circuits the fetch entirely; these tests are about
-	// what the live branch sends, so make sure a stray FIXTURE_DATA can't hide it.
+	// what the live branch does, so make sure a stray FIXTURE_DATA can't hide it.
 	delete process.env.FIXTURE_DATA;
 });
 
@@ -77,108 +62,6 @@ afterEach(() => {
 	restoreEnv("FIXTURE_DATA", realFixtureData);
 });
 
-// ------------------------------------------------------------------ the query
-
-test("asks the API to expand recurring series into instances", async () => {
-	// Google defaults singleEvents to false, which hands back the unexpanded
-	// master carrying its RRULE — the formatter below renders that as ONE event
-	// on the series' start date.
-	const requested = mockPages({ timeZone: "Europe/London", items: [] });
-
-	await calendar();
-
-	assert.equal(requested[0].searchParams.get("singleEvents"), "true");
-});
-
-test("orders by startTime, which the API only allows alongside singleEvents", async () => {
-	const requested = mockPages({ timeZone: "Europe/London", items: [] });
-
-	await calendar();
-
-	assert.equal(requested[0].searchParams.get("orderBy"), "startTime");
-	assert.equal(
-		requested[0].searchParams.get("singleEvents"),
-		"true",
-		"orderBy=startTime without singleEvents is a 400 from Google",
-	);
-});
-
-test("asks for the largest page the API allows, not the 250 default", async () => {
-	const requested = mockPages({ timeZone: "Europe/London", items: [] });
-
-	await calendar();
-
-	assert.equal(requested[0].searchParams.get("maxResults"), "2500");
-});
-
-test("does NOT send timeMin — the events page renders past events too", async () => {
-	// A timeMin would silently empty the "past events" section. The whole
-	// calendar is the page's subject, in both directions.
-	const requested = mockPages({ timeZone: "Europe/London", items: [] });
-
-	await calendar();
-
-	assert.equal(requested[0].searchParams.get("timeMin"), null);
-	assert.equal(requested[0].searchParams.get("timeMax"), null);
-});
-
-// -------------------------------------------------------------- pagination
-
-test("follows nextPageToken and keeps every page's events", async () => {
-	const requested = mockPages(
-		{
-			timeZone: "Europe/London",
-			items: [event("Page one", "2099-03-04T19:00:00+00:00")],
-			nextPageToken: "token-2",
-		},
-		{
-			timeZone: "Europe/London",
-			items: [event("Page two", "2099-03-05T19:00:00+00:00")],
-		},
-	);
-
-	const { futureEvents } = await calendar();
-
-	assert.equal(requested.length, 2);
-	assert.equal(requested[0].searchParams.get("pageToken"), null);
-	assert.equal(requested[1].searchParams.get("pageToken"), "token-2");
-	assert.deepEqual(
-		futureEvents.map((e) => e.summary),
-		["Page one", "Page two"],
-	);
-});
-
-test("throws rather than truncating when the API repeats a pageToken", async () => {
-	// A token that hands back itself would loop forever; stopping quietly would
-	// drop the tail, which is the bug this whole file guards.
-	mockPages({
-		timeZone: "Europe/London",
-		items: [event("Looping", "2099-03-04T19:00:00+00:00")],
-		nextPageToken: "same-token",
-	});
-
-	await assert.rejects(() => calendar(), /pageToken/);
-});
-
-test("throws rather than paging forever past the cap", async () => {
-	// An unbounded recurring series expands without end once singleEvents is on.
-	let n = 0;
-	globalThis.fetch = async () => ({
-		ok: true,
-		status: 200,
-		statusText: "OK",
-		json: async () => ({
-			timeZone: "Europe/London",
-			items: [event(`Instance ${n}`, "2099-03-04T19:00:00+00:00")],
-			nextPageToken: `token-${++n}`,
-		}),
-	});
-
-	await assert.rejects(() => calendar(), /too many pages/i);
-});
-
-// ------------------------------------------------------------------ failures
-
 test("throws when no API key is set", async () => {
 	delete process.env.GOOGLE_KEY;
 	mockPages({ timeZone: "Europe/London", items: [] });
@@ -187,14 +70,17 @@ test("throws when no API key is set", async () => {
 });
 
 test("throws on a non-OK events.list response", async () => {
-	mockError({ status: 403, statusText: "Forbidden" });
+	globalThis.fetch = async () => ({
+		ok: false,
+		status: 403,
+		statusText: "Forbidden",
+		json: async () => ({}),
+	});
 
 	await assert.rejects(() => calendar(), /403/);
 });
 
-// ------------------------------------------------------- shape, after paging
-
-test("paged events still partition into future and past around now", async () => {
+test("paged events partition into future and past around now", async () => {
 	mockPages(
 		{
 			timeZone: "Europe/London",
@@ -226,6 +112,24 @@ test("paged events still partition into future and past around now", async () =>
 	);
 });
 
+test("events are ordered by start, whatever order the API returned them in", async () => {
+	mockPages({
+		timeZone: "Europe/London",
+		items: [
+			event("Third", "2099-05-04T19:00:00+00:00"),
+			event("First", "2099-03-04T19:00:00+00:00"),
+			event("Second", "2099-04-04T19:00:00+00:00"),
+		],
+	});
+
+	const { futureEvents } = await calendar();
+
+	assert.deepEqual(
+		futureEvents.map((e) => e.summary),
+		["First", "Second", "Third"],
+	);
+});
+
 test("an events.list body with no items yields empty sections, not a crash", async () => {
 	mockPages({ timeZone: "Europe/London" });
 
@@ -233,4 +137,67 @@ test("an events.list body with no items yields empty sections, not a crash", asy
 
 	assert.deepEqual(futureEvents, []);
 	assert.deepEqual(pastEvents, []);
+});
+
+test("a timed event with no zone of its own is formatted in Europe/London", async () => {
+	// The site's fallback, which the calendar transport deliberately does not
+	// have: it returns `timeZone: undefined` rather than guessing for everyone.
+	mockPages({
+		items: [
+			{
+				...event("Summer evening", "2099-07-04T19:00:00+00:00"),
+				start: { dateTime: "2099-07-04T19:00:00+00:00" },
+				end: { dateTime: "2099-07-04T20:00:00+00:00" },
+			},
+		],
+	});
+
+	const { futureEvents } = await calendar();
+
+	// 19:00Z in July is 20:00 in London.
+	assert.equal(futureEvents[0].start, "Saturday, 4 July 2099 at 20:00");
+});
+
+test("the page's display fields are all present on every event", async () => {
+	mockPages({
+		timeZone: "Europe/London",
+		items: [event("Reading", "2099-03-04T19:00:00+00:00")],
+	});
+
+	const [e] = (await calendar()).futureEvents;
+
+	assert.equal(e.summary, "Reading");
+	assert.equal(e.description, "Reading description");
+	assert.equal(e.location, "Somewhere");
+	assert.equal(e.start, "Wednesday, 4 March 2099 at 19:00");
+	assert.equal(e.isMultiDay, false);
+	// The JSON-LD's inputs — see src/_lib/structuredData.js.
+	assert.equal(e.startDateTime, "2099-03-04T19:00:00+00:00");
+	assert.equal(e.endDateTime, "2099-03-04T19:00:00+00:00");
+});
+
+test("FIXTURE_DATA reads the checked-in payload through the same normaliser", async () => {
+	// No network, and no faked Response — the fixture is a raw events.list body,
+	// so it goes straight through normaliseEvents.
+	process.env.FIXTURE_DATA = "1";
+	globalThis.fetch = async () => {
+		throw new Error("the fixture path must not touch the network");
+	};
+
+	const { futureEvents, pastEvents } = await calendar();
+
+	// The fixtures sit in 2099 and 2019 on purpose, so the partition cannot flip
+	// as real time passes.
+	assert.deepEqual(
+		futureEvents.map((e) => e.summary),
+		["Bookshop Reading", "Literary Festival Weekend", "Library Talk"],
+	);
+	assert.ok(pastEvents.length > 0);
+
+	// Google's all-day end.date is exclusive: 13th-to-17th displays as ending on
+	// the 16th.
+	const festival = futureEvents[1];
+	assert.equal(festival.isMultiDay, true);
+	assert.equal(festival.start, "Saturday, 13 June 2099");
+	assert.equal(festival.end, "Tuesday, 16 June 2099");
 });
