@@ -124,6 +124,25 @@ and the build died.
 Chromium is pinned by `flake.nix`, not by Playwright, so the visual baselines
 survive a Playwright bump. They would not survive a Nix chromium bump.
 
+## `sharp`'s install script is ignored on purpose
+
+`package.json` carries `pnpm.ignoredBuiltDependencies: ["sharp"]`, which is what
+stops pnpm 10 warning `Ignored build scripts: sharp` on every install. It is a
+decision, not a silencer.
+
+`sharp`'s only lifecycle script is `install: node install/check`, and that script
+is a **fallback that compiles from source via node-gyp**. It has nothing to do
+here: the prebuilt `@img/sharp-linux-x64` arrives as an optional dependency and
+is what actually does the work. Approving the script instead — `pnpm
+approve-builds`, or `onlyBuiltDependencies` — would invite a source build on any
+machine whose heuristics decide the prebuilt is unsuitable, inside a Nix shell
+and a Cloudflare builder that have no business compiling libvips.
+
+If a platform ever genuinely lacks a prebuilt binary, this fails **loudly** at
+`require` time with "Could not load the sharp module", not silently. That is the
+signal to revisit this, and the fix then is the optional dependency, not the
+script.
+
 ## There is no CI
 
 `npm run test:all` before pushing is the only gate, and pushing to `main`

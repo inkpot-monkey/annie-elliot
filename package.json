@@ -45,5 +45,10 @@
 		"html-validate": "^10.3.1",
 		"lighthouse": "^13.0.1",
 		"prettier": "^3.6.2"
+	},
+	"pnpm": {
+		"ignoredBuiltDependencies": [
+			"sharp"
+		]
 	}
 }
