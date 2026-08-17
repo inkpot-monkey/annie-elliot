@@ -2,12 +2,14 @@
  * The gallery's presentation rules: which files this site shows, what it calls
  * them, and how they pack into justified rows.
  *
- * All of this is annie-elliot's, not Google's — it stays in this repo when the
- * Drive half leaves. Pure: no network, no clock, no environment.
+ * All of this is annie-elliot's, not Google's — which is why it stayed here when
+ * the Drive half left for `@palebluebytes/cms`. Pure: no network, no
+ * clock, no environment.
  */
 
-// HEIC/HEIF skipped by default (browser + CI-decode risk). A site policy: the
-// transport in `google-drive.js` returns every mimeType and filters nothing.
+// HEIC/HEIF skipped by default (browser + CI-decode risk). A site policy:
+// `@palebluebytes/cms/files/google` returns every mimeType and filters
+// none of them, deliberately.
 export const SKIP_MIME = new Set(["image/heic", "image/heif"]);
 
 // Leading digits + one separator (- _ . or space). Bare "01name" = no prefix.

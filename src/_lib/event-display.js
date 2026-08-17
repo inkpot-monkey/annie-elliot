@@ -3,7 +3,7 @@
  * and past.
  *
  * Everything here has a LOCALE or a CLOCK in it, which is exactly why it is the
- * site's and not the calendar transport's — `google-calendar.js` hands over ISO
+ * site's and not the package's — `@palebluebytes/cms` hands over ISO
  * strings and no opinion. Pure, with the clock passed in.
  */
 
@@ -12,13 +12,28 @@
  * reads: pre-formatted `start`/`end` strings for the page, and the raw ISO
  * `startDateTime`/`endDateTime` for the JSON-LD.
  *
- * @param {import("./google-calendar.js").CalendarEvent} event
+ * @param {import("@palebluebytes/cms/calendar/google").CalendarEvent} event
  * @param {{fallbackTimeZone: string}} options The zone to format a timed event
- *   in when the event carries none. The calendar API returns `undefined` rather
- *   than guessing, so the guess is made here, where "Europe/London" is true.
+ *   in when the event carries none. The package returns `undefined` rather than
+ *   guessing, so the guess is made here, where "Europe/London" is true.
  */
 export function formatForDisplay(event, { fallbackTimeZone }) {
-	const { isAllDay, start, end } = event;
+	const { kind, start, end } = event;
+
+	// `kind` replaced an `isAllDay` boolean, because a calendar can state a time
+	// in four forms and only one of them is an instant. This site reads Google,
+	// which returns just the two — so the other two arriving means someone
+	// pointed it at an .ics calendar, and formatting a WALL TIME through a zone
+	// would silently print an hour the file never stated.
+	if (kind !== "date" && kind !== "instant") {
+		throw new Error(
+			`event "${event.summary}" has kind "${kind}", which carries no offset. ` +
+				`Resolve it to an instant before formatting, or this page prints a ` +
+				`time nobody scheduled.`,
+		);
+	}
+
+	const isFloatingDay = kind === "date";
 
 	// An all-day date is floating: `new Date("2099-06-13")` invents an instant at
 	// UTC midnight, so format it back in UTC or a spurious time appears — and in
@@ -28,8 +43,8 @@ export function formatForDisplay(event, { fallbackTimeZone }) {
 		day: "numeric",
 		month: "long",
 		year: "numeric",
-		timeZone: isAllDay ? "UTC" : event.timeZone || fallbackTimeZone,
-		...(isAllDay ? {} : { hour: "numeric", minute: "2-digit" }),
+		timeZone: isFloatingDay ? "UTC" : event.timeZone || fallbackTimeZone,
+		...(isFloatingDay ? {} : { hour: "numeric", minute: "2-digit" }),
 	};
 	const format = (iso) =>
 		new Date(iso).toLocaleDateString("en-GB", displayOpts);

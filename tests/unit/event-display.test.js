@@ -13,7 +13,11 @@ const timed = (extra = {}) => ({
 	summary: "Bookshop Reading",
 	description: "An evening reading.",
 	location: "The Assembly Rooms",
-	isAllDay: false,
+	// "instant" and not merely "timed": the string carries an offset, which is
+	// what makes it safe to hand to `new Date()`. Google returns only this and
+	// "date"; an .ics calendar can also return a wall time, which
+	// `formatForDisplay` refuses rather than print an hour nobody scheduled.
+	kind: "instant",
 	isMultiDay: false,
 	start: "2099-03-04T19:00:00+00:00",
 	end: "2099-03-04T20:30:00+00:00",
@@ -26,7 +30,7 @@ const allDay = (extra = {}) => ({
 	summary: "Literary Festival Weekend",
 	description: "A weekend of talks.",
 	location: "Riverside Pavilion",
-	isAllDay: true,
+	kind: "date",
 	isMultiDay: true,
 	start: "2099-06-13",
 	end: "2099-06-16", // already the INCLUSIVE last day

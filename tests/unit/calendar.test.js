@@ -7,9 +7,9 @@ import calendar from "../../src/_data/calendar.js";
 // which key it reads, which zone it falls back to, and the ordering and
 // future/past split the events page renders.
 //
-// The request contract and the pagination walk have their own direct tests
-// (tests/unit/google-calendar.test.js), and so do the formatting and the
-// partition (tests/unit/event-display.test.js). This file still stubs
+// The request contract and the pagination walk are tested in
+// `@palebluebytes/cms` rather than here; the formatting and the partition
+// have their own direct tests (tests/unit/event-display.test.js). This file still stubs
 // `globalThis.fetch`, because the wrapper is what fixes the module's transport.
 
 const realFetch = globalThis.fetch;

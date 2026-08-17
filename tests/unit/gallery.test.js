@@ -5,10 +5,10 @@ import gallery from "../../src/_data/gallery.js";
 
 // The Eleventy data module: what this SITE does with a normalised Drive folder —
 // its skip policy, its caption refinement, its ordering, and the guards it keeps
-// that `_lib/google-drive.js` deliberately does not.
+// that the package deliberately does not.
 //
-// The transport and normaliser have their own direct tests
-// (tests/unit/google-drive.test.js), and so does the packer
+// The transport and normaliser are tested in `@palebluebytes/cms` rather
+// than here; the packer has its own direct tests
 // (tests/unit/gallery-layout.test.js) — it used to be reachable only through the
 // `fetch` seam here, because this module may export nothing but `default`. This
 // file still stubs `globalThis.fetch`, since the wrapper is what fixes the

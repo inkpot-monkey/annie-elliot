@@ -49,7 +49,7 @@ Outside Nix, Playwright will want to fetch its own browsers.
 | Input       | `src/` — pages are top-level `.webc` files, one layout in `src/_layouts/` |
 | Output      | `dist/`                                                                   |
 | Components  | `src/_components/**/*.webc`, globbed by the WebC plugin                   |
-| Global data | `src/_data/` — thin wrappers over the modules in `src/_lib/`              |
+| Global data | `src/_data/` — thin wrappers over the package and `src/_lib/`             |
 | Images      | `@11ty/eleventy-img`, at build time, for local **and** remote sources     |
 
 There are no collections. `src/sitemap.njk` uses the implicit `collections.all`.
@@ -67,22 +67,40 @@ Data flows in at build time:
 Both remote fetches are cached by `eleventy-fetch` in `.cache/`.
 
 Each `_data` module is a `default`-only wrapper — Eleventy insists on that, see
-[`AGENTS.md`](AGENTS.md) — over five modules in `src/_lib/`, split along the
-line between what Google says and what this site decides:
+[`AGENTS.md`](AGENTS.md) — over a package that talks to Google and two modules in
+`src/_lib/` that hold what this site decides:
 
-| Module                    | Holds                                                                         |
-| ------------------------- | ----------------------------------------------------------------------------- |
-| `_lib/google-auth.js`     | `apiKey()`. An `Auth` is a function from `Request` to authorised `Request`    |
-| `_lib/google-drive.js`    | `listFiles` / `normalisePhotos` / `fetchPhotos` — displayed aspect ratios     |
-| `_lib/google-calendar.js` | `listEvents` / `normaliseEvents` / `fetchEvents` — ISO strings, never `Date`s |
-| `_lib/gallery-layout.js`  | `packRows` / `parseFilename` / `SKIP_MIME` and the packing geometry           |
-| `_lib/event-display.js`   | en-GB date strings, and the future/past partition around a given instant      |
+| Module                               | Holds                                                                         |
+| ------------------------------------ | ----------------------------------------------------------------------------- |
+| `@palebluebytes/cms/auth`            | `apiKey()`. An `Auth` is a function from `Request` to authorised `Request`    |
+| `@palebluebytes/cms/files/google`    | `listFiles` / `normalisePhotos` / `fetchPhotos` — displayed aspect ratios     |
+| `@palebluebytes/cms/calendar/google` | `listEvents` / `normaliseEvents` / `fetchEvents` — ISO strings, never `Date`s |
+| `_lib/gallery-layout.js`             | `packRows` / `parseFilename` / `SKIP_MIME` and the packing geometry           |
+| `_lib/event-display.js`              | en-GB date strings, and the future/past partition around a given instant      |
 
-The three `google-*` modules read no environment, format nothing and know no
-site: the key, the folder and calendar ids, the HEIC skip, the ordering, the
-`"Europe/London"` fallback and the empty-folder hard fail all live in
-`src/_data/`. They are shaped to be lifted out into a package later — the
-reasoning is in `.scratch/google-data-package/` (untracked).
+**The three `google-*` modules that used to sit in `src/_lib/` are now that
+package**, which is what they were always shaped for. It reads no environment,
+formats nothing and knows no site: the key, the folder and calendar ids, the HEIC
+skip, the ordering, the `"Europe/London"` fallback and the empty-folder hard fail
+all stay in `src/_data/` here.
+
+Two consequences of the move worth knowing. `CalendarEvent` now carries a
+four-way `kind` (`"date" | "floating" | "zoned" | "instant"`) instead of an
+`isAllDay` boolean, because only one of those four is an instant — Google returns
+just the first and the last, and `_lib/event-display.js` throws rather than format
+the other two. And the calendar window is `from`/`to`, not `timeMin`/`timeMax`.
+
+> **The dependency is `"@palebluebytes/cms": "link:../../google-cms"`** — a local
+> path, not a published version. Two things follow, and both bite at deploy time
+> rather than here:
+>
+> - A `link:` **cannot resolve in a clean checkout**, and Cloudflare installs from
+>   `pnpm-lock.yaml` in exactly that. So it has to become a real version before the
+>   next deploy.
+> - The name and the path disagree on purpose for now: the package renamed itself
+>   from `google-cms` to `cms`, but the **directory** it lives in is still
+>   `google-cms`. When that repo is renamed on GitHub and re-cloned, this path
+>   changes too.
 
 ## Testing
 
@@ -104,19 +122,23 @@ tests, which use `node --test`.
 `npx playwright test`, so it runs every spec in `tests/`.
 
 No unit suite needs `GOOGLE_KEY` or a network. The pure modules —
-`gallery-layout`, `event-display`, and the `normalise*` half of each transport —
-are called directly; the transports take their `fetch` as an option; and the two
+`gallery-layout`, `event-display`, and the package's `normalise*` half — are
+called directly; the transports take their `fetch` as an option; and the two
 `_data` wrappers, which fix the transport to the global `fetch`, still stub it.
 
-| Suite                                | Covers                                                                             |
-| ------------------------------------ | ---------------------------------------------------------------------------------- |
-| `tests/unit/gallery-layout.test.js`  | Filename parsing, the skip list, and the row packer                                |
-| `tests/unit/event-display.test.js`   | en-GB formatting and the partition, against an injected clock                      |
-| `tests/unit/google-drive.test.js`    | Displayed aspect ratios, the caption guarantee, the `files.list` query             |
-| `tests/unit/google-calendar.test.js` | Recurrence expansion, the page walk, the inclusive all-day end                     |
-| `tests/unit/google-auth.test.js`     | The key reaches the request, and nothing else changes                              |
-| `tests/unit/gallery.test.js`         | The site's ordering, caption refinement, HEIC skip, empty-folder fail, image `src` |
-| `tests/unit/calendar.test.js`        | The site's sort, its `"Europe/London"` fallback, and the fixture path              |
+| Suite                               | Covers                                                                             |
+| ----------------------------------- | ---------------------------------------------------------------------------------- |
+| `tests/unit/gallery-layout.test.js` | Filename parsing, the skip list, and the row packer                                |
+| `tests/unit/event-display.test.js`  | en-GB formatting and the partition, against an injected clock                      |
+| `tests/unit/gallery.test.js`        | The site's ordering, caption refinement, HEIC skip, empty-folder fail, image `src` |
+| `tests/unit/calendar.test.js`       | The site's sort, its `"Europe/London"` fallback, and the fixture path              |
+
+**What is no longer tested here:** displayed aspect ratios, the caption
+guarantee, the `files.list` query, recurrence expansion, the page walk, the
+inclusive all-day end, and that the key reaches the request. Those moved out with
+the code, and they are tested in the package — including one suite this repo
+never had, which holds the Google and `.ics` providers to producing the same
+events from the same calendar. What stays here is what this site decides.
 
 > **Run `npm run test:all` before you push.** There is no CI — this is the gate.
 

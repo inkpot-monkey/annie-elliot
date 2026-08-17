@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import { readFile } from "node:fs/promises";
-import { apiKey } from "../_lib/google-auth.js";
-import { fetchPhotos, normalisePhotos } from "../_lib/google-drive.js";
+import { apiKey } from "@palebluebytes/cms/auth";
+import { fetchPhotos, normalisePhotos } from "@palebluebytes/cms/files/google";
 import { packRows, parseFilename, SKIP_MIME } from "../_lib/gallery-layout.js";
 
 dotenv.config();
@@ -40,8 +40,8 @@ async function load() {
 
 	// One Google API key serves both the Drive (gallery) and Calendar APIs — they
 	// share a Google Cloud project, so GOOGLE_KEY is the single key for both here
-	// and in calendar.js. The key is read HERE and passed in: `_lib/google-drive.js`
-	// reads no environment.
+	// and in calendar.js. The key is read HERE and passed in: the package reads no
+	// environment on any runtime, deliberately.
 	if (!process.env.GOOGLE_KEY) {
 		throw new Error("GOOGLE_KEY not found in environment variables");
 	}
@@ -118,7 +118,7 @@ function mediaSrc(photo) {
 		// worse than stopping.
 		throw new Error(
 			`No webContentLink for Drive file ${photo.name} (${photo.id}) — ` +
-				`check the fields= list in _lib/google-drive.js.`,
+				`pass extraFields to fetchPhotos.`,
 		);
 	}
 
@@ -131,8 +131,8 @@ export default async function () {
 	const photos = (await load())
 		.filter((photo) => photo.mimeType?.startsWith("image/"))
 		.filter((photo) => {
-			// A site policy, not Google's: _lib/google-drive.js returns every
-			// mimeType and filters none of them.
+			// A site policy, not Google's: the package returns every mimeType and
+			// filters none of them.
 			if (SKIP_MIME.has(photo.mimeType)) {
 				console.warn(
 					`[gallery] skipping HEIC (re-export as JPEG): ${photo.name}`,

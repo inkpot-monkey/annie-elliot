@@ -17,6 +17,9 @@ importers:
       '@11ty/eleventy-plugin-webc':
         specifier: ^0.11.2
         version: 0.11.2
+      '@palebluebytes/cms':
+        specifier: link:../../google-cms
+        version: link:../../google-cms
       dotenv:
         specifier: ^17.2.2
         version: 17.2.2

@@ -1,7 +1,10 @@
 import dotenv from "dotenv";
 import { readFile } from "node:fs/promises";
-import { apiKey } from "../_lib/google-auth.js";
-import { fetchEvents, normaliseEvents } from "../_lib/google-calendar.js";
+import { apiKey } from "@palebluebytes/cms/auth";
+import {
+	fetchEvents,
+	normaliseEvents,
+} from "@palebluebytes/cms/calendar/google";
 import { formatForDisplay, partition } from "../_lib/event-display.js";
 
 dotenv.config();
@@ -38,8 +41,8 @@ async function load() {
 
 	// One Google API key serves both the Calendar and Drive APIs — they share a
 	// Google Cloud project, so GOOGLE_KEY is the single key for both here and in
-	// gallery.js. It is read HERE and passed in: `_lib/google-calendar.js` reads
-	// no environment.
+	// gallery.js. It is read HERE and passed in: the package reads no environment
+	// on any runtime, deliberately.
 	if (!process.env.GOOGLE_KEY) {
 		throw new Error("GOOGLE_KEY not found in environment variables");
 	}
