@@ -18,8 +18,8 @@ importers:
         specifier: ^0.11.2
         version: 0.11.2
       '@palebluebytes/cms':
-        specifier: link:../../google-cms
-        version: link:../../google-cms
+        specifier: ^0.3.0
+        version: 0.3.0
       dotenv:
         specifier: ^17.2.2
         version: 17.2.2
@@ -448,6 +448,10 @@ packages:
     engines: {node: '>=14'}
     peerDependencies:
       '@opentelemetry/api': ^1.1.0
+
+  '@palebluebytes/cms@0.3.0':
+    resolution: {integrity: sha512-XKsmOhKGw0XjMn6XtwFh/OkUeKGUU5RJSQVa56pJPMqHDM+k0fphXZDVZG5S/tn151SdMVS8at0tbNNAuIYwRA==, tarball: https://npm.pkg.github.com/download/@palebluebytes/cms/0.3.0/e507145cda04b569d2a5a5a1556f9568d74c858e}
+    engines: {node: '>=22'}
 
   '@paulirish/trace_engine@0.0.61':
     resolution: {integrity: sha512-/O08DwmUqIlJjUSPSZbNF8lWnlxaMsIOV6sS+uDKCxBd5i1psAmjEoG3JAqR6+nHD8X+YY474NW7SxUH/K+/kQ==}
@@ -2898,6 +2902,8 @@ snapshots:
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/core': 1.30.1(@opentelemetry/api@1.9.0)
+
+  '@palebluebytes/cms@0.3.0': {}
 
   '@paulirish/trace_engine@0.0.61':
     dependencies:

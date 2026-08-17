@@ -26,16 +26,21 @@ whichever lockfile it finds, so an accidental one silently changes what
 production installs. The `npm run …` scripts are fine — it is only the install
 that must be pnpm.
 
-You need a `.env` in the repo root containing a Google API key:
+You need a `.env` in the repo root containing two secrets:
 
 ```
-GOOGLE_KEY=...
+GOOGLE_KEY=...              # one key serves both Drive and Calendar
+GITHUB_PACKAGES_TOKEN=...   # read:packages, to install @palebluebytes/cms
 ```
 
-One key serves both Drive and Calendar. **A build without it fails immediately** —
-`calendar.js` and `gallery.js` both throw rather than render an empty page. The
-test suite is the exception: it uses fixtures and needs neither the key nor a
-network connection.
+They fail at different moments, which is worth knowing when one bites.
+**`GITHUB_PACKAGES_TOKEN` is needed before `pnpm install` will even run** — see
+[Installing it needs a token](#installing-it-needs-a-token) — and it must reach
+the _shell_, which is why `.envrc` exports `.env` through direnv.
+
+**A build without `GOOGLE_KEY` fails immediately** — `calendar.js` and
+`gallery.js` both throw rather than render an empty page. The test suite is the
+exception: it uses fixtures and needs neither the key nor a network connection.
 
 **Note for Nix users:** `flake.nix` provides a system-compatible Chromium, sets
 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` so Playwright uses it instead of
@@ -90,17 +95,29 @@ four-way `kind` (`"date" | "floating" | "zoned" | "instant"`) instead of an
 just the first and the last, and `_lib/event-display.js` throws rather than format
 the other two. And the calendar window is `from`/`to`, not `timeMin`/`timeMax`.
 
-> **The dependency is `"@palebluebytes/cms": "link:../../google-cms"`** — a local
-> path, not a published version. Two things follow, and both bite at deploy time
-> rather than here:
->
-> - A `link:` **cannot resolve in a clean checkout**, and Cloudflare installs from
->   `pnpm-lock.yaml` in exactly that. So it has to become a real version before the
->   next deploy.
-> - The name and the path disagree on purpose for now: the package renamed itself
->   from `google-cms` to `cms`, but the **directory** it lives in is still
->   `google-cms`. When that repo is renamed on GitHub and re-cloned, this path
->   changes too.
+### Installing it needs a token
+
+`@palebluebytes/cms` is published to **GitHub Packages**, which requires
+authentication to _install_ even though the repo is public. Without it the
+install fails with a bare 401 that reads like the package doesn't exist.
+
+The committed [`.npmrc`](.npmrc) points the `@palebluebytes` scope at GitHub and
+reads the token from the environment, so **it holds no secret** — but the
+variable has to exist in both places that install:
+
+| Where      | How                                                                                   |
+| ---------- | ------------------------------------------------------------------------------------- |
+| Locally    | `GITHUB_PACKAGES_TOKEN` in `.env`, which `.envrc` exports via direnv                  |
+| Cloudflare | Settings → Variables and Secrets, as a **Secret**, on **both** Production and Preview |
+
+A `read:packages` scope is all it needs. Don't call it `GITHUB_TOKEN` — inside
+GitHub Actions that name is injected automatically with a token that cannot read
+another repository's packages, and the failure looks impossible.
+
+**pnpm errors on an unset variable** in `.npmrc` rather than falling back to
+`~/.npmrc`, so a missing token stops the install outright instead of 401-ing
+halfway through. If `pnpm install` complains about the environment, that is what
+it means — and `direnv allow` after any `.envrc` change is the usual cause.
 
 ## Testing
 
