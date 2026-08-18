@@ -124,16 +124,16 @@ it means — and `direnv allow` after any `.envrc` change is the usual cause.
 Everything runs through [Playwright](https://playwright.dev/) except the unit
 tests, which use `node --test`.
 
-| Command               | Covers                                                                |
-| --------------------- | --------------------------------------------------------------------- |
-| `npm run test:unit`   | `src/_lib/` directly, and the two `src/_data/` wrappers — see below   |
-| `npm run test:visual` | **The whole Playwright suite** — visual, a11y, SEO, gallery, lightbox |
-| `npm run test:seo`    | Title, description, Open Graph, canonical, JSON-LD                    |
-| `npm run test:a11y`   | `axe` against WCAG 2 A/AA over seven pages                            |
-| `npm run test:html`   | `html-validate` over `dist/` — **run `npm run build` first**          |
-| `npm run test:all`    | `test:unit` → `test:seo` → `test:html`                                |
-| `npm run test:update` | Rewrite the visual baselines after an intentional design change       |
-| `npm run report`      | Open the Playwright HTML report, including visual diffs               |
+| Command               | Covers                                                                    |
+| --------------------- | ------------------------------------------------------------------------- |
+| `npm run test:unit`   | `src/_lib/` directly, and the two `src/_data/` wrappers — see below       |
+| `npm run test:visual` | **The whole Playwright suite** — visual, a11y, SEO, gallery, lightbox     |
+| `npm run test:seo`    | Title, description, Open Graph, canonical, JSON-LD                        |
+| `npm run test:a11y`   | `axe` against WCAG 2 A/AA over seven pages                                |
+| `npm run test:html`   | `html-validate` over a fixture build it makes itself — no key, no network |
+| `npm run test:all`    | `test:unit` → `test:seo` → `test:html`                                    |
+| `npm run test:update` | Rewrite the visual baselines after an intentional design change           |
+| `npm run report`      | Open the Playwright HTML report, including visual diffs                   |
 
 `npm run test:visual` is named for its most expensive job but is literally
 `npx playwright test`, so it runs every spec in `tests/`.
@@ -205,6 +205,16 @@ two of its stock rules are re-tuned in `.htmlvalidate.json`:
   indentation behind on an otherwise empty line. Nobody reads `dist/`
   whitespace, and contorting the templates to satisfy the rule would cost more
   than it's worth.
+
+`test:html` builds its own `dist-test/` first (`npm run build:fixture`) rather
+than reading whatever `dist/` happens to hold. It used to point at `dist/`, which
+`test:all` never builds: with no `dist/` the gate's last step just failed, and
+with a **stale** `dist/` it validated markup from whenever someone last ran a
+live build and went green — passing on the previous release's HTML. Building what
+it validates also keeps the gate offline, like every other step in it.
+
+To validate a real production build before a deploy, run `npm run build` and then
+`npm run test:html:live`, which reads `dist/`.
 
 `no-inline-style` stays on, with an allowlist for the CSS custom properties that
 components legitimately set per instance (the gallery's `--r` / `--sum`, the nav's
