@@ -111,14 +111,18 @@ function mediaSrc(photo) {
 	}
 
 	if (!photo.url) {
-		// Drive populates webContentLink for any file with binary content, so its
-		// absence means the field was dropped from the listing's `fields=` or the
-		// file is not what we think it is. Falling back to the key-bearing media
-		// URL would silently reintroduce the hash hazard for one photo, which is
-		// worse than stopping.
+		// Not a field-mask problem: `webContentLink` is in the package's own
+		// BASE_FIELDS, always requested, and `extraFields` only adds to that. Drive
+		// populates it for any file with downloadable binary content, so its
+		// absence means the file has none — a Google-native Doc or a shortcut that
+		// the `mimeType contains 'image/'` query should already have excluded, or
+		// a file whose download the owner has restricted. Falling back to the
+		// key-bearing media URL would silently reintroduce the hash hazard for one
+		// photo, which is worse than stopping.
 		throw new Error(
-			`No webContentLink for Drive file ${photo.name} (${photo.id}) — ` +
-				`pass extraFields to fetchPhotos.`,
+			`No webContentLink for Drive file ${photo.name} (${photo.id}) — it has ` +
+				`no downloadable content (a Google-native file or a shortcut?) or ` +
+				`its download is restricted. Re-upload it as a real image file.`,
 		);
 	}
 
