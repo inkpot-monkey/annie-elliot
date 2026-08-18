@@ -33,18 +33,20 @@ export function formatForDisplay(event, { fallbackTimeZone }) {
 		);
 	}
 
-	const isFloatingDay = kind === "date";
+	// Not named for the package's `"floating"` kind, which is a WALL TIME and is
+	// rejected above; this is the date-only kind.
+	const isDateOnly = kind === "date";
 
-	// An all-day date is floating: `new Date("2099-06-13")` invents an instant at
-	// UTC midnight, so format it back in UTC or a spurious time appears — and in
-	// a zone west of UTC, the day before.
+	// An all-day date has no offset either: `new Date("2099-06-13")` invents an
+	// instant at UTC midnight, so format it back in UTC or a spurious time
+	// appears — and in a zone west of UTC, the day before.
 	const displayOpts = {
 		weekday: "long",
 		day: "numeric",
 		month: "long",
 		year: "numeric",
-		timeZone: isFloatingDay ? "UTC" : event.timeZone || fallbackTimeZone,
-		...(isFloatingDay ? {} : { hour: "numeric", minute: "2-digit" }),
+		timeZone: isDateOnly ? "UTC" : event.timeZone || fallbackTimeZone,
+		...(isDateOnly ? {} : { hour: "numeric", minute: "2-digit" }),
 	};
 	const format = (iso) =>
 		new Date(iso).toLocaleDateString("en-GB", displayOpts);
