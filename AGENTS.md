@@ -24,11 +24,12 @@ templates as the **whole module namespace**. Add a second named export and
 `$data.gallery` silently becomes `{ default, packRows }`, rendering
 `[object Object]` instead of the gallery.
 
-Both `_data` modules satisfy this **by construction**: everything worth naming —
-the Drive and Calendar transports, the row packer, the date formatting — lives in
-`src/_lib/` and is imported, so each `_data/*.js` file is one default export over
-imports and there is nothing to accidentally name. Add code there rather than a
-second export here.
+Both `_data` modules satisfy this **by construction**: everything worth naming
+lives somewhere else and is imported — the Drive and Calendar transports and
+their normalisers in `@palebluebytes/cms`, the row packer and the date
+formatting in `src/_lib/` — so each `_data/*.js` file is one default export over
+imports and there is nothing to accidentally name. Add code to `src/_lib/`
+rather than a second export here.
 
 ## A `_data/*.js` function is called once per build, not once per page
 

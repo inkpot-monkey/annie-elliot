@@ -138,10 +138,10 @@ tests, which use `node --test`.
 `npm run test:visual` is named for its most expensive job but is literally
 `npx playwright test`, so it runs every spec in `tests/`.
 
-No unit suite needs `GOOGLE_KEY` or a network. The pure modules —
-`gallery-layout`, `event-display`, and the package's `normalise*` half — are
-called directly; the transports take their `fetch` as an option; and the two
-`_data` wrappers, which fix the transport to the global `fetch`, still stub it.
+No unit suite needs `GOOGLE_KEY` or a network. `gallery-layout` and
+`event-display` are pure and called directly. No suite imports the package: its
+transports and normalisers are tested there, and the two `_data` wrappers reach
+them through the global `fetch`, so those two suites stub `globalThis.fetch`.
 
 | Suite                               | Covers                                                                             |
 | ----------------------------------- | ---------------------------------------------------------------------------------- |

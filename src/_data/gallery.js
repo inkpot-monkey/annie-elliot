@@ -10,7 +10,8 @@ dotenv.config();
 // Eleventy `_data/*.js` module with any other export is handed to templates as
 // the whole module namespace, so `$data.gallery` silently becomes
 // `{default, packRows}` and every loop renders "[object Object]". Everything
-// worth naming lives in `src/_lib/` and is imported here.
+// worth naming lives elsewhere — the transport and normaliser in the package,
+// the packer and the filename rules in `src/_lib/` — and is imported here.
 
 // Public folder id — not secret (it's in every share URL). Mirrors calendar.js's
 // hard-coded calendarId. Verified live in ticket 05.
@@ -50,7 +51,7 @@ async function load() {
 		folderId: FOLDER_ID,
 		auth: apiKey(process.env.GOOGLE_KEY),
 		// Asking Drive for images only is this site's business, not the
-		// transport's — which returns every mimeType and filters none of them.
+		// package's — which returns every mimeType and filters none of them.
 		// It saves a listing entry per stray file; the real filtering is below,
 		// because the fixture payload never goes near a query.
 		extraQuery: "mimeType contains 'image/'",

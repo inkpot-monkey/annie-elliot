@@ -10,9 +10,10 @@ import { formatForDisplay, partition } from "../_lib/event-display.js";
 dotenv.config();
 
 // Like src/_data/gallery.js, this module exports ONLY `default` — and now by
-// construction, because everything worth naming lives in src/_lib/. An Eleventy
-// `_data/*.js` module with a second export is handed to templates as the whole
-// module namespace, and every loop then renders "[object Object]".
+// construction, because everything worth naming lives elsewhere: the transport
+// and normaliser in the package, the formatting and the partition in src/_lib/.
+// An Eleventy `_data/*.js` module with a second export is handed to templates as
+// the whole module namespace, and every loop then renders "[object Object]".
 
 // Public calendar id — not secret. Mirrors gallery.js's hard-coded FOLDER_ID.
 const CALENDAR_ID = "author.annie.elliot@gmail.com";
@@ -55,10 +56,10 @@ async function load() {
 
 export default async function () {
 	const events = (await load())
-		// ISO strings sort as dates — one reason the transport returns strings and
+		// ISO strings sort as dates — one reason the package returns strings and
 		// not `Date`s. Sort while `start` is still ISO, before formatting.
 		.sort((a, b) => a.start.localeCompare(b.start))
-		// "Europe/London" is this site's truth, so it lives here. The transport
+		// "Europe/London" is this site's truth, so it lives here. The package
 		// returns `timeZone: undefined` rather than guessing for everyone.
 		.map((event) =>
 			formatForDisplay(event, { fallbackTimeZone: "Europe/London" }),
